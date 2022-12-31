@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const { SourceMapDevToolPlugin } = require("webpack");
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./src/presentation/index.js",
   output: {
     path: path.resolve(__dirname, "./public/js"),
     filename: "[name].min.js",

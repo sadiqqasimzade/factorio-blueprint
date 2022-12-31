@@ -30,64 +30,64 @@ myblu='0eNqdkm2LwyAMx79LXrsxbb22fpVjHHYLQ9C0VHtcKX73ace4ctfBthc+RJP/L9HM0NoR+8FQ
 
 
 
-# entities=[]
-# wmax,hmax=10,10
-# i,j=0,0
+entities=[]
+wmax,hmax=10,10
+i,j=0,0
 
-# while i<hmax:
-#     while j<wmax:
-#         entity={
-#             "entity_number": (i*wmax)+j,
-#             "name": "small-lamp",
-#             "position": {
-#               "x": j+0.5,
-#               "y": i+0.5
-#             },
-#             "connections": {
-#               "1": {
-#                 "green": [
-#                     (
-#                         {
-#                             "entity_id": (i*wmax)+j-1
-#                         } if j-1>=0 else 
-#                         {
-#                             "entity_id":j*(i-1)
-#                         } if i-1>=0 else None
-#                     ),
-#                     (
-#                         {
-#                             "entity_id":(i*wmax)+j+1
-#                         } if j+1!=wmax else None 
-#                     )
-#                 ]
-#               }
-#             }
-#         }
-#         entities.append(entity)
-#         j+=1
-#     j=0
-#     i+=1  
-
-
-
-# result={
-#   "blueprint": {
-#     "icons": [
-#       {
-#         "signal": {
-#           "type": "item",
-#           "name": "substation"
-#         },
-#         "index": 1
-#       }
-#     ],
-#     "entities":entities,
-#     "item": "blueprint",
-#     "version": 281479276527617
-#   }
-# }
+while i<hmax:
+    while j<wmax:
+        entity={
+            "entity_number": (i*wmax)+j,
+            "name": "small-lamp",
+            "position": {
+              "x": j+0.5,
+              "y": i+0.5
+            },
+            "connections": {
+              "1": {
+                "green": [
+                    (
+                        {
+                            "entity_id": (i*wmax)+j-1
+                        } if j-1>=0 else 
+                        {
+                            "entity_id":j*(i-1)
+                        } if i-1>=0 else None
+                    ),
+                    (
+                        {
+                            "entity_id":(i*wmax)+j+1
+                        } if j+1!=wmax else None 
+                    )
+                ]
+              }
+            }
+        }
+        entities.append(entity)
+        j+=1
+    j=0
+    i+=1  
 
 
+
+result={
+  "blueprint": {
+    "icons": [
+      {
+        "signal": {
+          "type": "item",
+          "name": "substation"
+        },
+        "index": 1
+      }
+    ],
+    "entities":entities,
+    "item": "blueprint",
+    "version": 281479276527617
+  }
+}
+
+print(result)
 # print(str(result).replace("'",'"').replace('None','"None"'))
 # print(encode_blueprint(result))
 
