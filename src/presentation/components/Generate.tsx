@@ -1,12 +1,16 @@
 import { Blueprint } from "../../domain/entity/models/Blueprint";
 import { Blueprint_Entity } from "../../domain/entity/models/Blueprint_Entity";
 import { Blueprint_Icon } from "../../domain/entity/models/Blueprint_Icon";
-import { signals, versions } from "../../domain/entity/stuctures/Enums";
+import {
+  entity_names,
+  signals,
+  versions,
+} from "../../domain/entity/stuctures/Enums";
 
 export default () => {
   var entities: Blueprint_Entity[] = [];
-  var wmax = 2;
-  var hmax = 14;
+  var wmax = 30;
+  var hmax = 5;
   var current_height = 0;
   var current_width = 0;
   var substation_counter = 4;
@@ -26,7 +30,7 @@ export default () => {
     entities.push(
       new Blueprint_Entity(
         wmax * hmax * 3 + current_width,
-        "constant-combinator",
+        entity_names.constant_combinator,
         current_width * 2 + 1,
         -1,
         {
@@ -75,17 +79,17 @@ export default () => {
             {
               signal: signals.signal_0,
               count: -1,
-              index: 9,
+              index: 8,
             },
             {
               signal: signals.signal_1,
               count: -7,
-              index: 8,
+              index: 9,
             },
             {
               signal: signals.signal_2,
               count: -2,
-              index: 18,
+              index: 10,
             },
           ],
         }
@@ -93,8 +97,6 @@ export default () => {
     );
     current_width++;
   }
-  console.log(substation_cordinates_w);
-  console.log(substation_cordinates_h);
   current_width = 0;
   while (current_height < hmax) {
     while (current_width < wmax) {
@@ -105,7 +107,7 @@ export default () => {
         entities.push(
           new Blueprint_Entity(
             current_height * wmax * 3 + current_width * 3,
-            "substation",
+            entity_names.substation,
             current_width * 2 + 0.5,
             current_height * 2 + 0.5,
             undefined,
@@ -135,7 +137,7 @@ export default () => {
       entities.push(
         new Blueprint_Entity(
           current_height * wmax * 3 + current_width * 3,
-          "arithmetic-combinator",
+          entity_names.arithmetic_combinator,
           current_width * 2 + 0.5,
           current_height * 2,
           {
@@ -183,7 +185,7 @@ export default () => {
       entities.push(
         new Blueprint_Entity(
           current_height * wmax * 3 + current_width * 3 + 1,
-          "small-lamp",
+          entity_names.small_lamp,
           current_width * 2,
           current_height * 2 + 1,
           {
@@ -216,7 +218,7 @@ export default () => {
       entities.push(
         new Blueprint_Entity(
           current_height * wmax * 3 + current_width * 3 + 2,
-          "small-lamp",
+          entity_names.small_lamp,
           current_width * 2 + 1,
           current_height * 2 + 1,
           {
@@ -250,7 +252,6 @@ export default () => {
         substation_cordinates_w[substation_cordinates_w.length - 1] &&
       substation_cordinates_h.includes(current_height)
     ) {
-      console.log('w'+current_width+':added');
       entities.push(
         new Blueprint_Entity(
           wmax * hmax * 3 +
@@ -258,18 +259,19 @@ export default () => {
             substation_cordinates_w[substation_cordinates_w.length - 1] *
               current_height,
 
-          "substation",
+          entity_names.substation,
           substation_cordinates_w[substation_cordinates_w.length - 1] * 2 + 0.5,
           current_height * 2 + 0.5,
           undefined,
           undefined,
-          undefined,[
+          undefined,
+          [
             substation_cordinates_h.includes(current_height + 9)
-                ? wmax * hmax * 3 +
-                  wmax +
-                  (current_height + 9) *
-                    substation_cordinates_w[substation_cordinates_w.length - 1]
-                : undefined,
+              ? wmax * hmax * 3 +
+                wmax +
+                (current_height + 9) *
+                  substation_cordinates_w[substation_cordinates_w.length - 1]
+              : undefined,
           ]
         )
       );
@@ -290,7 +292,7 @@ export default () => {
               wmax +
               substation_cordinates_h[substation_cordinates_h.length - 1] *
                 current_width,
-            "substation",
+            entity_names.substation,
             current_width * 2 + 0.5,
             substation_cordinates_h[substation_cordinates_h.length - 1] * 2 +
               0.5,

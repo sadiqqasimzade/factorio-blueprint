@@ -35,37 +35,37 @@ export const App: React.FC<{}> = () => {
   }
 
   return (
-    <>
-      <h2>Decoded</h2>
-      <p
-        onClick={clickHandler}
-      >
-        {JSON.stringify(
-          decode_blueprint(
-            "0eNqV0cEKwjAMANB/yTke2nXO9VdkyKZBAy4bayeO0X+3qxfBCfNQSEr7EpIZmvtI/cDiwc7A504c2OMMjq9S35c7P/UEFthTCwhSt0vmxsb52nMnEBBYLvQEq0KFQOLZM72VlEwnGduGhvhg7T9C3zlOYawWmZ3OS4QpBqaIuBBfb003DgupMasCfsF6I2zUL1ihWYOzPzvW5UbY/NnxN5xGEQeeFmM/9ojwoMElRB+UKUpd7PN4VBHCC46JohI="
-          ),
-          null,
-          2
-        )}
-      </p>
-      <h2>Encoded</h2>
-      <p
-        style={{ wordBreak: "break-all" }}
-        onClick={clickHandler}
-      >
-        {encode_blueprint({
-          blueprint: Generate(),
-        })}
-      </p>
-      <h1>NEw Json</h1>
-
-      <p onClick={clickHandler}>
-        {JSON.stringify(Generate()).replace(/(null)|(,null)/g, "").replace(/(\[,)/g,"[")}
-      </p>
-      <p>B</p>
-    </>
     // <>
-    //   <MyCanvas></MyCanvas>
+    //   <h2>Decoded</h2>
+    //   <p
+    //     onClick={clickHandler}
+    //   >
+    //     {JSON.stringify(
+    //       decode_blueprint(
+    //         "0eNqNkMFqwzAMht9FZ6eQrGk23/cUZQQn1VZBYhtbDgvB7145gW2ww2bwQdKvT7+0wTAl9IEsg96ARmcj6OsGkT6smUqOV4+ggRhnUGDNXCITiO8zMo3V6OaBrGEXICsge8NP0HV+U4CWiQkP4B6svU3zgEEEf6AUeBel29niQYhV83Q5tQpW0O1ZBolTDm7qB7ybhaRDZN+oXsq3vT2WwjuFyCUX2ZRNhROxSPpfey4UOEnmy9+hqJqynfMYzGEKKpG4xD7x/yGvkOXJafZr6h/HV7BgiDu5ea7P3UvTXVr5dZfzA6a/kAo="
+    //       ),
+    //       null,
+    //       2
+    //     )}
+    //   </p>
+    //   <h2>Encoded</h2>
+    //   <p
+    //     style={{ wordBreak: "break-all" }}
+    //     onClick={clickHandler}
+    //   >
+    //     {encode_blueprint({
+    //       blueprint: Generate(),
+    //     })}
+    //   </p>
+    //   <h1>NEw Json</h1>
+
+    //   <p onClick={clickHandler}>
+    //     {JSON.stringify(Generate()).replace(/(null)|(,null)/g, "").replace(/(\[,)/g,"[")}
+    //   </p>
+    
     // </>
+    <>
+      <MyCanvas></MyCanvas>
+    </>
   );
 };

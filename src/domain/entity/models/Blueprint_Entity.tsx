@@ -1,8 +1,9 @@
+import { entity_names } from "../stuctures/Enums";
 import { TBlueprint_Entity_Connections } from "../stuctures/TBlueprint_Entity_Connections";
 
 export class Blueprint_Entity{
   entity_number: number;
-  name: string;
+  name: entity_names;
   position: {
     x: number;
     y: number;
@@ -14,7 +15,7 @@ export class Blueprint_Entity{
 
   constructor(
     entity_number: number,
-    name: string,
+    name: entity_names,
     positionX: number,
     positionY: number,
     connections?: TBlueprint_Entity_Connections|undefined,

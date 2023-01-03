@@ -1,6 +1,6 @@
-import { item_type } from "./Enums";
+import { item_types } from "./Enums";
 
 export type TBlueprint_Signal = {
-  type: item_type;
+  type: item_types;
   name: string;
 };
