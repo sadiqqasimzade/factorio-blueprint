@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .d-flex {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .w {
+        width: calc(100% / 21);
+        border: 1px black;
+        background-color: brown;
+        aspect-ratio: 1;
+        margin: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="d-flex" id="test"></div>
+    <script>
+      {
+  
+          var w = 40;
+          var h = 20;
+          for (let i = 0; i < w; i++) {
+            for (let j = 0; j < h; j++) {
+              var newelement = document.createElement('p');
+              newelement.classList.add("w")
+              newelement.addEventListener('click',(e)=>{e.target.style.backgroundColor='green'})
+              newelement.innerText=`X:${j} Y:${i} id:${i*w+j}`
+              document.getElementById("test").appendChild(newelement);
+            }
+          }
+          // var init=1
+          // var c=0
+          // var res=[4]
+          // while(init*4+c<w||init*4+c<h) {
+          //  init+=2
+          //  c+=1
+          //  res.push(init*4+c)
+          // };
+          var current=4
+          var res=[4]
+          while(current<w||current<h){
+            res.push(current+9)
+            current+=9
+          }
+          console.log(res)
+      }
+    </script>
+  </body>
+</html>

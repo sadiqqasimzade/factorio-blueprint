@@ -1,13 +1,12 @@
 import { versions } from "../stuctures/Enums";
-import { IBlueprint } from "../stuctures/IBlueprint";
 import { Blueprint_Entity } from "./Blueprint_Entity";
 import { Blueprint_Icon } from "./Blueprint_Icon";
 
-export class Blueprint implements IBlueprint {
+export class Blueprint {
   icons: Blueprint_Icon[];
   entities: Blueprint_Entity[];
   item: string;
-  version: number;
+  version: versions;
 
   constructor(
     icons: Blueprint_Icon[],

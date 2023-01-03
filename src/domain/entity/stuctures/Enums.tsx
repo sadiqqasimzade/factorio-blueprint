@@ -1,4 +1,3 @@
-import { Blueprint_Icon_Signal } from "./IBlueprint_Icon";
 
 export enum versions {
   latest = 281479276527617,
@@ -82,6 +81,10 @@ export const signals= {
     type: item_type.Virtual,
     name: "signal-9",
   },
+  signal_each:{
+    type: item_type.Virtual,
+    name: "signal-each",
+  }
 };
 
 
