@@ -41,38 +41,42 @@ export const MyCanvas = (props: Props) => {
       }
       for (let i = 0; i < canvas.height; i++) {
         for (let j = 0; j < canvas.width; j++) {
+          
           let data = context.getImageData(j, i, 1, 1).data;
           hexed.push(rgbToHex(data[0], data[1], data[2]));
         }
       }
 
       const findclosest = (function () {
-        function levDist(s: string, t: string): number {
-          if (!s.length) return t.length;
-          if (!t.length) return s.length;
-
-          return Math.min(
-            levDist(s.substring(1), t) + 1,
-            levDist(t.substring(1), s) + 1,
-            levDist(s.substring(1), t.substring(1)) + (s[0] !== t[0] ? 1 : 0)
+        function dist(s:string, t:string):number {
+          if (!s.length || !t.length) return 0;
+          return (
+            dist(s.slice(2), t.slice(2)) +
+            Math.abs(parseInt(s.slice(0, 2), 16) - parseInt(t.slice(0, 2), 16))
           );
         }
 
-        return function (arr: [], str: string) {
-          return arr.sort(function (a, b) {
-            return levDist(a, str) - levDist(b, str);
-          });
+        return function (colorarr:string[], hexstr:string) {
+          var min = 0xffffff;
+          var best, current, i;
+          for (i = 0; i < colorarr.length; i++) {
+            current = dist(colorarr[i], hexstr);
+            if (current < min) {
+              min = current;
+              best = colorarr[i];
+            }
+          }
+          return best;
         };
       })();
 
-      // http://www.crockford.com/wrrrld/color.html
-      var colors = {
-        ff0000: "red",
+      var colors:{[color_hex:string]:string} = {
+        'ff0000': "red",
         "0000FF": "blue",
-        FFFFFF: "white",
-        FFFF00: "yellow",
+        'FFFFFF': "white",
+        'FFFF00': "yellow",
         "008000": "green",
-        ffc0cb: "rozoviy",
+        'ffc0cb': "rozoviy",
         "30d5c8": "biruzoviy",
       };
 
@@ -87,8 +91,7 @@ export const MyCanvas = (props: Props) => {
         // convert 3 digits to 6
         hex = hex.length < 6 ? hex.replace(/(.)/g, "$1$1") : hex;
 
-        // get the closest color // HERE'S THE PROBLEM
-        var match = findclosest(colorsArr, hex)[0];
+        var match = findclosest(colorsArr, hex);
 
         console.log(colors[match]);
       }

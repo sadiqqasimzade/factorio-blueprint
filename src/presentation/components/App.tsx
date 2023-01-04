@@ -35,37 +35,37 @@ export const App: React.FC<{}> = () => {
   }
 
   return (
-    // <>
-    //   <h2>Decoded</h2>
-    //   <p
-    //     onClick={clickHandler}
-    //   >
-    //     {JSON.stringify(
-    //       decode_blueprint(
-    //         "0eNqNkMFqwzAMht9FZ6eQrGk23/cUZQQn1VZBYhtbDgvB7145gW2ww2bwQdKvT7+0wTAl9IEsg96ARmcj6OsGkT6smUqOV4+ggRhnUGDNXCITiO8zMo3V6OaBrGEXICsge8NP0HV+U4CWiQkP4B6svU3zgEEEf6AUeBel29niQYhV83Q5tQpW0O1ZBolTDm7qB7ybhaRDZN+oXsq3vT2WwjuFyCUX2ZRNhROxSPpfey4UOEnmy9+hqJqynfMYzGEKKpG4xD7x/yGvkOXJafZr6h/HV7BgiDu5ea7P3UvTXVr5dZfzA6a/kAo="
-    //       ),
-    //       null,
-    //       2
-    //     )}
-    //   </p>
-    //   <h2>Encoded</h2>
-    //   <p
-    //     style={{ wordBreak: "break-all" }}
-    //     onClick={clickHandler}
-    //   >
-    //     {encode_blueprint({
-    //       blueprint: Generate(),
-    //     })}
-    //   </p>
-    //   <h1>NEw Json</h1>
-
-    //   <p onClick={clickHandler}>
-    //     {JSON.stringify(Generate()).replace(/(null)|(,null)/g, "").replace(/(\[,)/g,"[")}
-    //   </p>
-    
-    // </>
     <>
-      <MyCanvas></MyCanvas>
+      <h2>Decoded</h2>
+      <p
+        onClick={clickHandler}
+      >
+        {JSON.stringify(
+          decode_blueprint(
+            "0eNp9UM2KwkAMfpecp0JLx7pz2+cQkanG3UCbKdO0WMq8u5kK4kUPgSR8P/myQttNOERiAbcCXQKP4I4rjPTHvss7WQYEByTYgwH2fZ4yTjxLcQl9S+wlREgGiK94B1emkwFkISF8ym3DcuapbzEq4KuQgSGMyg2c/VWvqGy9swYWbe1hZ9VJeRJDd27x38+kJEXeqBOMH+6fKcqkm5fzE1H8wqY25QeUrwR1OqUcYkvt3p5kYFaL7bTqUNbNT9XsrVbZpPQAXgFvRA=="
+          ),
+          null,
+          2
+        )}
+      </p>
+      <h2>Encoded</h2>
+      <p
+        style={{ wordBreak: "break-all" }}
+        onClick={clickHandler}
+      >
+        {encode_blueprint({
+          blueprint: Generate(),
+        })}
+      </p>
+      <h1>NEw Json</h1>
+
+      <p onClick={clickHandler}>
+        {JSON.stringify(Generate()).replace(/(null)|(,null)/g, "").replace(/(\[,)/g,"[")}
+      </p>
+    
     </>
+    // <>
+    //   <MyCanvas></MyCanvas>
+    // </>
   );
 };

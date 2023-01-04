@@ -9,7 +9,7 @@ import {
 
 export default () => {
   var entities: Blueprint_Entity[] = [];
-  var wmax = 30;
+  var wmax = 6;
   var hmax = 5;
   var current_height = 0;
   var current_width = 0;
@@ -26,6 +26,57 @@ export default () => {
     substation_cordinates_h.push(substation_counter + 9);
     substation_counter += 9;
   }
+  entities.push(
+    new Blueprint_Entity(
+      100000000, //uint64 max
+      entity_names.constant_combinator,
+      -1,
+      -1,
+      {
+        "1": { red: [{ entity_id: 100000000 - 1 }] },
+      },
+      undefined,
+      {
+        filters: [
+          {
+            signal: signals.signal_red,
+            count: -6,
+            index: 1,
+          },
+          {
+            signal: signals.signal_green,
+            count: -5,
+            index: 2,
+          },
+          {
+            signal: signals.signal_blue,
+            count: -4,
+            index: 3,
+          },
+          {
+            signal: signals.signal_yellow,
+            count: -3,
+            index: 4,
+          },
+          {
+            signal: signals.signal_pink,
+            count: -2,
+            index: 5,
+          },
+          {
+            signal: signals.signal_cyan,
+            count: -1,
+            index: 6,
+          },
+          {
+            signal: signals.signal_white,
+            count: 1,
+            index: 7,
+          },
+        ],
+      }
+    )
+  );
   while (current_width < wmax) {
     entities.push(
       new Blueprint_Entity(
@@ -37,45 +88,18 @@ export default () => {
           "1": {
             green: [{ entity_id: current_width * 3, circuit_id: 1 }],
           },
+          "2": {
+            red: [
+              { entity_id: current_width * 3, circuit_id: 1 },
+              current_width + 1 != wmax
+                ? { entity_id: wmax * hmax * 3 + current_width + 1 }
+                : undefined,
+            ],
+          },
         },
         undefined,
         {
           filters: [
-            {
-              signal: signals.signal_red,
-              count: -6,
-              index: 1,
-            },
-            {
-              signal: signals.signal_green,
-              count: -5,
-              index: 2,
-            },
-            {
-              signal: signals.signal_blue,
-              count: -4,
-              index: 3,
-            },
-            {
-              signal: signals.signal_yellow,
-              count: -3,
-              index: 4,
-            },
-            {
-              signal: signals.signal_pink,
-              count: -2,
-              index: 5,
-            },
-            {
-              signal: signals.signal_cyan,
-              count: -1,
-              index: 6,
-            },
-            {
-              signal: signals.signal_white,
-              count: 1,
-              index: 7,
-            },
             {
               signal: signals.signal_0,
               count: -1,
@@ -92,6 +116,24 @@ export default () => {
               index: 10,
             },
           ],
+        }
+      )
+    );
+    entities.push(
+      new Blueprint_Entity(
+        100000000 - (current_width + 1),
+        entity_names.medium_electric_pole,
+        current_width * 2,
+        -1,
+        {
+          "1": {
+            red: [
+              { entity_id: current_width * 3, circuit_id: 1 },
+              current_width + 1 != wmax
+                ? { entity_id: 100000000 - (current_width + 2) }
+                : undefined,
+            ],
+          },
         }
       )
     );
@@ -152,6 +194,17 @@ export default () => {
                       circuit_id: 1,
                     }
                   : { entity_id: wmax * hmax * 3 + current_width }, //const combinator id
+                current_height + 1 != hmax //Next => check is there is entity under current entity
+                  ? {
+                      entity_id:
+                        current_height * wmax * 3 +
+                        current_width * 3 +
+                        wmax * 3,
+                      circuit_id: 1,
+                    }
+                  : undefined,
+              ],
+              red: [
                 current_height + 1 != hmax //Next => check is there is entity under current entity
                   ? {
                       entity_id:

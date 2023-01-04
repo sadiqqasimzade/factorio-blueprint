@@ -1,3 +1,5 @@
+
+
 export enum versions {
   latest = 281479276527617,
 }
@@ -14,6 +16,7 @@ export enum entity_names {
   substation = "substation",
   arithmetic_combinator = "arithmetic-combinator",
   small_lamp = "small-lamp",
+  medium_electric_pole = "medium-electric-pole",
 }
 
 export enum arithmetic_operations {
@@ -104,4 +107,67 @@ export const signals = {
     type: item_types.Virtual,
     name: "signal-each",
   },
+  signal_a: {
+    type: item_types.Virtual,
+    name: "signal-A",
+  },
+  signal_b: {
+    type: item_types.Virtual,
+    name: "signal-B",
+  },
+  signal_c: {
+    type: item_types.Virtual,
+    name: "signal-C",
+  },
+  signal_d: {
+    type: item_types.Virtual,
+    name: "signal-D",
+  },
+  signal_e: {
+    type: item_types.Virtual,
+    name: "signal-E",
+  },
+  signal_f: {
+    type: item_types.Virtual,
+    name: "signal-F",
+  },
+  signal_g: {
+    type: item_types.Virtual,
+    name: "signal-G",
+  },
+  signal_h: {
+    type: item_types.Virtual,
+    name: "signal-H",
+  },
+  signal_i: {
+    type: item_types.Virtual,
+    name: "signal-I",
+  },
+  signal_j: {
+    type: item_types.Virtual,
+    name: "signal-J",
+  },
 };
+
+const signal_priority = [
+  signals.signal_0,
+  signals.signal_1,
+  signals.signal_2,
+  signals.signal_3,
+  signals.signal_4,
+  signals.signal_5,
+  signals.signal_6,
+  signals.signal_7,
+  signals.signal_8,
+  signals.signal_9,
+  signals.signal_a,
+  signals.signal_b,
+  signals.signal_c,
+  signals.signal_d,
+  signals.signal_e,
+  signals.signal_f,
+  signals.signal_g,
+  signals.signal_h,
+  signals.signal_i,
+  signals.signal_j,
+];
