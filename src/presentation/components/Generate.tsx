@@ -4,19 +4,29 @@ import { Blueprint_Icon } from "../../domain/entity/models/Blueprint_Icon";
 import {
   entity_names,
   signals,
+  signal_priority,
   versions,
 } from "../../domain/entity/stuctures/Enums";
 
-export default () => {
-  var entities: Blueprint_Entity[] = [];
-  var wmax = 6;
-  var hmax = 5;
-  var current_height = 0;
-  var current_width = 0;
+export default (wmax: number, hmax: number, color_indexes: number[][]) => {
+  //#region validations
+  if (wmax < 5) {
+    throw "min width is 5";
+  }
+  if (hmax < 5) {
+    throw "min height is 5";
+  }
+  if (hmax > 20) {
+    throw "max height is 20";
+  }
+  if (wmax != color_indexes.length) {
+    throw "width dont match with array's length";
+  }
+  //#endregion
+  //#region substation array
   var substation_counter = 4;
   var substation_cordinates_w = [4];
   var substation_cordinates_h = [4];
-
   while (substation_counter + 9 < Math.ceil(wmax / 9) * 9) {
     substation_cordinates_w.push(substation_counter + 9);
     substation_counter += 9;
@@ -26,6 +36,15 @@ export default () => {
     substation_cordinates_h.push(substation_counter + 9);
     substation_counter += 9;
   }
+  //#endregion
+
+  //#region variables
+  var entities: Blueprint_Entity[] = [];
+  var current_height = 0;
+  var current_width = 0;
+  //#endregion
+  //#region const cambinators
+  //color combinator
   entities.push(
     new Blueprint_Entity(
       100000000, //uint64 max
@@ -78,6 +97,14 @@ export default () => {
     )
   );
   while (current_width < wmax) {
+    var combinator_filter = [];
+    for (let j = 0; j < color_indexes[current_width].length; j++) {
+      combinator_filter.push({
+        signal: signal_priority[j],
+        count: color_indexes[current_width][j],
+        index: j + 1,
+      });
+    }
     entities.push(
       new Blueprint_Entity(
         wmax * hmax * 3 + current_width,
@@ -99,23 +126,7 @@ export default () => {
         },
         undefined,
         {
-          filters: [
-            {
-              signal: signals.signal_0,
-              count: -1,
-              index: 8,
-            },
-            {
-              signal: signals.signal_1,
-              count: -7,
-              index: 9,
-            },
-            {
-              signal: signals.signal_2,
-              count: -2,
-              index: 10,
-            },
-          ],
+          filters: combinator_filter,
         }
       )
     );
@@ -140,6 +151,7 @@ export default () => {
     current_width++;
   }
   current_width = 0;
+  //#endregion
   while (current_height < hmax) {
     while (current_width < wmax) {
       if (
@@ -214,6 +226,15 @@ export default () => {
                       circuit_id: 1,
                     }
                   : undefined,
+                current_height - 1 >= 0 //Prev => check if there is entity above current entity
+                  ? {
+                      entity_id:
+                        current_height * wmax * 3 +
+                        current_width * 3 -
+                        wmax * 3,
+                      circuit_id: 1,
+                    }
+                  : undefined,
               ],
             },
             "2": {
@@ -228,7 +249,7 @@ export default () => {
           {
             arithmetic_conditions: {
               first_signal: signals.signal_each,
-              second_signal: signals.signal_0,
+              second_signal: signal_priority[current_height],
               operation: "-",
               output_signal: signals.signal_each,
             },
@@ -257,10 +278,7 @@ export default () => {
           undefined,
           {
             circuit_condition: {
-              first_signal: {
-                type: "virtual",
-                name: "signal-white",
-              },
+              first_signal: signals.signal_white,
               constant: 1,
               comparator: ">",
             },
@@ -286,10 +304,7 @@ export default () => {
           undefined,
           {
             circuit_condition: {
-              first_signal: {
-                type: "virtual",
-                name: "signal-white",
-              },
+              first_signal: signals.signal_white,
               constant: 1,
               comparator: ">",
             },
@@ -299,7 +314,7 @@ export default () => {
       );
       current_width += 1;
     }
-
+    //substation not affected by loop by width
     if (
       current_width <=
         substation_cordinates_w[substation_cordinates_w.length - 1] &&
@@ -333,6 +348,7 @@ export default () => {
     current_height += 1;
   }
   current_width = 0;
+  //substation not affected by loop by height
   if (
     current_height <=
     substation_cordinates_h[substation_cordinates_h.length - 1]

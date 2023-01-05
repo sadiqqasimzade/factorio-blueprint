@@ -53,7 +53,7 @@ const Decode_Encode = (props: Props) => {
         <textarea className="w-100" placeholder="Json" onChange={decodedInputChange}></textarea>
         <p ref={encodedTextRef} onClick={clickHandler} className='base-test'></p>
       </div>
-      <p onClick={clickHandler}>{Encode_Blueprint({blueprint:Generate()})}</p>
+      {/* <p onClick={clickHandler}>{Encode_Blueprint({blueprint:Generate()})}</p> */}
     </div>
   );
 };

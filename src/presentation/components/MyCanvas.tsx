@@ -1,4 +1,8 @@
 import React, { useRef } from "react";
+import { color_priority, signals } from "../../domain/entity/stuctures/Enums";
+import { TBlueprint_Signal } from "../../domain/entity/stuctures/TBlueprint_Signal";
+import Encode_Blueprint from "../utils/convertors/Encoder";
+import Generate from "./Generate";
 
 type Props = {};
 
@@ -24,13 +28,14 @@ export const MyCanvas = (props: Props) => {
     var img = new Image();
     img.src = window.URL.createObjectURL(files[0]);
     var canvas = document.createElement("canvas");
-    var context = canvas.getContext("2d");
+    var context = canvas.getContext("2d", { willReadFrequently: true });
     img.onload = () => {
       canvas.height = img.naturalHeight;
       canvas.width = img.naturalWidth;
       context.drawImage(img, 0, 0);
       errormessageRef.current.appendChild(canvas);
-      var hexed: string[] = [];
+
+      //#region rgb to hex convertor
       function componentToHex(c: number): string {
         var hex = c.toString(16);
         return hex.length == 1 ? "0" + hex : hex;
@@ -39,16 +44,10 @@ export const MyCanvas = (props: Props) => {
       function rgbToHex(r: number, g: number, b: number): string {
         return componentToHex(r) + componentToHex(g) + componentToHex(b);
       }
-      for (let i = 0; i < canvas.height; i++) {
-        for (let j = 0; j < canvas.width; j++) {
-          
-          let data = context.getImageData(j, i, 1, 1).data;
-          hexed.push(rgbToHex(data[0], data[1], data[2]));
-        }
-      }
-
+      //#endregion
+      //#region findclosest
       const findclosest = (function () {
-        function dist(s:string, t:string):number {
+        function dist(s: string, t: string): number {
           if (!s.length || !t.length) return 0;
           return (
             dist(s.slice(2), t.slice(2)) +
@@ -56,7 +55,7 @@ export const MyCanvas = (props: Props) => {
           );
         }
 
-        return function (colorarr:string[], hexstr:string) {
+        return function (colorarr: string[], hexstr: string) {
           var min = 0xffffff;
           var best, current, i;
           for (i = 0; i < colorarr.length; i++) {
@@ -70,14 +69,14 @@ export const MyCanvas = (props: Props) => {
         };
       })();
 
-      var colors:{[color_hex:string]:string} = {
-        'ff0000': "red",
-        "0000FF": "blue",
-        'FFFFFF': "white",
-        'FFFF00': "yellow",
-        "008000": "green",
-        'ffc0cb': "rozoviy",
-        "30d5c8": "biruzoviy",
+      var colors: { [color_hex: string]: TBlueprint_Signal } = {
+        ff0000: signals.signal_red,
+        "0000FF": signals.signal_blue,
+        FFFFFF: signals.signal_white,
+        FFFF00: signals.signal_yellow,
+        "008000": signals.signal_green,
+        ffc0cb: signals.signal_pink,
+        "30d5c8": signals.signal_cyan,
       };
 
       // convert the `colors`-object to an array
@@ -85,16 +84,38 @@ export const MyCanvas = (props: Props) => {
       for (var key in colors) {
         colorsArr.push(key);
       }
+      //#endregion
 
-      for (let i = 0; i < hexed.length; i++) {
-        var hex: string = hexed[i];
-        // convert 3 digits to 6
-        hex = hex.length < 6 ? hex.replace(/(.)/g, "$1$1") : hex;
+      var color_indexes: number[][] = [];
+      let temp: number[] = [];
+      console.log(canvas.width);
+      console.log(canvas.height);
+      for (let i = 0; i < canvas.width; i++) {
+        for (let j = 0; j < canvas.height; j++) {
+          //i w
+          //j h
 
-        var match = findclosest(colorsArr, hex);
+          let data = context.getImageData(i, j, 1, 1).data;
+          let hex = rgbToHex(data[0], data[1], data[2]);
+          hex = hex.length < 6 ? hex.replace(/(.)/g, "$1$1") : hex;
 
-        console.log(colors[match]);
+          var match = findclosest(colorsArr, hex);
+
+          temp.push(-(color_priority.indexOf(colors[match]) + 1));
+        }
+        color_indexes.push(temp);
+        temp = [];
       }
+      console.log(color_indexes);
+      var elem = errormessageRef.current as HTMLParagraphElement;
+      elem.innerHTML = Encode_Blueprint({
+        blueprint: Generate(canvas.width, canvas.height, color_indexes),
+      });
+      // elem.innerHTML = JSON.stringify(
+      //   Generate(canvas.width, canvas.height, color_indexes),
+      //   null,
+      //   2
+      // );
     };
   }
 
@@ -119,7 +140,12 @@ export const MyCanvas = (props: Props) => {
       <button type="submit" onClick={handleClick}>
         Click me
       </button>
-      <p ref={errormessageRef}></p>
+      <p
+        ref={errormessageRef}
+        onClick={(e) => {
+          navigator.clipboard.writeText(e.target.innerText);
+        }}
+      ></p>
     </>
   );
 };

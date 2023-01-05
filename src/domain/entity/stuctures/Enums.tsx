@@ -1,5 +1,3 @@
-
-
 export enum versions {
   latest = 281479276527617,
 }
@@ -149,7 +147,17 @@ export const signals = {
   },
 };
 
-const signal_priority = [
+export const color_priority = [
+  signals.signal_white,
+  signals.signal_cyan,
+  signals.signal_pink,
+  signals.signal_yellow,
+  signals.signal_blue,
+  signals.signal_green,
+  signals.signal_red,
+];
+
+export const signal_priority = [
   signals.signal_0,
   signals.signal_1,
   signals.signal_2,

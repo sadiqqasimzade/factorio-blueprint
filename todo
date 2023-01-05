@@ -1,11 +1,17 @@
-add type behave contorl
 
 separate w/h seubstations
 
 
+add type behave contorl
 create combinator type
 
-singleton
+singleton?
 
 
 recommended w/h =5x5
+
+
+20x20 bug
+
+
+png error rgba
