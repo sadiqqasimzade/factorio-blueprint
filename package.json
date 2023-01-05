@@ -7,7 +7,7 @@
     "test": "browserify -e ./public/js/main.min.js -o ./public/js/test.js",
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
-    "sass": "sass -w ./static/scss/style.scss ./static/css/style.min.css --style=compressed"
+    "sass": "sass -w ./public/scss/style.scss ./public/css/style.min.css --style=compressed"
   },
   "keywords": [],
   "author": "",
