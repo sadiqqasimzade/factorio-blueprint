@@ -8,7 +8,7 @@ import {
   versions,
 } from "../../domain/entity/stuctures/Enums";
 
-export default (wmax: number, hmax: number, color_indexes: number[][]) => {
+export default (wmax: number, hmax: number, color_indexes: number[][][]) => {
   //#region validations
   if (wmax < 5) {
     throw "min width is 5";
@@ -16,8 +16,8 @@ export default (wmax: number, hmax: number, color_indexes: number[][]) => {
   if (hmax < 5) {
     throw "min height is 5";
   }
-  if (hmax > 20) {
-    throw "max height is 20";
+  if (hmax > 100) {
+    throw "max height is 100";
   }
   if (wmax != color_indexes.length) {
     throw "width dont match with array's length";
@@ -97,7 +97,7 @@ export default (wmax: number, hmax: number, color_indexes: number[][]) => {
     )
   );
   while (current_width < wmax) {
-    var combinator_filter = [];
+    let combinator_filter = [];
     for (let j = 0; j < color_indexes[current_width].length; j++) {
       combinator_filter.push({
         signal: signal_priority[j],
@@ -105,31 +105,45 @@ export default (wmax: number, hmax: number, color_indexes: number[][]) => {
         index: j + 1,
       });
     }
-    entities.push(
-      new Blueprint_Entity(
-        wmax * hmax * 3 + current_width,
-        entity_names.constant_combinator,
-        current_width * 2 + 1,
-        -1,
-        {
-          "1": {
-            green: [{ entity_id: current_width * 3, circuit_id: 1 }],
+    for (let i = 0; i < color_indexes[current_width].length; i++) {
+      let combinator_filter = [];
+      for (let j = 0; j < color_indexes[current_width][i].length; j++) {
+        combinator_filter.push({
+          signal: signal_priority[j],
+          count: color_indexes[current_width][i][j],
+          index: j + 1,
+        });
+      }
+      entities.push(
+        new Blueprint_Entity(
+          (wmax * hmax * 3 + current_width) * (i + 1),
+          entity_names.constant_combinator,
+          current_width * 2 + 1,
+          -1 - 5 + i,
+          {
+            "1": {
+              green: [
+                { entity_id: current_width * 3 + i * wmax * 3, circuit_id: 1 },
+              ],
+            },
+            //current_height * wmax * 3 + current_width * 3,
+            // "2": {
+            //   red: [
+            //     { entity_id: current_width * 3, circuit_id: 1 },
+            //     current_width + 1 != wmax
+            //       ? { entity_id: wmax * hmax * 3 + current_width + 1 }
+            //       : undefined,
+            //   ],
+            // },
           },
-          "2": {
-            red: [
-              { entity_id: current_width * 3, circuit_id: 1 },
-              current_width + 1 != wmax
-                ? { entity_id: wmax * hmax * 3 + current_width + 1 }
-                : undefined,
-            ],
-          },
-        },
-        undefined,
-        {
-          filters: combinator_filter,
-        }
-      )
-    );
+          undefined,
+          {
+            filters: combinator_filter,
+          }
+        )
+      );
+    }
+
     entities.push(
       new Blueprint_Entity(
         100000000 - (current_width + 1),
@@ -139,8 +153,8 @@ export default (wmax: number, hmax: number, color_indexes: number[][]) => {
         {
           "1": {
             red: [
-              { entity_id: current_width * 3, circuit_id: 1 },
-              current_width + 1 != wmax
+              { entity_id: current_width * 3, circuit_id: 1 }, //1st above
+              current_width + 1 != wmax //next electric pole
                 ? { entity_id: 100000000 - (current_width + 2) }
                 : undefined,
             ],
@@ -164,7 +178,21 @@ export default (wmax: number, hmax: number, color_indexes: number[][]) => {
             entity_names.substation,
             current_width * 2 + 0.5,
             current_height * 2 + 0.5,
-            undefined,
+            {
+              1: {
+                green: [
+                  {
+                    entity_id:
+                      (current_height + color_indexes[0].length - 1) *
+                        wmax *
+                        3 +
+                      current_width * 3 +
+                      wmax * 3,
+                    circuit_id: 1,
+                  },
+                ],
+              },
+            },
             undefined,
             undefined,
             [
@@ -197,19 +225,27 @@ export default (wmax: number, hmax: number, color_indexes: number[][]) => {
           {
             "1": {
               green: [
-                current_height - 1 >= 0 //Prev => check if there is entity above current entity
+                //   current_height - color_indexes[0].length >= 0 //Prev => check if there is entity above current entity
+                //     ? {
+                //         entity_id:
+                //           (current_height - color_indexes[0].length-1) * wmax * 3 +
+                //           current_width * 3 -
+                //           wmax * 3,
+                //         circuit_id: 1,
+                //       }
+                // : {
+                //     entity_id:
+                //       (wmax * hmax * 3 + current_width) *
+                //       -1 *
+                //       (current_height - color_indexes[0].length),
+                //   }, //const combinator id
+                // :undefined,
+                current_height + color_indexes[0].length != hmax //Next => check is there is entity under current entity
                   ? {
                       entity_id:
-                        current_height * wmax * 3 +
-                        current_width * 3 -
-                        wmax * 3,
-                      circuit_id: 1,
-                    }
-                  : { entity_id: wmax * hmax * 3 + current_width }, //const combinator id
-                current_height + 1 != hmax //Next => check is there is entity under current entity
-                  ? {
-                      entity_id:
-                        current_height * wmax * 3 +
+                        (current_height + color_indexes[0].length - 1) *
+                          wmax *
+                          3 +
                         current_width * 3 +
                         wmax * 3,
                       circuit_id: 1,
@@ -249,7 +285,10 @@ export default (wmax: number, hmax: number, color_indexes: number[][]) => {
           {
             arithmetic_conditions: {
               first_signal: signals.signal_each,
-              second_signal: signal_priority[current_height],
+              second_signal:
+                signal_priority[
+                  Math.floor(current_height / color_indexes[0].length)
+                ],
               operation: "-",
               output_signal: signals.signal_each,
             },
@@ -314,7 +353,7 @@ export default (wmax: number, hmax: number, color_indexes: number[][]) => {
       );
       current_width += 1;
     }
-    //substation not affected by loop by width
+    //addding substation if that not affected by loop
     if (
       current_width <=
         substation_cordinates_w[substation_cordinates_w.length - 1] &&

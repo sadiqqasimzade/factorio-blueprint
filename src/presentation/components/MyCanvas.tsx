@@ -86,33 +86,42 @@ export const MyCanvas = (props: Props) => {
       }
       //#endregion
 
-      var color_indexes: number[][] = [];
-      let temp: number[] = [];
       console.log(canvas.width);
       console.log(canvas.height);
+      var color_indexes: number[][] = [];
+      let part20: number[] = [];
+      let result: number[][][] = [];
+      let step=Math.ceil(canvas.height / 20)
       for (let i = 0; i < canvas.width; i++) {
-        for (let j = 0; j < canvas.height; j++) {
-          //i w
-          //j h
+        color_indexes=[]
+        for (let count = 0; count < step; count++) {
+          part20 = [];
+          for (let j = 0; j < canvas.height; j +=step) {
+            //i w
+            //j h
+ 
+            let data = context.getImageData(i, j, 1, 1).data;
+            let hex = rgbToHex(data[0], data[1], data[2]);
+            hex = hex.length < 6 ? hex.replace(/(.)/g, "$1$1") : hex;
 
-          let data = context.getImageData(i, j, 1, 1).data;
-          let hex = rgbToHex(data[0], data[1], data[2]);
-          hex = hex.length < 6 ? hex.replace(/(.)/g, "$1$1") : hex;
-
-          var match = findclosest(colorsArr, hex);
-
-          temp.push(-(color_priority.indexOf(colors[match]) + 1));
+            var match = findclosest(colorsArr, hex);
+            part20.push(-(color_priority.indexOf(colors[match]) + 1));
+            // if (part20.length == 20) {
+            //   color_indexes.push(part20);
+            //   part20 = [];
+            // }
+          }
+          color_indexes.push(part20);
         }
-        color_indexes.push(temp);
-        temp = [];
+        result.push(color_indexes);
       }
-      console.log(color_indexes);
+      console.log(result);
       var elem = errormessageRef.current as HTMLParagraphElement;
       elem.innerHTML = Encode_Blueprint({
-        blueprint: Generate(canvas.width, canvas.height, color_indexes),
+        blueprint: Generate(canvas.width, canvas.height, result),
       });
       // elem.innerHTML = JSON.stringify(
-      //   Generate(canvas.width, canvas.height, color_indexes),
+      //   Generate(canvas.width, canvas.height, result),
       //   null,
       //   2
       // );
@@ -122,7 +131,7 @@ export const MyCanvas = (props: Props) => {
   function handleInputChange(
     e: React.InputHTMLAttributes<HTMLInputElement>
   ): void {
-    errormessageRef.current.innerText;
+    // errormessageRef.current.innerText;
   }
 
   return (

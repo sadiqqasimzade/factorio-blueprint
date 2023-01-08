@@ -18,15 +18,16 @@ myblu='0eNqdkm2LwyAMx79LXrsxbb22fpVjHHYLQ9C0VHtcKX73ace4ctfBthc+RJP/L9HM0NoR+8FQ
 
 # print(encode_blueprint(myobj))
 
+desired_sizes=[10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]
 
-
-basewidth = 34
-baseheight=20
-img = Image.open('124.jpg')
-hpercent = (baseheight/float(img.size[1]))
-wsize = int((float(img.size[0])*float(hpercent)))
-img = img.resize((wsize,baseheight), Image.Resampling.LANCZOS)
-img.save('new.jpg')
+# basewidth = 34
+for desired_size in desired_sizes:
+    baseheight=desired_size
+    img = Image.open('./PythonImgConverer/stalin.jpg')
+    hpercent = (baseheight/float(img.size[1]))
+    wsize = int((float(img.size[0])*float(hpercent)))
+    img = img.resize((wsize,baseheight), Image.Resampling.LANCZOS)
+    img.save(f'./convertedimgs/new{desired_size}.jpg')
 
 
 
