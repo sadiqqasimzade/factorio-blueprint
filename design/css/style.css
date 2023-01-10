@@ -1,0 +1,85 @@
+.customcard {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  background: #313031;
+  transition: 2s all;
+  border-left: 4px solid #2e2623;
+  border-right: 4px solid #2e2623;
+  border-bottom: 4px solid #2e2623;
+  margin: -12px;
+}
+.customcard::before {
+  content: attr(text);
+  width: 100%;
+  height: 40px;
+  background: blue;
+  position: absolute;
+  transition: 2s all;
+  text-align: center;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  z-index: 1;
+}
+.customcard::after {
+  content: "";
+  border: 4px solid #2e2623;
+  margin: -4px;
+  width: 100%;
+  height: 100%;
+  background-color: #313031;
+  position: absolute;
+  transition: 2s all;
+  z-index: -1;
+  top: 0;
+}
+.customcard:hover::before {
+  transform: translateY(-250px);
+}
+.customcard:hover::after {
+  transform: translateY(-250px);
+  height: 290px;
+}
+.customcard:hover .customcard--icon:not(:nth-child(2n)) {
+  transform: translateY(-210px) rotate(-360deg);
+}
+.customcard:hover .customcard--icon:nth-child(2n) {
+  transform: translateY(-210px) rotate(360deg);
+}
+.customcard--icon {
+  width: 40px;
+  aspect-ratio: 1;
+  position: absolute;
+  transition: 2s all;
+}
+.customcard--icon:not(:nth-child(2n)) {
+  left: 0;
+}
+.customcard--icon:nth-child(2n) {
+  right: 0;
+}
+.customcard--inner {
+  padding: 10px;
+  background: #414040;
+  width: auto;
+  height: auto;
+  position: relative;
+  bottom: 0;
+}
+
+.d-grid {
+  display: grid;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.maingrid {
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  place-items: center;
+}/*# sourceMappingURL=style.css.map */

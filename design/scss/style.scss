@@ -1,0 +1,108 @@
+$card-w: 100%;
+$card-h: 100px;
+$card-background: #313031;
+$card-transition: 2s all;
+$card-border-thickness: 4px;
+$card-border: $card-border-thickness solid #2e2623;
+
+$card-header-h: 40px;
+$card-header-font-size: 25px;
+$card-header-font-weight: bold;
+$card-header-background: blue;
+
+$card-transform-y: 250px;
+$card-transform-rotate: 360deg;
+
+$card-icon-w: $card-header-h;
+
+.customcard {
+  position: relative;
+  width: $card-w;
+  height: $card-h;
+  background: $card-background;
+  transition: $card-transition;
+  border-left: $card-border;
+  border-right: $card-border;
+  border-bottom: $card-border;
+  margin:  0  -$card-border-thickness -$card-border-thickness -$card-border-thickness;
+  &::before {
+    content: attr(text);
+    width: 100%;
+    height: $card-header-h;
+    background: $card-header-background;
+    position: absolute;
+    transition: $card-transition;
+    text-align: center;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: $card-header-font-size;
+    font-weight: $card-header-font-weight;
+    z-index: 1;
+  }
+  &::after {
+    content: "";
+    border: $card-border;
+    margin: -$card-border-thickness;
+    width: 100%;
+    height: 100%;
+    background-color: $card-background;
+    position: absolute;
+    transition: $card-transition;
+    z-index: -1;
+    top: 0;
+  }
+  &:hover {
+    &::before {
+      transform: translateY(-$card-transform-y);
+    }
+    &::after {
+      transform: translateY(-$card-transform-y);
+      height: $card-header-h + $card-transform-y;
+    }
+    & .customcard--icon {
+      &:not(:nth-child(2n)) {
+        transform: translateY(-$card-transform-y + calc($card-icon-w))
+          rotate(-$card-transform-rotate);
+      }
+      &:nth-child(2n) {
+        transform: translateY(-$card-transform-y + calc($card-icon-w))
+          rotate($card-transform-rotate);
+      }
+    }
+  }
+  &--icon {
+    width: $card-icon-w;
+    aspect-ratio: 1;
+    position: absolute;
+    transition: $card-transition;
+    &:not(:nth-child(2n)) {
+      left: 0;
+    }
+    &:nth-child(2n) {
+      right: 0;
+    }
+  }
+  &--inner {
+    padding: 10px;
+    background: #414040;
+    width: auto;
+    height: auto;
+    position: relative;
+    bottom: 0;
+  }
+}
+
+.d-grid {
+  display: grid;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.maingrid {
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  place-items: center;
+}

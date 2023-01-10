@@ -1,0 +1,11 @@
+.curtomcard {
+  width: 200px;
+  height: 300px;
+  background: linear-gradient(#000000, #3b3b3b, #8b8b8b);
+  transition: 1s all;
+}
+
+.curtomcard::before {
+  content: attr(text);
+  height: 500px;
+}/*# sourceMappingURL=style.css.map */

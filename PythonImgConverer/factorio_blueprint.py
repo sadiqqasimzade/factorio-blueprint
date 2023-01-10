@@ -23,7 +23,7 @@ desired_sizes=[10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]
 # basewidth = 34
 for desired_size in desired_sizes:
     baseheight=desired_size
-    img = Image.open('./PythonImgConverer/stalin.jpg')
+    img = Image.open('./PythonImgConverer/b.jpg')
     hpercent = (baseheight/float(img.size[1]))
     wsize = int((float(img.size[0])*float(hpercent)))
     img = img.resize((wsize,baseheight), Image.Resampling.LANCZOS)
