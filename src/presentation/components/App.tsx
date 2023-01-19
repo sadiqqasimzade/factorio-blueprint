@@ -1,21 +1,13 @@
 import React from "react";
-import Decode_Encode from "../pages/Decode_Encode";
-import { MyCanvas } from "./MyCanvas";
+import Router from "../routes/router";
 import Navbar from "./navbar/Navbar";
-
 export const App: React.FC<{}> = () => {
-
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar />
       <main>
-      <section>
-      <div className="d-grid">
-        
-      </div>
-      </section>
+        <Router />
       </main>
-
     </>
   );
 };

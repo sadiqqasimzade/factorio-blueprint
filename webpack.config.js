@@ -7,6 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, "./public/js"),
     filename: "[name].min.js",
     sourceMapFilename: "[name].js.map",
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -30,22 +31,18 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+    extensions: ["*", ".js", ".jsx", ".tsx", ".ts"],
   },
   optimization: {
     minimize: true,
   },
+  devServer: {
+    historyApiFallback: true,
+  },
   plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        // This has effect on the react lib size
-        NODE_ENV: JSON.stringify("production"),
-      },
-    }),
     new SourceMapDevToolPlugin({
       filename: "[file].map",
     }),
-    
   ],
   // externalsPresets: { node: true },
   // resolve: {
@@ -53,5 +50,4 @@ module.exports = {
   //     'react-dom$': 'react-dom/profiling',
   //   }
   // }
-
 };

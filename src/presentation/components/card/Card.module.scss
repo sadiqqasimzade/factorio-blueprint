@@ -1,16 +1,19 @@
 $card-w: 100%;
 $card-h: 100px;
-$card-background: #5b2a2a;
+$card-background: #2e1437;
 $card-transition: 2s all;
 $card-border-thickness: 4px;
-$card-border: $card-border-thickness solid #2e2623;
+$card-border: $card-border-thickness solid #b56a2a;
+$card-text-color: white;
 
-$card-video-background: #2e2623;
+$card-video-background: #51415f;
+$card-video-border: $card-border-thickness solid #5eb663;
 
 $card-header-h: 40px;
 $card-header-font-size: 25px;
 $card-header-font-weight: bold;
-$card-header-background: blue;
+$card-header-background: $card-background;
+$card-header-border: $card-border-thickness solid white;
 
 $card-transform-y: 250px;
 $card-transform-rotate: 360deg;
@@ -18,26 +21,27 @@ $card-transform-rotate: 360deg;
 $card-gear-w: $card-header-h;
 $card-gear-rail-color: gray;
 $card-gear-rail-w: 5px;
-.customcard {
+
+$card-link-color: #257cee;
+.card {
   position: relative;
   background-color: $card-background;
   width: $card-w;
   height: $card-h;
   transition: $card-transition;
-  border-left: $card-border;
-  border-right: $card-border;
-  border-bottom: $card-border;
 
+  z-index: 2;
+  margin-top: $card-transform-y;
   &--video {
     &--container {
-      border: $card-border;
-      margin: -$card-border-thickness;
+      border-left: $card-video-border;
+      border-right: $card-video-border;
       width: 100%;
       height: 100%;
-      background-color: $card-background;
+      background-color: $card-video-background;
       position: absolute;
       transition: $card-transition;
-      z-index: -1;
+      z-index: 1;
       top: 0;
     }
   }
@@ -46,7 +50,7 @@ $card-gear-rail-w: 5px;
     aspect-ratio: 1;
     position: absolute;
     transition: $card-transition;
-    z-index: 1;
+    z-index: 3;
     &:not(:nth-child(2n)) {
       left: 0;
     }
@@ -61,32 +65,35 @@ $card-gear-rail-w: 5px;
         right: calc($card-gear-w/2 - $card-gear-rail-w/2);
       }
       width: $card-gear-rail-w;
-      bottom: $card-h;
+      bottom: calc($card-h - $card-header-h);
       background-color: $card-gear-rail-color;
       position: absolute;
       transition: $card-transition;
       max-height: 0;
+      z-index: 2;
       height: $card-transform-y;
     }
   }
   &--inner {
     padding: 10px;
     position: absolute;
+    color: $card-text-color;
     bottom: 0;
-    top: 0;
+    top: $card-header-h;
     left: 0;
-    background: $card-background;
     right: 0;
-
-    &--container{
+    background: $card-background;
+    z-index: 2;
+    border-left: $card-border;
+    border-right: $card-border;
+    border-bottom: $card-border;
+    &--container {
       display: flex;
       align-items: flex-end;
       justify-content: center;
     }
   }
-
-  &::before {
-    content: attr(text);
+  &--header {
     width: 100%;
     height: $card-header-h;
     background: $card-header-background;
@@ -95,28 +102,24 @@ $card-gear-rail-w: 5px;
     text-align: center;
     display: grid;
     place-items: center;
-    color: white;
+    color: $card-text-color;
     font-size: $card-header-font-size;
     font-weight: $card-header-font-weight;
-    z-index: 2;
+    z-index: 3;
+    border-left: $card-header-border;
+    border-right: $card-header-border;
+    border-top: $card-header-border;
   }
-
+  &--link{
+    color: $card-link-color;
+  }
   &:hover {
-    &::before {
-      transform: translateY(-$card-transform-y);
-    }
-    .customcard {
+    .card {
+      &--header {
+        transform: translateY(-$card-transform-y);
+      }
       &--video {
         &--container {
-          border: $card-border;
-          margin: -$card-border-thickness;
-          width: 100%;
-          height: 100%;
-          background-color: $card-video-background;
-          position: absolute;
-          transition: $card-transition;
-          z-index: -1;
-          top: 0;
           transform: translateY(-$card-transform-y);
           height: $card-header-h + $card-transform-y;
         }
@@ -137,18 +140,3 @@ $card-gear-rail-w: 5px;
     }
   }
 }
-
-.d-grid {
-  display: grid;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.maingrid {
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  place-items: center;
-}
-
