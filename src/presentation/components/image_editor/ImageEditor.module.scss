@@ -9,6 +9,7 @@
     background: rgba(0, 0, 0, 0.3);
     z-index: 2;
     top: 0;
+    border: 1px dashed white;
   }
   &--settings {
     color: white;
@@ -26,6 +27,11 @@
     }
     &--helper {
       font-size: 16px;
+    }
+    &--input{
+      &__red{
+        border: 1px solid red;
+      }
     }
   }
 }

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useImage } from "../../contexts/ImageContext";
 import validateFiles from "../../utils/image/validateFiles";
 import styles from "./FileDragAndDrop.module.scss";
 type Props = {
-  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement>>;
+  setCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement>>;
 };
-const FileDragAndDrop = ({ setImage: imageSetter }: Props) => {
+const FileDragAndDrop = ({ setCanvas }: Props) => {
   //refs
   const inputRef: React.MutableRefObject<HTMLInputElement> = useRef(null);
   const resultRef: React.MutableRefObject<HTMLParagraphElement> = useRef(null);
@@ -41,8 +40,13 @@ const FileDragAndDrop = ({ setImage: imageSetter }: Props) => {
       } else {
         var img = new Image();
         img.src = window.URL.createObjectURL(result);
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d", { willReadFrequently: true });
         img.onload = () => {
-          imageSetter(img);
+          canvas.height = img.naturalHeight;
+          canvas.width = img.naturalWidth;
+          context.drawImage(img, 0, 0);
+          setCanvas(canvas);
         };
       }
     }
@@ -56,8 +60,13 @@ const FileDragAndDrop = ({ setImage: imageSetter }: Props) => {
       } else {
         var img = new Image();
         img.src = window.URL.createObjectURL(result);
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d", { willReadFrequently: true });
         img.onload = () => {
-          imageSetter(img);
+          canvas.height = img.naturalHeight;
+          canvas.width = img.naturalWidth;
+          context.drawImage(img, 0, 0);
+          setCanvas(canvas);
         };
       }
     }
