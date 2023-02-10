@@ -3,7 +3,7 @@
       "jsx": "react",
       "outDir": "./dist/",
       "noImplicitAny": true,
-      "module": "es6",
+      "module": "esnext",
       "target": "es5",
       "allowJs": true,
       "allowSyntheticDefaultImports": true,

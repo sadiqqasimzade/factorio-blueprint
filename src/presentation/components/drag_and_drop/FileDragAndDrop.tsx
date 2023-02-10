@@ -2,18 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import validateFiles from "../../utils/image/validateFiles";
 import styles from "./FileDragAndDrop.module.scss";
 type Props = {
-  setCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement>>;
+  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement>>;
 };
-const FileDragAndDrop = ({ setCanvas }: Props) => {
-  //refs
+const FileDragAndDrop = ({ setImage }: Props) => {
+  //Refs
   const inputRef: React.MutableRefObject<HTMLInputElement> = useRef(null);
   const resultRef: React.MutableRefObject<HTMLParagraphElement> = useRef(null);
   const dragdropareaRef: React.MutableRefObject<HTMLDivElement> = useRef(null);
   const dragdroptitleRef: React.MutableRefObject<HTMLParagraphElement> =
     useRef(null);
 
-  //functions
-
+  //#region handlers
   function handleDragIn(e: React.DragEvent<HTMLDivElement>): void {
     e.preventDefault();
     if (e.dataTransfer.items && e.dataTransfer.items.length > 1) {
@@ -31,6 +30,13 @@ const FileDragAndDrop = ({ setCanvas }: Props) => {
     );
     dragdroptitleRef.current.innerText = "Drop Image file here,or click";
   }
+  function handleDivClick(
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void {
+    inputRef.current.click();
+  }
+  //#endregion
+  //#region Input
   function handleDragDrop(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
     if (e.dataTransfer.items) {
@@ -40,13 +46,8 @@ const FileDragAndDrop = ({ setCanvas }: Props) => {
       } else {
         var img = new Image();
         img.src = window.URL.createObjectURL(result);
-        var canvas = document.createElement("canvas");
-        var context = canvas.getContext("2d", { willReadFrequently: true });
         img.onload = () => {
-          canvas.height = img.naturalHeight;
-          canvas.width = img.naturalWidth;
-          context.drawImage(img, 0, 0);
-          setCanvas(canvas);
+          setImage(img);
         };
       }
     }
@@ -60,22 +61,13 @@ const FileDragAndDrop = ({ setCanvas }: Props) => {
       } else {
         var img = new Image();
         img.src = window.URL.createObjectURL(result);
-        var canvas = document.createElement("canvas");
-        var context = canvas.getContext("2d", { willReadFrequently: true });
         img.onload = () => {
-          canvas.height = img.naturalHeight;
-          canvas.width = img.naturalWidth;
-          context.drawImage(img, 0, 0);
-          setCanvas(canvas);
+          setImage(img);
         };
       }
     }
   }
-  function handleDivClick(
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ): void {
-    inputRef.current.click();
-  }
+  //#endregion
 
   return (
     <div>

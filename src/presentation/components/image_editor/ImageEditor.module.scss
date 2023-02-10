@@ -1,16 +1,7 @@
 .imageeditor {
   display: inline-block;
   position: relative;
-  &--forward {
-    max-height: 100px;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 2;
-    top: 0;
-    border: 1px dashed white;
-  }
+
   &--settings {
     color: white;
     display: grid;
@@ -20,6 +11,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+      padding-top: 20px;
     }
 
     &--label {
@@ -33,5 +25,8 @@
         border: 1px solid red;
       }
     }
+  }
+  &--canvas{
+    padding: 10px;
   }
 }

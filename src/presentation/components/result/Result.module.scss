@@ -1,0 +1,13 @@
+.result{
+    word-break: break-all;
+    max-height: 240px;
+    overflow: auto  ;
+    &--container{
+        color: white;
+    }
+    &--help{
+        color: white;
+        font-size: 46px;
+    }
+}
+

@@ -1,17 +1,33 @@
-import React, { useState } from "react";
-import FileDragAndDrop from "../../components/drag_and_drop/FileDragAndDrop";
-import ImageEditor from "../../components/image_editor/ImageEditor";
-import ImageOverView from "../../components/image_overview/ImageOverView";
+import React, { lazy, Suspense, useState } from "react";
+
+const FileDragAndDrop = lazy(
+  () => import("../../components/drag_and_drop/FileDragAndDrop")
+);
+const ImageEditor = lazy(
+  () => import("../../components/image_editor/ImageEditor")
+);
+const Result = lazy(() => import("../../components/result/Result"));
 
 type Props = {};
 
 const ImageConverterPage = (props: Props) => {
-  const [Canvas, setCanvas] = useState<HTMLCanvasElement>();
+  const [Image, setImage] = useState<HTMLImageElement>();
+  const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement>();
   return (
     <section className="container">
-      <FileDragAndDrop setCanvas={setCanvas}></FileDragAndDrop>
-      <ImageOverView></ImageOverView>
-      {Canvas && <ImageEditor Canvas={Canvas}></ImageEditor>}
+      <Suspense>
+        {Image ? (
+          <ImageEditor
+            Image={Image}
+            setImage={setImage}
+            setresultCanvas={setresultCanvas}
+          />
+        ) : resultCanvas ? (
+          <Result resultCanvas={resultCanvas} />
+        ) : (
+          <FileDragAndDrop setImage={setImage} />
+        )}
+      </Suspense>
     </section>
   );
 };

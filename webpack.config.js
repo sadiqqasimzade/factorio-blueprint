@@ -7,7 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, "./public/js"),
     filename: "[name].min.js",
     sourceMapFilename: "[name].js.map",
-    publicPath: "/",
+    publicPath: "/public/js/",
   },
   module: {
     rules: [
@@ -44,6 +44,7 @@ module.exports = {
       filename: "[file].map",
     }),
   ],
+  historyApiFallback: true
   // externalsPresets: { node: true },
   // resolve: {
   //   alias: {
