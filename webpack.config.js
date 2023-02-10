@@ -44,7 +44,6 @@ module.exports = {
       filename: "[file].map",
     }),
   ],
-  historyApiFallback: true
   // externalsPresets: { node: true },
   // resolve: {
   //   alias: {
