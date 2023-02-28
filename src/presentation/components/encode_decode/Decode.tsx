@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
 import Decode_Blueprint from "../../utils/convertors/Decoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";
-import styles from "./Decode.module.scss";
-type Props = {};
+type Props = {
+  styles:any
+};
 
-const Decode = (props: Props) => {
+const Decode = ({styles}: Props) => {
   const decodedTextRef = useRef(undefined);
 
   const encodedInputChange = (e: React.ChangeEvent<any>) => {

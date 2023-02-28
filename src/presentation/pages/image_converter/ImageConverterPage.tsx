@@ -1,4 +1,5 @@
 import React, { lazy, Suspense, useState } from "react";
+import SuspenseComponent from "../../components/suspense/SuspenseComponent";
 
 const FileDragAndDrop = lazy(
   () => import("../../components/drag_and_drop/FileDragAndDrop")
@@ -15,7 +16,7 @@ const ImageConverterPage = (props: Props) => {
   const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement>();
   return (
     <section className="container">
-      <Suspense>
+      <Suspense fallback={<SuspenseComponent/>}>
         {Image ? (
           <ImageEditor
             Image={Image}

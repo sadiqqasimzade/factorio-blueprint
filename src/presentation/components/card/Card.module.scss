@@ -42,7 +42,10 @@ $card-link-color: #257cee;
       position: absolute;
       transition: $card-transition;
       z-index: 1;
-      top: 0;
+      top: 0;    
+      display: grid;
+      place-items: center;
+      padding: 20px;
     }
   }
   &--gear {

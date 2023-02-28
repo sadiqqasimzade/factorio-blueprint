@@ -5,7 +5,7 @@
   "main": "./src/presentation/index.js",
   "scripts": {
     "test": "browserify -e ./public/js/main.min.js -o ./public/js/test.js",
-    "dev": "webpack --mode development --watch",
+    "dev": "webpack --mode development --watch ",
     "build": "webpack --mode production",
     "sass": "sass -w ./public/scss/style.scss ./public/css/style.min.css --style=compressed"
   },

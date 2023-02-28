@@ -1,3 +1,8 @@
+$input-border: 1px solid #fff;
+$input-padding: 10px 0;
+$input-color: #fff;
+$canvas-padding: 10px;
+
 .imageeditor {
   display: inline-block;
   position: relative;
@@ -20,13 +25,21 @@
     &--helper {
       font-size: 16px;
     }
-    &--input{
-      &__red{
-        border: 1px solid red;
+    &--input {
+      border: none;
+      border-bottom: $input-border;
+      background: transparent;
+      padding: $input-padding;
+      width: 100%;
+      outline: none;
+      color: $input-color;
+      max-width: 100%;
+      &::placeholder {
+        color: $input-color;
       }
     }
   }
-  &--canvas{
-    padding: 10px;
+  &--canvas {
+    padding: $canvas-padding;
   }
 }

@@ -13,14 +13,13 @@ const ImageEditor: React.FC<Props> = ({
   setresultCanvas,
 }: Props) => {
   const maxW = 300,
-  maxH = 100,
-  minW = 5,
-  minH = 5;
+    maxH = 100,
+    minW = 5,
+    minH = 5;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState(Image.naturalWidth);
   const [height, setHeight] = useState(Image.naturalHeight);
   const [aspectRatio, setAspectRatio] = useState(true);
-  console.log(['rerednering',width,height])
 
   const handleResize = () => {
     const canvas = canvasRef.current;
@@ -84,7 +83,7 @@ const ImageEditor: React.FC<Props> = ({
 
   useEffect(() => {
     handleResize();
-  }, [width,height]);
+  }, [width, height]);
 
   return (
     <div>
@@ -125,12 +124,9 @@ const ImageEditor: React.FC<Props> = ({
             type="checkbox"
             checked={aspectRatio}
             onChange={handleAspectRatioChange}
+            className={styles["imageeditor--settings--input"]}
           />
         </div>
-        {/* <div className={styles["imageeditor--settings"]}>
-          <p className={styles["imageeditor--settings--label"]}>Resize</p>
-          <button onClick={handleResize}>Resize</button>
-        </div> */}
         <div className={styles["imageeditor--settings"]}>
           <button
             onClick={() => {

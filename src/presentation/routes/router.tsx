@@ -1,32 +1,36 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import DecodeEncodePage from "../pages/DecodeEncodePage";
-import ErrorPage from "../pages/error_pages/ErrorPage";
-import NotFound from "../pages/error_pages/NotFound";
-import ImageConverterPage from "../pages/image_converter/ImageConverterPage";
-import IndexPage from "../pages/index/IndexPage";
+
+const DecodeEncodePage = lazy(() => import("../pages/decodeEncodePage/DecodeEncodePage"));
+const ErrorPage = lazy(() => import("../pages/error_pages/ErrorPage"));
+const NotFound = lazy(() => import("../pages/error_pages/NotFound"));
+const ImageConverterPage = lazy(
+  () => import("../pages/image_converter/ImageConverterPage")
+);
+const IndexPage = lazy(() => import("../pages/index/IndexPage"));
 
 type Props = {};
 
 const Router = (props: Props) => {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={<IndexPage />}
-        errorElement={<ErrorPage />}
-        
-      ></Route>
+      <Route path="/" element={<IndexPage />} errorElement={<ErrorPage />} />
       <Route
         path="/decode-encode"
         element={<DecodeEncodePage />}
         errorElement={<ErrorPage />}
-      ></Route>
+      />
       <Route
-        path="/image-converter"
+        path="/image-converter-lamp"
         element={<ImageConverterPage />}
         errorElement={<ErrorPage />}
-      ></Route>
+      />
+      <Route
+        path="/image-converter-brick"
+        element={<ImageConverterPage />}
+        errorElement={<ErrorPage />}
+      />
+      <Route path="*" element={<NotFound />} errorElement={<ErrorPage />} />
     </Routes>
   );
 };

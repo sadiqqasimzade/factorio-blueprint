@@ -7,10 +7,12 @@ import findClosestColor from "./findClosestColor";
 import rgbToHex from "./rgbToHex";
 
 /**
- * 
- * @param canvas 
+ *
+ * @param canvas
  */
-export default function calculateColors(canvas: HTMLCanvasElement) :number[][][] {
+export default function calculateColors(
+  canvas: HTMLCanvasElement
+): number[][][] {
   var context = canvas.getContext("2d", { willReadFrequently: true });
 
   var colors: { [color_hex: string]: TBlueprint_Signal } = {
@@ -21,6 +23,7 @@ export default function calculateColors(canvas: HTMLCanvasElement) :number[][][]
     "008000": signals.signal_green,
     ffc0cb: signals.signal_pink,
     "30d5c8": signals.signal_cyan,
+    "000000": signals.signal_black,
   };
 
   // convert the `colors`-object to an array

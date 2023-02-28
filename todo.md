@@ -3,26 +3,14 @@ separate w/h seubstations
 20x20 bug substation corners not exist
 36x41 substation at bottom not connected
 
-add type behave contorl
+add type behavior contorl
 create combinator type
-
-
-
-recommended w/h =5x5 +
-
-add black color //void 
-
-
-png error rgba
-
-
 
 --ui
 
 loading screen with %
 main loading factorio gear rotationg
-adjustable height  (animation)
-adjustable width (animation)
+
 
 save data in session 
 --ui2
@@ -36,3 +24,20 @@ array of 100x100?resizeable
 
 --final2 
 audio=>blueprint
+
+
+
+contact me page footer 
+
+
+
+add service workers
+i18
+transition page change
+show approx items count
+delete unnnesacry packets in package.json
+
+
+
+
+write tests

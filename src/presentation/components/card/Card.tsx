@@ -23,7 +23,7 @@ const Card = ({ title, desc, link }: Props) => {
         <div className={styles["card--gear--rail"]}></div>
         <div className={styles["card--gear--rail"]}></div>
       </div>
-      <div className={styles["card--video--container"]}></div>
+      <div className={styles["card--video--container"]}>WIP</div>
       <div className={styles["card--inner"]}>
         <div className={styles["card--inner--container"]}>
           <p>{desc}</p>

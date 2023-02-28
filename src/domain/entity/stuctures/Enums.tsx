@@ -61,6 +61,10 @@ export const signals = {
     type: item_types.Virtual,
     name: "signal-white",
   },
+  signal_black: {
+    type: item_types.Virtual,
+    name: "signal-black",
+  },
   signal_0: {
     type: item_types.Virtual,
     name: "signal-0",
