@@ -7,7 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, "./public/js"),
     filename: "[name].min.js",
     sourceMapFilename: "[name].js.map",
-    // publicPath: "/public/js/",
+    publicPath: "/public/js/",
   },
   module: {
     rules: [
