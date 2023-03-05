@@ -12,7 +12,6 @@ export const App: React.FC<{}> = () => {
           <Router />
         </Suspense>
       </main>
-
       <Footer />
     </>
   );
