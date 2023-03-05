@@ -9,7 +9,7 @@ create combinator type
 --ui
 
 loading screen with %
-main loading factorio gear rotationg
+
 
 
 save data in session 

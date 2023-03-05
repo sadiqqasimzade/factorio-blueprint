@@ -8,7 +8,7 @@ type Props = {
   trackColor?: string ;
   indicatorWidth?: number ;
   indicatorColor?: string ;
-  indicatorCap: "round" | "inherit" | "butt" | "square";
+  indicatorCap?: "round" | "inherit" | "butt" | "square";
   label?: string ;
   labelColor?: string ;
   spinnerMode?: boolean ;
@@ -22,7 +22,7 @@ const ProgressBar = ({
   trackColor=`#ddd`,
   indicatorWidth=10,
   indicatorColor=`#07c`,
-  indicatorCap,
+  indicatorCap="round",
   label=`Loading...`,
   labelColor=`#333`,
   spinnerMode=false,
@@ -34,7 +34,6 @@ const ProgressBar = ({
     dashArray = 2 * Math.PI * radius,
     dashOffset = dashArray * ((100 - progress) / 100);
   let hideLabel = size < 100 || !label.length || spinnerMode ? true : false;
-  console.log(styles)
   return (
     <div
       className={styles["loader--wrapper"]}
