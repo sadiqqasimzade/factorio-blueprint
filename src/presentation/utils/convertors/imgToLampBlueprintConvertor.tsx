@@ -8,13 +8,11 @@ import {
   versions,
 } from "../../../domain/entity/stuctures/Enums";
 
-export default async(
+export default(
   wmax: number,
   hmax: number,
   color_indexes: number[][][],
-  setProgress: React.Dispatch<React.SetStateAction<number>>,
-  setBlueprint:React.Dispatch<React.SetStateAction<Blueprint>>
-):Promise<void> => {
+):Blueprint => {
   //#region substation array
   var substation_counter = 4;
   var substation_cordinates_w = [4];
@@ -321,8 +319,6 @@ export default async(
       );
       current_width += 1;
       // await new Promise(r => setTimeout(r, 1)); //test 
-      console.log((wmax*current_height)*100/(wmax*hmax))
-      setProgress((wmax*current_height)*100/(wmax*hmax))
     }
     //addding substation if that not affected by loop
     if (
@@ -398,5 +394,5 @@ export default async(
     entities,
     versions.latest
   );
-  setBlueprint(result)
+  return result
 };
