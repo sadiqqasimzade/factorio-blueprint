@@ -1,6 +1,6 @@
 import { deflate } from "pako";
-import { Blueprint } from "../../../domain/entity/models/Blueprint";
 import { Buffer } from "buffer";
+import Blueprint from "../../../domain/entity/models/Blueprint";
 
 /**
  * encodes given json to factorio base64 blueprint string

@@ -5,15 +5,18 @@ type Props = {
   Image: HTMLImageElement;
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement>>;
   setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement>>;
+  maxW:number,
+  maxH:number
 };
 
 const ImageEditor: React.FC<Props> = ({
   Image,
   setImage,
   setresultCanvas,
+  maxW,
+  maxH
 }: Props) => {
-  const maxW = 300,
-    maxH = 100,
+  const 
     minW = 5,
     minH = 5;
   const canvasRef = useRef<HTMLCanvasElement>(null);

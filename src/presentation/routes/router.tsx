@@ -8,6 +8,7 @@ const ImageConverterPage = lazy(
   () => import("../pages/image_converter/ImageConverterPage")
 );
 const IndexPage = lazy(() => import("../pages/index/IndexPage"));
+const MusicConverterPage=lazy(()=>import("../pages/music_converter/MusicConverterPage"))
 
 type Props = {};
 
@@ -22,14 +23,15 @@ const Router = (props: Props) => {
       />
       <Route
         path="/image-converter-lamp"
-        element={<ImageConverterPage />}
+        element={<ImageConverterPage convert_to="lamp" maxH={100} maxW={300}/> }
         errorElement={<ErrorPage />}
       />
       <Route
         path="/image-converter-brick"
-        element={<ImageConverterPage />}
+        element={<ImageConverterPage convert_to="brick" maxH={500} maxW={500}/>}
         errorElement={<ErrorPage />}
       />
+      <Route path="/music-converter" element={<MusicConverterPage/>} errorElement={<ErrorPage/>}/>
       <Route path="*" element={<NotFound />} errorElement={<ErrorPage />} />
     </Routes>
   );

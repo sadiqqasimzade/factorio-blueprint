@@ -17,6 +17,12 @@ export enum entity_names {
   medium_electric_pole = "medium-electric-pole",
 }
 
+export enum tile_names{
+  concrete="concrete",
+  stone_path="stone-path",
+  hazard_concrete_left="hazard-concrete-left"
+}
+
 export enum arithmetic_operations {
   addition = "+",
   subtraction = "−",

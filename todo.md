@@ -8,7 +8,7 @@ create combinator type
 
 --ui
 
-loading screen with %
+-loading screen with %
 
 
 
@@ -31,7 +31,7 @@ contact me page footer
 
 
 
-add service workers
+add service workers pwd
 i18
 transition page change
 show approx items count

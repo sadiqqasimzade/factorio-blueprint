@@ -1,6 +1,6 @@
-import { Blueprint } from "../../../domain/entity/models/Blueprint";
-import { Blueprint_Entity } from "../../../domain/entity/models/Blueprint_Entity";
-import { Blueprint_Icon } from "../../../domain/entity/models/Blueprint_Icon";
+import Blueprint from "../../../domain/entity/models/Blueprint";
+import Blueprint_Entity from "../../../domain/entity/models/Blueprint_Entity";
+import Blueprint_Icon from "../../../domain/entity/models/Blueprint_Icon";
 import {
   entity_names,
   signals,
@@ -8,11 +8,11 @@ import {
   versions,
 } from "../../../domain/entity/stuctures/Enums";
 
-export default(
+export default (
   wmax: number,
   hmax: number,
-  color_indexes: number[][][],
-):Blueprint => {
+  color_indexes: number[][][]
+): Blueprint => {
   //#region substation array
   var substation_counter = 4;
   var substation_cordinates_w = [4];
@@ -318,7 +318,7 @@ export default(
         )
       );
       current_width += 1;
-      // await new Promise(r => setTimeout(r, 1)); //test 
+      // await new Promise(r => setTimeout(r, 1)); //test
     }
     //addding substation if that not affected by loop
     if (
@@ -392,7 +392,6 @@ export default(
   var result: Blueprint = new Blueprint(
     [new Blueprint_Icon(signals.signal_white, 1)],
     entities,
-    versions.latest
   );
-  return result
+  return result;
 };

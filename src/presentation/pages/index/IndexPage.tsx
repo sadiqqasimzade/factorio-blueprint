@@ -21,6 +21,11 @@ const IndexPage = (props: Props) => {
         desc="Converts image to factorio blueprint"
         link="image-converter-brick"
       />
+      <Card
+        title="Image converter - Brick"
+        desc="Converts image to factorio blueprint"
+        link="music-converter"
+      />
     </section>
   );
 };

@@ -9,9 +9,13 @@ const ImageEditor = lazy(
 );
 const Result = lazy(() => import("../../components/result/Result"));
 
-type Props = {};
+type Props = {
+  convert_to:"lamp"|"brick"
+  maxW:number,
+  maxH:number
+};
 
-const ImageConverterPage = (props: Props) => {
+const ImageConverterPage = ({convert_to,maxW,maxH}: Props) => {
   const [Image, setImage] = useState<HTMLImageElement>();
   const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement>();
   return (
@@ -22,9 +26,11 @@ const ImageConverterPage = (props: Props) => {
             Image={Image}
             setImage={setImage}
             setresultCanvas={setresultCanvas}
+            maxW={maxW}
+            maxH={maxH}
           />
         ) : resultCanvas ? (
-          <Result resultCanvas={resultCanvas} />
+          <Result resultCanvas={resultCanvas} convert_to={convert_to} />
         ) : (
           <FileDragAndDrop setImage={setImage} />
         )}

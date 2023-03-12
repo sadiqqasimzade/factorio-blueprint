@@ -4,10 +4,11 @@ import calculateColors from "../../utils/image/calculateColors";
 import imgToLampBlueprintConvertor from "../../utils/convertors/imgToLampBlueprintConvertor";
 import Encode_Blueprint from "../../utils/convertors/Encoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";
+import imgToBrickBlueprintConvertor from "../../utils/convertors/imgToBrickBlueprintConvertor";
 
-type Props = { resultCanvas: HTMLCanvasElement };
+type Props = { resultCanvas: HTMLCanvasElement; convert_to: "lamp" | "brick" };
 
-const Result = ({ resultCanvas }: Props) => {
+const Result = ({ resultCanvas, convert_to }: Props) => {
   return (
     <div className={styles["result--container"]}>
       <p className={styles["result--help"]}>
@@ -16,11 +17,15 @@ const Result = ({ resultCanvas }: Props) => {
 
       <p className={styles["result"]} onClick={clickCopyHandler}>
         {Encode_Blueprint({
-          blueprint: imgToLampBlueprintConvertor(
-            resultCanvas.width,
-            resultCanvas.height,
-            calculateColors(resultCanvas)
-          ),
+          blueprint: convert_to=='lamp'
+            ? imgToLampBlueprintConvertor(
+                resultCanvas.width,
+                resultCanvas.height,
+                calculateColors(resultCanvas)
+              )
+            : imgToBrickBlueprintConvertor(
+                resultCanvas
+              ),
         })}
       </p>
     </div>

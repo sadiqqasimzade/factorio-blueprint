@@ -1,6 +1,6 @@
 import { TBlueprint_Signal } from "../stuctures/TBlueprint_Signal";
 
-export class Blueprint_Icon {
+export default class {
   signal: TBlueprint_Signal;
   index: number;
 
