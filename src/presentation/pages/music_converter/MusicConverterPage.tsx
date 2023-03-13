@@ -17,20 +17,23 @@ function getFrequencies(audioBuffer: AudioBuffer): Promise<number[][]> {
   source.connect(analyser);
   analyser.connect(ctx.destination);
 
-  source.start(18,0,1);
-  
+  source.start(18, 0, 1);
+
   ctx.startRendering();
   return new Promise((resolve, reject) => {
     ctx.oncomplete = (event) => {
       const buffer = event.renderedBuffer;
       const frequencyData: number[][] = [];
-      
-      for (let i = 0; i < buffer.length; i+=(1/buffer.duration)) {
+
+      for (let i = 0; i < buffer.length; i++) {
         const time = buffer.duration * (i / buffer.length);
         const data = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(data);
-        console.log(i)
+        console.log(time)
+
+
         frequencyData.push([time, ...data]);
+
       }
 
       resolve(frequencyData);
@@ -71,9 +74,9 @@ function MusicConverterPage() {
     <div>
       <input type="file" accept="audio/*" onChange={handleFileInputChange} />
       {frequencyData.map(([time, ...data], index) => (
-        <div style={{color:'white',fontSize:'18px'}} key={index}>
+        <div style={{ color: 'white', fontSize: '18px' }} key={index}>
           <div>{time}</div>
-          <div>{data.slice(0,14).join(", ")}</div>
+          <div>{data.slice(0, 14).join(", ")}</div>
         </div>
       ))}
     </div>
