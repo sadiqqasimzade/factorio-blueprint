@@ -36,14 +36,15 @@ function MusicConverterPage() {
 
   return (
     <div>
-      <input type="file" accept="audio/*" onChange={handleAudioFileInputChange} />
-      {frequencyData && (
-        <p>
-          {Array.from(frequencyData.slice(0, 150))
-            .map((value) => Math.floor(value / 2))
-            .join(", ")}
-        </p>
-      )}
+
+      <input type="file" accept="audio/*" onChange={handleFileInputChange} />
+      {frequencyData.map(([time, ...data], index) => (
+        <div style={{ color: 'white', fontSize: '18px' }} key={index}>
+          <div>{time}</div>
+          <div>{data.slice(0, 14).join(", ")}</div>
+        </div>
+      ))}
+
     </div>
   );
 }
