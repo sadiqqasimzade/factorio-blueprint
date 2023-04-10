@@ -22,9 +22,14 @@ const IndexPage = (props: Props) => {
         link="image-converter-brick"
       />
       <Card
-        title="Image converter - Brick"
+        title="Audio to Blueprint"
         desc="Converts image to factorio blueprint"
         link="music-converter"
+      />
+      <Card
+        title="Pixel Art"
+        desc="Converts image to factorio blueprint"
+        link="pixel-art"
       />
     </section>
   );

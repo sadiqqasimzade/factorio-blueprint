@@ -1,3 +1,5 @@
+import { TBlueprint_Signal } from "./TBlueprint_Signal";
+
 export enum versions {
   latest = 281479276527617,
 }
@@ -17,10 +19,10 @@ export enum entity_names {
   medium_electric_pole = "medium-electric-pole",
 }
 
-export enum tile_names{
-  concrete="concrete",
-  stone_path="stone-path",
-  hazard_concrete_left="hazard-concrete-left"
+export enum tile_names {
+  concrete = "concrete",
+  stone_path = "stone-path",
+  hazard_concrete_left = "hazard-concrete-left"
 }
 
 export enum arithmetic_operations {
@@ -38,7 +40,7 @@ export enum arithmetic_operations {
 }
 //signals enum
 
-export const signals = {
+export const signals: { [color_hex: string]: TBlueprint_Signal } = {
   signal_red: {
     type: item_types.Virtual,
     name: "signal-red",
@@ -189,3 +191,24 @@ export const signal_priority = [
   signals.signal_i,
   signals.signal_j,
 ];
+
+
+//colors
+
+export const colors: { [color_hex: string]: TBlueprint_Signal } = {
+  "ff0000": signals.signal_red,
+  "0000FF": signals.signal_blue,
+  "FFFFFF": signals.signal_white,
+  "FFFF00": signals.signal_yellow,
+  "008000": signals.signal_green,
+  "ffc0cb": signals.signal_pink,
+  "30d5c8": signals.signal_cyan,
+  "000000": signals.signal_black,
+};
+
+
+export const colorsArr: string[] = [];
+for (var key in colors) {
+  colorsArr.push(key);
+}
+

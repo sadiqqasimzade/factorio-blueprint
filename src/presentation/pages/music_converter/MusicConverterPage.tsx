@@ -1,50 +1,79 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import styles from './MusicConverterPage.module.scss'
 type Props = {};
 
 
 
 
 function MusicConverterPage() {
-  const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
-  const [frequencyData, setFrequencyData] = useState<Uint8Array | null>(null);
 
-  const handleAudioFileInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      const audioContext = new AudioContext();
-      const fileBuffer = await file.arrayBuffer();
-      audioContext.decodeAudioData(fileBuffer, (buffer) => {
-        setAudioBuffer(buffer);
-        const analyser = audioContext.createAnalyser();
-        analyser.fftSize = 2048;
-        const bufferSource = audioContext.createBufferSource();
-        bufferSource.buffer = buffer;
-        bufferSource.connect(analyser);
-        analyser.connect(audioContext.destination);
-        const frequencyData = new Uint8Array(analyser.frequencyBinCount);
-        setFrequencyData(frequencyData);
-        const updateFrequencyData = () => {
-          analyser.getByteFrequencyData(frequencyData);
-          setFrequencyData(new Uint8Array(frequencyData));
-          setTimeout(updateFrequencyData, 250);
-        };
-        setTimeout(updateFrequencyData, 250);
-      });
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [frequencyData, setFrequencyData] = useState<Float32Array | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  const handleAudioFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setAudioFile(file);
     }
+  };
+
+  const analyzeAudioFile = async (file: File) => {
+    const audioContext = new AudioContext();
+    const fileReader = new FileReader();
+
+    fileReader.readAsArrayBuffer(file);
+    fileReader.onload = async () => {
+      const audioBuffer = await audioContext.decodeAudioData(fileReader.result as ArrayBuffer);
+
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 2048;
+
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(analyser);
+      analyser.connect(audioContext.destination);
+
+      const frequencyData = new Float32Array(analyser.frequencyBinCount);
+      setIsAnalyzing(true);
+
+      const analyze = () => {
+        requestAnimationFrame(analyze);
+        analyser.getFloatFrequencyData(frequencyData);
+        setFrequencyData(frequencyData.slice());
+      };
+
+      source.start();
+      analyze();
+    };
   };
 
   return (
     <div>
-
-      <input type="file" accept="audio/*" onChange={handleFileInputChange} />
-      {frequencyData.map(([time, ...data], index) => (
-        <div style={{ color: 'white', fontSize: '18px' }} key={index}>
-          <div>{time}</div>
-          <div>{data.slice(0, 14).join(", ")}</div>
+      <input type="file" accept="audio/*" onChange={handleAudioFileChange} />
+      {audioFile && (
+        <button
+          onClick={() => {
+            analyzeAudioFile(audioFile);
+          }}
+          disabled={isAnalyzing}
+        >
+          {isAnalyzing ? "Analyzing..." : "Analyze"}
+        </button>
+      )}
+      {frequencyData && (
+        <div>
+          {frequencyData.map((frequency, index) => (
+            <div key={index}>
+              <p>
+                {frequency}
+              </p>
+              <br></br>
+              <p>aaa</p>
+            </div>
+          ))}
         </div>
-      ))}
-
+      )}
     </div>
   );
 }

@@ -1,0 +1,68 @@
+@keyframes color-me-in {
+    50% {
+        background: #64e4ed;
+    }
+
+    50% {
+        background: #025721;
+    }
+
+    50% {
+        background: #01232e;
+    }
+
+    50% {
+        background: #64e4ed;
+    }
+}
+
+div audio {
+    display: block;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.myCanvas {
+    width: 100%;
+    height: 25% !important;
+    border: 1px solid;
+    margin-left: auto;
+    margin-right: auto;
+    animation: color-me-in 5s infinite;
+
+}
+
+.main {
+    margin: 30px;
+    border: 1px solid #014347;
+    border-radius: 15px;
+    background: linear-gradient(to top, #64bee8, #012c40);
+    padding: 10px;
+    width: 90%;
+
+    box-shadow: 5px 5px 5px grey;
+    text-align: center;
+    font-family: "Open Sans";
+    font-size: 12px;
+}
+
+div.controls:hover {
+    color: blue;
+    font-weight: bold;
+}
+
+div.controls label {
+    display: inline-block;
+    text-align: center;
+    width: 10%;
+}
+
+div.controls label,
+div.controls input,
+output {
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+    font-family: "Open Sans", Verdana, Geneva, sans-serif, sans-serif;
+    font-size: 12px;
+}

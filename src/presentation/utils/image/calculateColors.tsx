@@ -1,8 +1,8 @@
 import {
-  signals,
   color_priority,
+  colorsArr,
+  colors,
 } from "../../../domain/entity/stuctures/Enums";
-import { TBlueprint_Signal } from "../../../domain/entity/stuctures/TBlueprint_Signal";
 import findClosestColor from "./findClosestColor";
 import rgbToHex from "./rgbToHex";
 
@@ -15,22 +15,9 @@ export default function calculateColors(
 ): number[][][] {
   var context = canvas.getContext("2d", { willReadFrequently: true });
 
-  var colors: { [color_hex: string]: TBlueprint_Signal } = {
-    ff0000: signals.signal_red,
-    "0000FF": signals.signal_blue,
-    FFFFFF: signals.signal_white,
-    FFFF00: signals.signal_yellow,
-    "008000": signals.signal_green,
-    ffc0cb: signals.signal_pink,
-    "30d5c8": signals.signal_cyan,
-    "000000": signals.signal_black,
-  };
+  
 
   // convert the `colors`-object to an array
-  var colorsArr: string[] = [];
-  for (var key in colors) {
-    colorsArr.push(key);
-  }
 
   var color_indexes: number[][] = [];
   let part20: number[] = [];
