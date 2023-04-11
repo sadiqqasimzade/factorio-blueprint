@@ -197,7 +197,8 @@ export const signal_priority = [
 
 export const colors: { [color_hex: string]: TBlueprint_Signal } = {
   "ff0000": signals.signal_red,
-  "0000FF": signals.signal_blue,
+  // "0000FF": signals.signal_blue,
+  "7bafd6": signals.signal_blue,
   "FFFFFF": signals.signal_white,
   "FFFF00": signals.signal_yellow,
   "008000": signals.signal_green,

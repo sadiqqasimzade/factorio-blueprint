@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useState } from "react";
 import SuspenseComponent from "../../components/suspense/SuspenseComponent";
+import PixelArtPage from "../pixel_art/PixelArtPage";
 
 const FileDragAndDrop = lazy(
   () => import("../../components/drag_and_drop/FileDragAndDrop")
@@ -18,6 +19,8 @@ type Props = {
 const ImageConverterPage = ({convert_to,maxW,maxH}: Props) => {
   const [Image, setImage] = useState<HTMLImageElement>();
   const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement>();
+  const [pixelArt, setPixelArt] = useState<string[][]>()
+
   return (
     <section className="container">
       <Suspense fallback={<SuspenseComponent/>}>
@@ -30,6 +33,7 @@ const ImageConverterPage = ({convert_to,maxW,maxH}: Props) => {
             maxH={maxH}
           />
         ) : resultCanvas ? (
+          // <PixelArtPage resultCanvas={resultCanvas} />
           <Result resultCanvas={resultCanvas} convert_to={convert_to} />
         ) : (
           <FileDragAndDrop setImage={setImage} />

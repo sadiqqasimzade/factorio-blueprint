@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Result.module.scss";
-import calculateColors from "../../utils/image/calculateColors";
+import { calculateColorsBlueprint,calculateColors } from "../../utils/image/calculateColors";
 import imgToLampBlueprintConvertor from "../../utils/convertors/imgToLampBlueprintConvertor";
 import Encode_Blueprint from "../../utils/convertors/Encoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";
@@ -21,7 +21,7 @@ const Result = ({ resultCanvas, convert_to }: Props) => {
             ? imgToLampBlueprintConvertor(
                 resultCanvas.width,
                 resultCanvas.height,
-                calculateColors(resultCanvas)
+                calculateColorsBlueprint(calculateColors(resultCanvas))
               )
             : imgToBrickBlueprintConvertor(
                 resultCanvas
