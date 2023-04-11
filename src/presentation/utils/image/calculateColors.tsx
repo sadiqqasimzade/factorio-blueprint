@@ -23,6 +23,7 @@ export function calculateColorsBlueprint(
     for (let count = 0; count < step; count++) {
       part20 = [];
       for (let j = 0; j < imageColors[0].length; j += step) {
+        
         part20.push(-(color_priority.indexOf(colors[imageColors[i][j]]) + 1));
       }
       color_indexes.push(part20);

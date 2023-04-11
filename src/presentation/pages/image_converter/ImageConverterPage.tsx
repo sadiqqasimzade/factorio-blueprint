@@ -11,19 +11,19 @@ const ImageEditor = lazy(
 const Result = lazy(() => import("../../components/result/Result"));
 
 type Props = {
-  convert_to:"lamp"|"brick"
-  maxW:number,
-  maxH:number
+  convert_to: "lamp" | "brick"
+  maxW: number,
+  maxH: number
 };
 
-const ImageConverterPage = ({convert_to,maxW,maxH}: Props) => {
+const ImageConverterPage = ({ convert_to, maxW, maxH }: Props) => {
   const [Image, setImage] = useState<HTMLImageElement>();
   const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement>();
   const [pixelArt, setPixelArt] = useState<string[][]>()
 
   return (
     <section className="container">
-      <Suspense fallback={<SuspenseComponent/>}>
+      <Suspense fallback={<SuspenseComponent />}>
         {Image ? (
           <ImageEditor
             Image={Image}
@@ -33,7 +33,8 @@ const ImageConverterPage = ({convert_to,maxW,maxH}: Props) => {
             maxH={maxH}
           />
         ) : resultCanvas ? (
-          // <PixelArtPage resultCanvas={resultCanvas} />
+          <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} />
+        ) : pixelArt ? (
           <Result resultCanvas={resultCanvas} convert_to={convert_to} />
         ) : (
           <FileDragAndDrop setImage={setImage} />

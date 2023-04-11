@@ -9,7 +9,7 @@ type Props = {
 const PixelArtGrid = ({ cells,updateCell }: Props) => {
     return (
         <>
-            <div>
+            <div className=''>
                 {cells.map((cellrow, rindex) => (
                     <div className={styles['row']} key={cellrow.length * rindex}>
                         {cellrow.map((cell, cindex) => (
