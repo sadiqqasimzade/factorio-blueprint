@@ -195,7 +195,7 @@ export const signal_priority = [
 
 //colors
 
-export const colors: { [color_hex: string]: TBlueprint_Signal } = {
+export const lampColors: { [color_hex: string]: TBlueprint_Signal } = {
   "ff0000": signals.signal_red,
   // "0000FF": signals.signal_blue,
   "7bafd6": signals.signal_blue,
@@ -208,8 +208,19 @@ export const colors: { [color_hex: string]: TBlueprint_Signal } = {
 };
 
 
-export const colorsArr: string[] = [];
-for (var key in colors) {
-  colorsArr.push(key);
+export const lampColorsArr: string[] = [];
+for (var key in lampColors) {
+  lampColorsArr.push(key);
 }
 
+
+export const tileColors: { [color_hex: string]: tile_names } = {
+  "524f46": tile_names.stone_path,
+  "585858": tile_names.concrete,
+  "71603d": tile_names.hazard_concrete_left,
+};
+
+export const tileColorsArr: string[] = [];
+for (var key in tileColors) {
+  tileColorsArr.push(key);
+}

@@ -1,7 +1,6 @@
 import {
   color_priority,
-  colorsArr,
-  colors,
+  lampColors,
 } from "../../../domain/entity/stuctures/Enums";
 import findClosestColor from "./findClosestColor";
 import rgbToHex from "./rgbToHex";
@@ -10,7 +9,7 @@ import rgbToHex from "./rgbToHex";
  *
  * @param imageColors result of calculateColors function
  */
-export function calculateColorsBlueprint(
+export function calculateColorsForLamps(
   imageColors:string[][]
 ): number[][][] {
 
@@ -24,7 +23,7 @@ export function calculateColorsBlueprint(
       part20 = [];
       for (let j = 0; j < imageColors[0].length; j += step) {
         
-        part20.push(-(color_priority.indexOf(colors[imageColors[i][j]]) + 1));
+        part20.push(-(color_priority.indexOf(lampColors[imageColors[i][j]]) + 1));
       }
       color_indexes.push(part20);
     }
@@ -34,11 +33,12 @@ export function calculateColorsBlueprint(
 }
 
 /**
- * 
+ * calculates closest colors in given canvas using given available colors
  * @param canvas Html Canvas Element
+ * @param availableColors array of color strings
  * @returns string array of color arrays for cols
  */
-export function calculateColors(canvas:HTMLCanvasElement):string[][]{
+export function calculateColorsInCanvas(canvas:HTMLCanvasElement,availableColors:string[]):string[][]{
   var context = canvas.getContext("2d", { willReadFrequently: true });
   let result = []
   for (let i = 0; i < canvas.width; i++) {
@@ -47,7 +47,7 @@ export function calculateColors(canvas:HTMLCanvasElement):string[][]{
       let data = context.getImageData(i, j, 1, 1).data;
       let hex = rgbToHex(data[0], data[1], data[2]);
       hex = hex.length < 6 ? hex.replace(/(.)/g, "$1$1") : hex;
-      var match = findClosestColor(colorsArr, hex);
+      var match = findClosestColor(availableColors, hex);
       col.push(match)
     }
     result.push(col)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{memo} from 'react'
 import styles from './PixelArtGrid.module.scss'
 type Props = {
     x: number,
@@ -13,4 +13,4 @@ const Cell = ({ color,updateCell,x,y }: Props) => {
     )
 }
 
-export default Cell
+export default memo(Cell)

@@ -42,4 +42,16 @@ $canvas-padding: 10px;
   &--canvas {
     padding: $canvas-padding;
   }
+  &--preresult{
+    display: flex;
+    &--img{
+      width: 30px;
+      height: 30px;
+    }
+    &--text{
+      font-size: 16px;
+      font-weight: bold;
+      color: $input-color;
+    }
+  }
 }

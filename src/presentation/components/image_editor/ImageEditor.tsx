@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./ImageEditor.module.scss";
+import { calculateEntitiesCount } from "../../utils/calculateEntitiesCount";
 
 type Props = {
   Image: HTMLImageElement;
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement>>;
   setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement>>;
-  maxW:number,
-  maxH:number
+  maxW: number,
+  maxH: number,
+  convertTo: 'lamp' | 'brick'
 };
 
 const ImageEditor: React.FC<Props> = ({
@@ -14,15 +16,18 @@ const ImageEditor: React.FC<Props> = ({
   setImage,
   setresultCanvas,
   maxW,
-  maxH
+  maxH,
+  convertTo
 }: Props) => {
-  const 
+  const
     minW = 5,
     minH = 5;
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [width, setWidth] = useState(Image.naturalWidth);
-  const [height, setHeight] = useState(Image.naturalHeight);
-  const [aspectRatio, setAspectRatio] = useState(true);
+  const [width, setWidth] = useState<number>(Image.naturalWidth);
+  const [height, setHeight] = useState<number>(Image.naturalHeight);
+  const [aspectRatio, setAspectRatio] = useState<boolean>(true);
+  const entityCount = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : []
+
 
   const handleResize = () => {
     const canvas = canvasRef.current;
@@ -53,14 +58,14 @@ const ImageEditor: React.FC<Props> = ({
     if (aspectRatio && Image) {
       let newHeight = (newWidth / Image.width) * Image.height;
       if (newHeight > maxH) {
-        setHeight(maxH);
-        setWidth((maxH / Image.height) * Image.width);
+        setHeight(Math.floor(maxH));
+        setWidth(Math.floor((maxH / Image.height) * Image.width));
       } else {
-        setHeight(newHeight);
-        setWidth(newWidth);
+        setHeight(Math.floor(newHeight));
+        setWidth(Math.floor(newWidth));
       }
     } else {
-      setWidth(newWidth);
+      setWidth(Math.floor(newWidth));
     }
   };
 
@@ -73,14 +78,14 @@ const ImageEditor: React.FC<Props> = ({
     if (aspectRatio && Image) {
       let newWidth = (newHeight / Image.height) * Image.width;
       if (newWidth > maxW) {
-        setWidth(maxW);
-        setWidth((newHeight / Image.height) * maxW);
+        setWidth(Math.floor(maxW));
+        setWidth(Math.floor((newHeight / Image.height) * maxW));
       } else {
-        setWidth(newWidth);
-        setHeight(newHeight);
+        setWidth(Math.floor(newWidth));
+        setHeight(Math.floor(newHeight));
       }
     } else {
-      setHeight(newHeight);
+      setHeight(Math.floor(newHeight));
     }
   };
 
@@ -154,6 +159,29 @@ const ImageEditor: React.FC<Props> = ({
           >
             Continue
           </button>
+          {convertTo == 'lamp' ? (<div>
+            <div className={styles["imageeditor--preresult"]}>
+              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/constantCombinator.png"></img>
+              <p className={styles["imageeditor--preresult--text"]}>{entityCount[0]}</p>
+            </div>
+            <div className={styles["imageeditor--preresult"]}>
+              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/steelPole.png"></img>
+              <p className={styles["imageeditor--preresult--text"]}>{entityCount[1]}</p>
+            </div>
+            <div className={styles["imageeditor--preresult"]}>
+              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/substation.png"></img>
+              <p className={styles["imageeditor--preresult--text"]}>{entityCount[2]}</p>
+            </div>
+            <div className={styles["imageeditor--preresult"]}>
+              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/arithmeticCombinator.png"></img>
+              <p className={styles["imageeditor--preresult--text"]}>{entityCount[3]}</p>
+            </div>
+            <div className={styles["imageeditor--preresult"]}>
+              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/lamp.png"></img>
+              <p className={styles["imageeditor--preresult--text"]}>{entityCount[4]}</p>
+            </div>
+          </div>) : (<></>)}
+
         </div>
       </div>
       <canvas className={styles["imageeditor--canvas"]} ref={canvasRef} />

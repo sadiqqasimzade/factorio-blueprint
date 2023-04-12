@@ -1,14 +1,14 @@
 import React from "react";
 import styles from "./Result.module.scss";
-import { calculateColorsBlueprint,calculateColors } from "../../utils/image/calculateColors";
+import { calculateColorsForLamps, calculateColorsInCanvas } from "../../utils/image/calculateColors";
 import imgToLampBlueprintConvertor from "../../utils/convertors/imgToLampBlueprintConvertor";
 import Encode_Blueprint from "../../utils/convertors/Encoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";
 import imgToBrickBlueprintConvertor from "../../utils/convertors/imgToBrickBlueprintConvertor";
 
-type Props = { resultCanvas: HTMLCanvasElement; convert_to: "lamp" | "brick" };
+type Props = { pixelArt: string[][]; convert_to: "lamp" | "brick" };
 
-const Result = ({ resultCanvas, convert_to }: Props) => {
+const Result = ({ pixelArt, convert_to }: Props) => {
   return (
     <div className={styles["result--container"]}>
       <p className={styles["result--help"]}>
@@ -17,15 +17,15 @@ const Result = ({ resultCanvas, convert_to }: Props) => {
 
       <p className={styles["result"]} onClick={clickCopyHandler}>
         {Encode_Blueprint({
-          blueprint: convert_to=='lamp'
+          blueprint: convert_to == 'lamp'
             ? imgToLampBlueprintConvertor(
-                resultCanvas.width,
-                resultCanvas.height,
-                calculateColorsBlueprint(calculateColors(resultCanvas))
-              )
+              pixelArt.length,
+              pixelArt[0].length,
+              calculateColorsForLamps(pixelArt)
+            )
             : imgToBrickBlueprintConvertor(
-                resultCanvas
-              ),
+              pixelArt
+            ),
         })}
       </p>
     </div>

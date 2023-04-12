@@ -7,7 +7,7 @@ add type behavior contorl
 create combinator type
 
 --ui
-
+-button design
 -loading screen with %
 
 
@@ -41,3 +41,10 @@ delete unnnesacry packets in package.json
 
 
 write tests
+
+make modal agreement for pixel art ram usage
+make variables/function names camel case
+make unused comonents lazy
+make pixelArt array without state
+
+

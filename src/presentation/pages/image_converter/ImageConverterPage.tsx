@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useState } from "react";
 import SuspenseComponent from "../../components/suspense/SuspenseComponent";
-import PixelArtPage from "../pixel_art/PixelArtPage";
 
+const PixelArtPage = lazy(() => import("../pixel_art/PixelArtPage"));
 const FileDragAndDrop = lazy(
   () => import("../../components/drag_and_drop/FileDragAndDrop")
 );
@@ -11,12 +11,12 @@ const ImageEditor = lazy(
 const Result = lazy(() => import("../../components/result/Result"));
 
 type Props = {
-  convert_to: "lamp" | "brick"
+  convertTo: "lamp" | "brick"
   maxW: number,
   maxH: number
 };
 
-const ImageConverterPage = ({ convert_to, maxW, maxH }: Props) => {
+const ImageConverterPage = ({ convertTo, maxW, maxH }: Props) => {
   const [Image, setImage] = useState<HTMLImageElement>();
   const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement>();
   const [pixelArt, setPixelArt] = useState<string[][]>()
@@ -31,11 +31,12 @@ const ImageConverterPage = ({ convert_to, maxW, maxH }: Props) => {
             setresultCanvas={setresultCanvas}
             maxW={maxW}
             maxH={maxH}
+            convertTo={convertTo}
           />
-        ) : resultCanvas ? (
-          <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} />
+        ) : resultCanvas && !pixelArt ? (
+          <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} convertTo={convertTo} />
         ) : pixelArt ? (
-          <Result resultCanvas={resultCanvas} convert_to={convert_to} />
+          <Result pixelArt={pixelArt} convert_to={convertTo} />
         ) : (
           <FileDragAndDrop setImage={setImage} />
         )}
