@@ -5,7 +5,6 @@ import {
   entity_names,
   signals,
   signal_priority,
-  versions,
 } from "../../../domain/entity/stuctures/Enums";
 
 export default (
@@ -17,12 +16,12 @@ export default (
   var substation_counter = 4;
   var substation_cordinates_w = [4];
   var substation_cordinates_h = [4];
-  while (substation_counter + 9 < Math.ceil(wmax / 9) * 9) {
+  while (substation_counter + 5 < Math.ceil(wmax / 9) * 9) {
     substation_cordinates_w.push(substation_counter + 9);
     substation_counter += 9;
   }
   substation_counter = 4;
-  while (substation_counter + 9 < Math.ceil(hmax / 9) * 9) {
+  while (substation_counter + 5 < Math.ceil(hmax / 9) * 9) {
     substation_cordinates_h.push(substation_counter + 9);
     substation_counter += 9;
   }

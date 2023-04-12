@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import Encode_Blueprint from "../../utils/convertors/Encoder";
+import blueprintEncoder from "../../utils/convertors/blueprintEncoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";
 
 type Props = {
@@ -12,7 +12,7 @@ const Encode = ({ styles }: Props) => {
   const decodedInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     var p = encodedTextRef.current as HTMLParagraphElement;
     try {
-      p.innerText = Encode_Blueprint(JSON.parse(e.target.value));
+      p.innerText = blueprintEncoder(JSON.parse(e.target.value));
     } catch (error) {
       p.innerText = "Cant parse given json to blueprint sting  =(";
     }

@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Result.module.scss";
 import { calculateColorsForLamps, calculateColorsInCanvas } from "../../utils/image/calculateColors";
 import imgToLampBlueprintConvertor from "../../utils/convertors/imgToLampBlueprintConvertor";
-import Encode_Blueprint from "../../utils/convertors/Encoder";
+import blueprintEncoder from "../../utils/convertors/blueprintEncoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";
 import imgToBrickBlueprintConvertor from "../../utils/convertors/imgToBrickBlueprintConvertor";
 
@@ -16,7 +16,7 @@ const Result = ({ pixelArt, convert_to }: Props) => {
       </p>
 
       <p className={styles["result"]} onClick={clickCopyHandler}>
-        {Encode_Blueprint({
+        {blueprintEncoder({
           blueprint: convert_to == 'lamp'
             ? imgToLampBlueprintConvertor(
               pixelArt.length,

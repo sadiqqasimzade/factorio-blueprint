@@ -40,6 +40,7 @@ export enum arithmetic_operations {
 }
 //signals enum
 
+
 export const signals: { [color_hex: string]: TBlueprint_Signal } = {
   signal_red: {
     type: item_types.Virtual,
@@ -224,3 +225,4 @@ export const tileColorsArr: string[] = [];
 for (var key in tileColors) {
   tileColorsArr.push(key);
 }
+
