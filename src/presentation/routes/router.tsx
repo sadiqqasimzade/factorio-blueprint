@@ -1,6 +1,5 @@
 import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-// const PixelArtPage = lazy(() => import("../pages/pixel_art/PixelArtPage"));
 const DecodeEncodePage = lazy(() => import("../pages/decodeEncode/DecodeEncodePage"));
 const ErrorPage = lazy(() => import("../pages/error_pages/ErrorPage"));
 const NotFound = lazy(() => import("../pages/error_pages/NotFound"));
@@ -32,7 +31,7 @@ const Router = (props: Props) => {
         errorElement={<ErrorPage />}
       />
       <Route path="/music-converter" element={<MusicConverterPage />} errorElement={<ErrorPage />} />
-
+      <Route path="/pixel-art" element={<ImageConverterPage convertTo="lamp" maxW={20} maxH={20} skipInput/>}/>
       <Route path="*" element={<NotFound />} errorElement={<ErrorPage />} />
     </Routes>
   );

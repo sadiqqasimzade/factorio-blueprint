@@ -19,7 +19,7 @@ export default class {
     this.icons = icons;
     this.entities = entities;
     this.item = "blueprint";
-    this.version = versions.latest;
+    this.version = versions.LATEST;
     this.tiles=tiles
   }
 }

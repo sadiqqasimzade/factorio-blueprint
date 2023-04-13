@@ -13,33 +13,37 @@ const Result = lazy(() => import("../../components/result/Result"));
 type Props = {
   convertTo: "lamp" | "brick"
   maxW: number,
-  maxH: number
+  maxH: number,
+  skipInput?: boolean | undefined
 };
 
-const ImageConverterPage = ({ convertTo, maxW, maxH }: Props) => {
-  const [Image, setImage] = useState<HTMLImageElement>();
+const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
+  const [validatedImage, setValidatedImage] = useState<HTMLImageElement>();
   const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement>();
   const [pixelArt, setPixelArt] = useState<string[][]>()
 
   return (
     <section className="container">
       <Suspense fallback={<SuspenseComponent />}>
-        {Image ? (
-          <ImageEditor
-            Image={Image}
-            setImage={setImage}
-            setresultCanvas={setresultCanvas}
-            maxW={maxW}
-            maxH={maxH}
-            convertTo={convertTo}
-          />
-        ) : resultCanvas && !pixelArt ? (
-          <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} convertTo={convertTo} />
-        ) : pixelArt ? (
-          <Result pixelArt={pixelArt} convert_to={convertTo} />
-        ) : (
-          <FileDragAndDrop setImage={setImage} />
-        )}
+        {
+          pixelArt ? <Result pixelArt={pixelArt} convert_to={convertTo} /> :
+            resultCanvas || skipInput ?
+              skipInput ?
+                //fllor number
+                <PixelArtPage sizex={parseInt(prompt('width'))} sizey={parseInt(prompt('height'))} convertTo="lamp" setPixelArt={setPixelArt} /> :
+                <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} convertTo={convertTo} />
+              :
+              validatedImage ? <ImageEditor
+                Image={validatedImage}
+                setImage={setValidatedImage}
+                setresultCanvas={setresultCanvas}
+                maxW={maxW}
+                maxH={maxH}
+                convertTo={convertTo}
+              /> : <FileDragAndDrop setImage={setValidatedImage} />
+        }
+
+
       </Suspense>
     </section>
   );

@@ -37,7 +37,7 @@ export default (
   entities.push(
     new Blueprint_Entity(
       100000000, //uint64 max
-      entity_names.constant_combinator,
+      entity_names.CONSTANT_COMBINATOR,
       -1,
       -1,
       {
@@ -106,7 +106,7 @@ export default (
       entities.push(
         new Blueprint_Entity(
           (wmax * hmax * 3 + current_width) * (i + 1),
-          entity_names.constant_combinator,
+          entity_names.CONSTANT_COMBINATOR,
           current_width * 2 + 1,
           -1 - 5 + i,
           {
@@ -127,7 +127,7 @@ export default (
     entities.push(
       new Blueprint_Entity(
         100000000 - (current_width + 1),
-        entity_names.medium_electric_pole,
+        entity_names.MEDIUM_ELECTRIC_POLE,
         current_width * 2,
         -1,
         {
@@ -155,7 +155,7 @@ export default (
         entities.push(
           new Blueprint_Entity(
             current_height * wmax * 3 + current_width * 3,
-            entity_names.substation,
+            entity_names.SUBSTATION,
             current_width * 2 + 0.5,
             current_height * 2 + 0.5,
             {
@@ -199,7 +199,7 @@ export default (
       entities.push(
         new Blueprint_Entity(
           current_height * wmax * 3 + current_width * 3,
-          entity_names.arithmetic_combinator,
+          entity_names.ARITHMETIC_COMBINATOR,
           current_width * 2 + 0.5,
           current_height * 2,
           {
@@ -263,7 +263,7 @@ export default (
       entities.push(
         new Blueprint_Entity(
           current_height * wmax * 3 + current_width * 3 + 1,
-          entity_names.small_lamp,
+          entity_names.LAMP,
           current_width * 2,
           current_height * 2 + 1,
           {
@@ -293,7 +293,7 @@ export default (
       entities.push(
         new Blueprint_Entity(
           current_height * wmax * 3 + current_width * 3 + 2,
-          entity_names.small_lamp,
+          entity_names.LAMP,
           current_width * 2 + 1,
           current_height * 2 + 1,
           {
@@ -332,7 +332,7 @@ export default (
             substation_cordinates_w[substation_cordinates_w.length - 1] *
               current_height,
 
-          entity_names.substation,
+          entity_names.SUBSTATION,
           substation_cordinates_w[substation_cordinates_w.length - 1] * 2 + 0.5,
           current_height * 2 + 0.5,
           undefined,
@@ -366,7 +366,7 @@ export default (
               wmax +
               substation_cordinates_h[substation_cordinates_h.length - 1] *
                 current_width,
-            entity_names.substation,
+            entity_names.SUBSTATION,
             current_width * 2 + 0.5,
             substation_cordinates_h[substation_cordinates_h.length - 1] * 2 +
               0.5,

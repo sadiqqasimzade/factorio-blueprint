@@ -8,7 +8,7 @@ type Props = {
     sizex: number,
     sizey: number,
     resultCanvas?: undefined,
-    setPixelArt?: undefined
+    setPixelArt: React.Dispatch<React.SetStateAction<string[][]>>
     convertTo: 'lamp' | 'brick'
 
 } | {

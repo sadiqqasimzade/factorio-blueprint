@@ -9,10 +9,10 @@ create combinator type
 --ui
 -button design
 -loading screen with %
-
-
-
 save data in session 
+
+
+
 --ui2
 
 pixel art
@@ -35,7 +35,7 @@ add service workers pwd
 i18
 transition page change
 show approx items count
-delete unnnesacry packets in package.json
+
 
 
 
