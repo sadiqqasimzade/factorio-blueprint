@@ -31,7 +31,8 @@ const Router = (props: Props) => {
         errorElement={<ErrorPage />}
       />
       <Route path="/music-converter" element={<MusicConverterPage />} errorElement={<ErrorPage />} />
-      <Route path="/pixel-art" element={<ImageConverterPage convertTo="lamp" maxW={20} maxH={20} skipInput/>}/>
+      <Route path="/pixel-art-lamp" element={<ImageConverterPage convertTo="lamp" maxW={300} maxH={100} skipInput/>}/>
+      <Route path="/pixel-art-brick" element={<ImageConverterPage convertTo="brick" maxW={500} maxH={500} skipInput/>}/>
       <Route path="*" element={<NotFound />} errorElement={<ErrorPage />} />
     </Routes>
   );

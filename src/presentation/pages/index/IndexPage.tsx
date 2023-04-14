@@ -10,26 +10,37 @@ const IndexPage = (props: Props) => {
         title="Decoder/Encoder"
         desc="Decodes or Encodes factorio blueprint strings"
         link="decode-encode"
+        imgSrc=""
       />
       <Card
         title="Image converter - Lamp"
         desc="Converts image to factorio blueprint"
         link="image-converter-lamp"
+        imgSrc=""
       />
       <Card
         title="Image converter - Brick"
         desc="Converts image to factorio blueprint"
         link="image-converter-brick"
+        imgSrc=""
       />
       <Card
         title="Audio to Blueprint"
         desc="Converts image to factorio blueprint"
         link="music-converter"
+        imgSrc=""
       />
       <Card
-        title="Pixel Art"
+        title="Pixel Art-Lamp"
         desc="Converts image to factorio blueprint"
-        link="pixel-art"
+        link="pixel-art-lamp"
+        imgSrc=""
+      />
+      <Card
+        title="Pixel Art-Brick"
+        desc="Converts image to factorio blueprint"
+        link="pixel-art-brick"
+        imgSrc=""
       />
     </section>
   );

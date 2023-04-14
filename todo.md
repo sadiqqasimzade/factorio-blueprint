@@ -46,5 +46,9 @@ make modal agreement for pixel art ram usage
 make variables/function names camel case
 make unused comonents lazy
 make pixelArt array without state
+custom warning
+
+usecontext 2 themes
 
 
+img=>solar img

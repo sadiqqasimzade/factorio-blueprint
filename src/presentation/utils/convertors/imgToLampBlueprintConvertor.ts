@@ -319,7 +319,7 @@ export default (
       current_width += 1;
       // await new Promise(r => setTimeout(r, 1)); //test
     }
-    //addding substation if that not affected by loop
+    // addding substation if that not affected by loop
     if (
       current_width <=
         substation_cordinates_w[substation_cordinates_w.length - 1] &&

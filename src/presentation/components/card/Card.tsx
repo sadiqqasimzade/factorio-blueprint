@@ -5,9 +5,10 @@ type Props = {
   title: string;
   desc: string;
   link: string;
+  imgSrc:string;
 };
 
-const Card = ({ title, desc, link }: Props) => {
+const Card = ({ title, desc, link,imgSrc }: Props) => {
   return (
     <div className={styles["card"]}>
       <div>

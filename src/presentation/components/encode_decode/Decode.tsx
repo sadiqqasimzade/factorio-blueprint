@@ -2,16 +2,16 @@ import React, { useRef } from "react";
 import blueprintDecoder from "../../utils/convertors/blueprintDecoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";
 type Props = {
-  styles:any
+  styles: any
 };
 
-const Decode = ({styles}: Props) => {
+const Decode = ({ styles }: Props) => {
   const decodedTextRef = useRef(undefined);
 
   const encodedInputChange = (e: React.ChangeEvent<any>) => {
     var p = decodedTextRef.current as HTMLParagraphElement;
     try {
-      p.innerText = blueprintDecoder(e.target.value);
+      p.innerText = JSON.stringify(blueprintDecoder(e.target.value), null, 2);
     } catch (error) {
       p.innerText = 'Cant parse given blueprint sting to json =(';
     }

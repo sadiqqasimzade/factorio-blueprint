@@ -8,6 +8,8 @@ type Props = {
   setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement>>;
   maxW: number,
   maxH: number,
+  minW: number,
+  minH: number,
   convertTo: 'lamp' | 'brick'
 };
 
@@ -17,16 +19,16 @@ const ImageEditor: React.FC<Props> = ({
   setresultCanvas,
   maxW,
   maxH,
+  minW,
+  minH,
   convertTo
 }: Props) => {
-  const
-    minW = 5,
-    minH = 5;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState<number>(Image.naturalWidth);
   const [height, setHeight] = useState<number>(Image.naturalHeight);
   const [aspectRatio, setAspectRatio] = useState<boolean>(true);
-  const entityCount = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : []
+  const entityCount:[number,number,number,number,number] = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
 
 
   const handleResize = () => {
