@@ -8,7 +8,6 @@ const blueprintDecoder = (blueprint: string): JSON => {
   var blueprint = blueprint.substring(1);
   var based = Buffer.from(blueprint, "base64");
   var decoded = inflate(based, { to: "string" });
-  console.log(JSON.parse(decoded))
   return JSON.parse(decoded);
 };
 export default blueprintDecoder;
