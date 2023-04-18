@@ -28,7 +28,7 @@ const ImageEditor: React.FC<Props> = ({
   const [width, setWidth] = useState<number>(Image.naturalWidth);
   const [height, setHeight] = useState<number>(Image.naturalHeight);
   const [aspectRatio, setAspectRatio] = useState<boolean>(true);
-  const entityCount:[number,number,number,number,number] = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
+  const entityCount:[number,number,number,number] = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
 
 
   const handleResize = () => {
@@ -167,20 +167,16 @@ const ImageEditor: React.FC<Props> = ({
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[0]}</p>
             </div>
             <div className={styles["imageeditor--preresult"]}>
-              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/steelPole.png"></img>
+              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/substation.png"></img>
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[1]}</p>
             </div>
             <div className={styles["imageeditor--preresult"]}>
-              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/substation.png"></img>
+              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/arithmeticCombinator.png"></img>
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[2]}</p>
             </div>
             <div className={styles["imageeditor--preresult"]}>
-              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/arithmeticCombinator.png"></img>
-              <p className={styles["imageeditor--preresult--text"]}>{entityCount[3]}</p>
-            </div>
-            <div className={styles["imageeditor--preresult"]}>
               <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/lamp.png"></img>
-              <p className={styles["imageeditor--preresult--text"]}>{entityCount[4]}</p>
+              <p className={styles["imageeditor--preresult--text"]}>{entityCount[3]}</p>
             </div>
           </div>) : (<></>)}
 

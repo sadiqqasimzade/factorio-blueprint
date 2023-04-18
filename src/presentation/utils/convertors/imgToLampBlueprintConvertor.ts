@@ -14,7 +14,6 @@ import {
   color_priority,
   directions,
 } from "../../../domain/entity/stuctures/Enums";
-import { IBpConnectable } from "../../../domain/entity/stuctures/IBpConnectable";
 import { TBpControlBehaviorArithmetic, TBpControlBehaviorCompare, TBpConstCombinatorControlBehavior, TBpConstCombinatorControlBehaviorFilter } from "../../../domain/entity/stuctures/TBpControlBehavior";
 
 export default (
@@ -36,7 +35,8 @@ export default (
 
 
   let mainEntities: BpEntity[] = []
-  let lampEntites: BpEntity[] = []
+  let lampEntites: BpLamp[] = []
+  let constCombinators: BpConstCombinator[] = []
   let createArithmeticCombinatorBehavior = (height: number): TBpControlBehaviorArithmetic => {
     return {
       arithmetic_conditions: {
@@ -63,12 +63,13 @@ export default (
 
   //#region create lamp grid with combinators
   for (let i = 0; i < width; i++) {
+    let row: BpEntity[] = []
     for (let j = 0; j < height; j++) {
       if (substation_cordinates_w.includes(i) && substation_cordinates_h.includes(j)) {
         let substation = new BpSubstaion(i * 2 + 0.5, j * 2 + 0.5)
-        substation.makeConnection(mainEntities.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.GREEN)
-        substation.makeConnection(mainEntities.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.RED)
-        mainEntities.push(substation)
+        substation.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.GREEN)
+        substation.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.RED)
+        row.push(substation)
       }
       else {
         let combinator = new BpArithmeticCombinator(createArithmeticCombinatorBehavior(j), i * 2 + 1, j * 2 + 1, directions.WEST)
@@ -78,21 +79,22 @@ export default (
         lamp_r.makeConnection(lamp_l, 1, 1, cable_colors.RED)
         lamp_l.makeConnection(combinator, 1, 2, cable_colors.RED)
 
-        if (mainEntities.at(-color_indexes[0].length) != undefined) {
-          combinator.makeConnection(mainEntities.at(-color_indexes[0].length) as BpArithmeticCombinator, 1, 1, cable_colors.RED)
+        if (row.at(-color_indexes[0].length) != undefined) {
+          combinator.makeConnection(row.at(-color_indexes[0].length) as BpArithmeticCombinator, 1, 1, cable_colors.RED)
         }
-        if (mainEntities.at(-1) != undefined) {
-          combinator.makeConnection(mainEntities.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.GREEN)
+        if (row.at(-1) != undefined) {
+          combinator.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.GREEN)
         }
-        mainEntities.push(combinator)
+        row.push(combinator)
         lampEntites.push(lamp_l, lamp_r)
       }
     }
+    mainEntities.push(...row)
   }
   //#endregion
 
   //#region color const combinators
-  mainEntities.push(
+  constCombinators.push(
     new BpConstCombinator(
       {
         filters: ((): TBpConstCombinatorControlBehaviorFilter[] => {
@@ -118,14 +120,13 @@ export default (
   let arithmetic_combinators = mainEntities.filter(entity => entity instanceof BpArithmeticCombinator && entity.position.y == 1) as BpArithmeticCombinator[]
   for (let i = 0; i < arithmetic_combinators.length; i++) {
     let combinator = arithmetic_combinators[i]
-    i == 0 ? combinator.makeConnection(mainEntities.at(-1) as BpConstCombinator, 1, 1, cable_colors.GREEN) :
+    i == 0 ? combinator.makeConnection(constCombinators.at(-1), 1, 1, cable_colors.GREEN) :
       combinator.makeConnection(arithmetic_combinators[i - 1], 1, 1, cable_colors.GREEN)
   }
 
   //#endregion
 
   //#region add color const combinators
-  let color_combinators: BpConstCombinator[] = []
   for (let i = 0; i < width; i++) {
     let temp_combinators: BpConstCombinator[] = []
     for (let j = 0; j < color_indexes[0].length; j++) {
@@ -143,36 +144,30 @@ export default (
         })()
       }, i * 2 + 1, -1 - j)
       let arithmetic_combinator = null
-      arithmetic_combinator = mainEntities.find(e => e.position.x == i * 2 + 1 && e.position.y == (color_indexes[0].length - j -1) * 2 + 1) as BpArithmeticCombinator
+      arithmetic_combinator = mainEntities.find(e => e.position.x == i * 2 + 1 && e.position.y == (color_indexes[0].length - j - 1) * 2 + 1) as BpArithmeticCombinator
       if (arithmetic_combinator == undefined) {
-        arithmetic_combinator = mainEntities.find(e => e.position.x == i * 2 + 0.5 && e.position.y == (color_indexes[0].length - j -1) * 2 + 0.5) as BpSubstaion
+        arithmetic_combinator = mainEntities.find(e => e.position.x == i * 2 + 0.5 && e.position.y == (color_indexes[0].length - j - 1) * 2 + 0.5) as BpSubstaion
       }
-      try {
-        arithmetic_combinator.makeConnection(combinator, 1, 1, cable_colors.RED)
-      } catch (error) {
-        console.log(error)
-      }
+      arithmetic_combinator.makeConnection(combinator, 1, 1, cable_colors.RED)
       temp_combinators.push(combinator)
     }
-    color_combinators.push(...temp_combinators)
+    constCombinators.push(...temp_combinators)
   }
   //#endregion
 
   //#region add offgrid substation and connect all substations
 
-  for (let i = 0; i < substation_cordinates_w.length; i++) {
-    if (substation_cordinates_w[i] > width) {
-      for (let j = 0; j < substation_cordinates_h.length; j++) {
-        mainEntities.push(new BpSubstaion(substation_cordinates_w[i] * 2 + 0.5, substation_cordinates_h[j] * 2 + 0.5))
-      }
+  if (substation_cordinates_h.at(-1) > height) {
+    for (let j = 0; j < substation_cordinates_w.length; j++) {
+      mainEntities.push(new BpSubstaion(substation_cordinates_w[j] * 2 + 0.5, substation_cordinates_h.at(-1) * 2 + 0.5))
     }
   }
 
-  for (let i = 0; i < substation_cordinates_h.length; i++) {
-    if (substation_cordinates_h[i] > height) {
-      for (let j = 0; j < substation_cordinates_w.length; j++) {
-        mainEntities.push(new BpSubstaion(substation_cordinates_w[j] * 2 + 0.5, substation_cordinates_h[i] * 2 + 0.5))
-      }
+
+  if (substation_cordinates_w.at(-1) > width) {
+    //last substation already placed by previous 
+    for (let j = 0; j < substation_cordinates_h.length -(height%9==5?0:1); j++) {
+      mainEntities.push(new BpSubstaion(substation_cordinates_w.at(-1) * 2 + 0.5, substation_cordinates_h[j] * 2 + 0.5))
     }
   }
 
@@ -198,7 +193,7 @@ export default (
   //#endregion
 
 
-  mainEntities.push(...color_combinators)
+  mainEntities.push(...constCombinators)
   mainEntities.push(...lampEntites)
   var result: Blueprint = new Blueprint(
     [new Blueprint_Icon(signals.signal_white, 1)],

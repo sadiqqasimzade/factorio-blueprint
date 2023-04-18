@@ -1,42 +1,37 @@
 
 --ui
--button design
--loading screen with %
+contact me page footer 
+remove clg in handlecopyclick (toast )
+button design
+transition page change
+custom warning
+usecontext 2 themes
+make modal agreement for pixel art ram usage
 
 
 
 
 
---final
+--final maybe
 
- video=>display
-
---final2 
+loading screen with %
+video=>display
 audio=>blueprint
 img=>solar img
 
 
 
-contact me page footer 
 
 
 
+--code
 add service workers pwd
 i18
-transition page change
 show approx items count
-
 write tests
-make modal agreement for pixel art ram usage
 make unused comonents lazy
 make pixelArt array without state
-custom warning
-
-usecontext 2 themes
-
-
-
-
 seperate types control behaviur=>control behaviour generic? 
+seperate arrays at main function
+check all functions documentation
 
-remove clg in handlecopyclick (toast )

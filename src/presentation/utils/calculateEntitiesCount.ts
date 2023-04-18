@@ -4,22 +4,19 @@
  * @param y height
  * @returns array of numbers describing amount of 
  * @ Const combinators ,
- * @ Steel poles,
  * @ Substations, 
  * @ Arithmetic combinators
  * @ and Lamps in this order
  */
-export function calculateEntitiesCount(x: number, y: number): [number, number, number, number, number] {
-    let result: [number, number, number, number, number] = [undefined, undefined, undefined, undefined, undefined]
+export function calculateEntitiesCount(x: number, y: number): [number, number, number, number] {
+    let result: [number, number, number, number] = [undefined, undefined, undefined, undefined]
     //const combinatior
-    result[0] = Math.ceil(y / 20)  * x + 1
-    //steel pole
-    result[1] = x
+    result[0] = Math.ceil(y / 20) * x + 1
     //substation
-    result[2] = Math.ceil(x / 9) * Math.ceil(y / 9)
+    result[1] = Math.ceil(x / 9) * Math.ceil(y / 9)
     //arithmetic combinator
-    result[3] = (x * y) - (Math.floor(Math.floor(x / 9) * Math.floor(y / 9)))
+    result[2] = (x * y) - (Math.ceil(x / 9) * Math.ceil(y / 9)) + (x % 9 == 5 ? 0 : Math.ceil(y / 9)) + (y % 9 == 5 ? 0 : Math.ceil(x / 9)) - (y % 9 == 5 || x % 9 == 5 ? 0 : 1)
     //lamp
-    result[4] = result[3] * 2
+    result[3] = result[2] * 2
     return result
 }
