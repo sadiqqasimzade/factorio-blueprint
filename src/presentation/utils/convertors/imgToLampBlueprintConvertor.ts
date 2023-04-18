@@ -4,7 +4,6 @@ import BpConstCombinator from "../../../domain/entity/models/BpConstCombinator";
 import BpEntity from "../../../domain/entity/models/BpEntity";
 import Blueprint_Icon from "../../../domain/entity/models/BpIcon";
 import BpLamp from "../../../domain/entity/models/BpLamp";
-import { BpMediumPole } from "../../../domain/entity/models/BpMediumPole";
 import BpSubstaion from "../../../domain/entity/models/BpSubstaion";
 import {
   signals,
@@ -15,6 +14,7 @@ import {
   color_priority,
   directions,
 } from "../../../domain/entity/stuctures/Enums";
+import { IBpConnectable } from "../../../domain/entity/stuctures/IBpConnectable";
 import { TBpControlBehaviorArithmetic, TBpControlBehaviorCompare, TBpConstCombinatorControlBehavior, TBpConstCombinatorControlBehaviorFilter } from "../../../domain/entity/stuctures/TBpControlBehavior";
 
 export default (
@@ -66,8 +66,8 @@ export default (
     for (let j = 0; j < height; j++) {
       if (substation_cordinates_w.includes(i) && substation_cordinates_h.includes(j)) {
         let substation = new BpSubstaion(i * 2 + 0.5, j * 2 + 0.5)
-        substation.makeConnection(mainEntities.at(-1), 1, 1, cable_colors.GREEN)
-        substation.makeConnection(mainEntities.at(-1), 1, 1, cable_colors.RED)
+        substation.makeConnection(mainEntities.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.GREEN)
+        substation.makeConnection(mainEntities.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.RED)
         mainEntities.push(substation)
       }
       else {
@@ -79,8 +79,10 @@ export default (
         lamp_l.makeConnection(combinator, 1, 2, cable_colors.RED)
 
         if (mainEntities.at(-color_indexes[0].length) != undefined) {
-          combinator.makeConnection(mainEntities.at(-color_indexes[0].length), 1, 1, cable_colors.RED)
-          combinator.makeConnection(mainEntities.at(-color_indexes[0].length), 1, 1, cable_colors.GREEN)
+          combinator.makeConnection(mainEntities.at(-color_indexes[0].length) as BpArithmeticCombinator, 1, 1, cable_colors.RED)
+        }
+        if (mainEntities.at(-1) != undefined) {
+          combinator.makeConnection(mainEntities.at(-1) as BpArithmeticCombinator, 1, 1, cable_colors.GREEN)
         }
         mainEntities.push(combinator)
         lampEntites.push(lamp_l, lamp_r)
@@ -111,15 +113,16 @@ export default (
   );
   //#endregion
 
-  //#region poles
-  //must come after color const combinator so it connects properly
-  for (let i = 0; i < width; i++) {
-    let electric_pole = new BpMediumPole(i * 2, -1)
-    electric_pole.makeConnection(mainEntities.at(-1), 1, 1, cable_colors.GREEN)
-    mainEntities.push(electric_pole)
-  }
-  //#endregion
 
+  //#region connect 1st row of arithmetic combinators to color const combinator
+  let arithmetic_combinators = mainEntities.filter(entity => entity instanceof BpArithmeticCombinator && entity.position.y == 1) as BpArithmeticCombinator[]
+  for (let i = 0; i < arithmetic_combinators.length; i++) {
+    let combinator = arithmetic_combinators[i]
+    i == 0 ? combinator.makeConnection(mainEntities.at(-1) as BpConstCombinator, 1, 1, cable_colors.GREEN) :
+      combinator.makeConnection(arithmetic_combinators[i - 1], 1, 1, cable_colors.GREEN)
+  }
+
+  //#endregion
 
   //#region add color const combinators
   let color_combinators: BpConstCombinator[] = []
@@ -138,17 +141,24 @@ export default (
           }
           return filters
         })()
-      }, i * 2, -2 - j)
-      temp_combinators.length == 0 ?
-        combinator.makeConnection(mainEntities.at(-width + i), 1, 1, cable_colors.RED) :
-        combinator.makeConnection(temp_combinators.at(-1), 1, 1, cable_colors.RED)
+      }, i * 2 + 1, -1 - j)
+      let arithmetic_combinator = null
+      arithmetic_combinator = mainEntities.find(e => e.position.x == i * 2 + 1 && e.position.y == (color_indexes[0].length - j -1) * 2 + 1) as BpArithmeticCombinator
+      if (arithmetic_combinator == undefined) {
+        arithmetic_combinator = mainEntities.find(e => e.position.x == i * 2 + 0.5 && e.position.y == (color_indexes[0].length - j -1) * 2 + 0.5) as BpSubstaion
+      }
+      try {
+        arithmetic_combinator.makeConnection(combinator, 1, 1, cable_colors.RED)
+      } catch (error) {
+        console.log(error)
+      }
       temp_combinators.push(combinator)
     }
     color_combinators.push(...temp_combinators)
   }
   //#endregion
 
-  //#region add substation
+  //#region add offgrid substation and connect all substations
 
   for (let i = 0; i < substation_cordinates_w.length; i++) {
     if (substation_cordinates_w[i] > width) {
@@ -167,36 +177,26 @@ export default (
   }
 
   for (let i = 0; i < substation_cordinates_h.length; i++) {
-    let row_of_substations = mainEntities.filter(e => e instanceof BpSubstaion && e.position.y == substation_cordinates_h[i] * 2 + 0.5)
+    let row_of_substations = mainEntities.filter(e => e instanceof BpSubstaion && e.position.y == substation_cordinates_h[i] * 2 + 0.5) as BpSubstaion[]
     for (let j = 0; j < row_of_substations.length; j++) {
-      let substation = row_of_substations[j] as BpSubstaion
+      let substation = row_of_substations[j]
       if (j < row_of_substations.length - 1) {
-        substation.addNeighbour(row_of_substations[j + 1] as BpSubstaion)
+        substation.addNeighbour(row_of_substations[j + 1])
       }
     }
   }
 
   for (let i = 0; i < substation_cordinates_w.length; i++) {
-    let col_of_substations = mainEntities.filter(e => e instanceof BpSubstaion && e.position.x == substation_cordinates_w[i] * 2 + 0.5)
+    let col_of_substations = mainEntities.filter(e => e instanceof BpSubstaion && e.position.x == substation_cordinates_w[i] * 2 + 0.5) as BpSubstaion[]
     for (let j = 0; j < col_of_substations.length; j++) {
-      let substation = col_of_substations[j] as BpSubstaion
+      let substation = col_of_substations[j]
       if (j < col_of_substations.length - 1) {
-        substation.addNeighbour(col_of_substations[j + 1] as BpSubstaion)
+        substation.addNeighbour(col_of_substations[j + 1])
       }
     }
   }
   //#endregion
 
-  //#region connect 1st row of arithmetic combinators to  medium poles
-  let poles = mainEntities.filter(e => e instanceof BpMediumPole)
-  let combinators = mainEntities.filter(e => e instanceof BpArithmeticCombinator && e.position.y == 1)
-  for (let i = 0; i < combinators.length; i++) {
-    let combinator = combinators[i] as BpArithmeticCombinator
-    combinator.makeConnection(poles[i], 1, 1, cable_colors.RED)
-    combinator.makeConnection(poles[i], 1, 1, cable_colors.GREEN)
-  }
-
-  //#endregion
 
   mainEntities.push(...color_combinators)
   mainEntities.push(...lampEntites)
