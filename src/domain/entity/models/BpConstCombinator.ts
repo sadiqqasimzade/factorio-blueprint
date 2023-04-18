@@ -4,6 +4,7 @@ import { IBpConnectable } from "../stuctures/IBpConnectable";
 import { TBpEntityConnection, TBpEntityConnectionPort } from "../stuctures/TBpEntityConnection";
 import BpEntity from "./BpEntity";
 import { IBpDirectionable } from "../stuctures/IBpDirectionable";
+import { BpStaticMethods } from "../stuctures/BpStaticMethods";
 
 
 export default class BpConstCombinator extends BpEntity implements IBpConnectable, IBpDirectionable {
@@ -17,19 +18,8 @@ export default class BpConstCombinator extends BpEntity implements IBpConnectabl
         this.control_behavior = control_behavior
         this.direction = direction
     }
-    public makeConnection(entity: BpEntity, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void {
-        if (!this.connections) {
-            this.connections = {}
-        }
-        if (!this.connections[port]) {
-            this.connections[port] = {
-
-            };
-        }
-        if (!this.connections[port][cable]) {
-            this.connections[port][cable] = [];
-        }
-        this.connections[port][cable].push({ entity_id: entity.entity_number, circuit_id: destinationPort })
+    public makeConnection(entity: BpEntity & IBpConnectable, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void {
+        BpStaticMethods.makeConnection(this, entity, port, destinationPort, cable)
     }
 };
 

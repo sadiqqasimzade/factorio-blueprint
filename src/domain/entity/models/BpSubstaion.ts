@@ -1,3 +1,4 @@
+import { BpStaticMethods } from "../stuctures/BpStaticMethods";
 import { cable_colors, entity_names } from "../stuctures/Enums";
 import { IBpConnectable } from "../stuctures/IBpConnectable";
 import { IBpNeightbourable } from "../stuctures/IBpNeightbourable";
@@ -12,30 +13,11 @@ export default class BpSubstaion extends BpEntity implements IBpConnectable, IBp
     constructor(x: number, y: number) {
         super(entity_names.SUBSTATION, x, y);
     }
-    AddNeighbour(neighbour: BpSubstaion): void {
-        if(!this.neighbours){
-            this.neighbours = [];
-        }
-        this.neighbours.push(neighbour.entity_number);
-        if(!neighbour.neighbours){
-            neighbour.neighbours = [];
-        }
-        neighbour.neighbours.push(this.entity_number);
+    public addNeighbour(neighbour: BpEntity & IBpNeightbourable): void {
+        BpStaticMethods.addNeighbour(this, neighbour)
     }
-
-    makeConnection(entity: BpEntity, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void {
-        if (!this.connections) {
-            this.connections = {}
-        }
-        if (!this.connections[port]) {
-            this.connections[port] = {
-
-            };
-        }
-        if (!this.connections[port][cable]) {
-            this.connections[port][cable] = [];
-        }
-        this.connections[port][cable].push({ entity_id: entity.entity_number, circuit_id: destinationPort })
+    public makeConnection(entity: BpEntity & IBpConnectable, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void {
+        BpStaticMethods.makeConnection(this, entity, port, destinationPort, cable)
     }
 
 

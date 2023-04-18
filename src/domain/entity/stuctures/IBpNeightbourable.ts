@@ -1,4 +1,6 @@
+import BpEntity from "../models/BpEntity"
+
 export interface IBpNeightbourable{
     neighbours: number[]
-    AddNeighbour(neighbour: IBpNeightbourable): void
+    addNeighbour(neighbour: IBpNeightbourable & BpEntity): void
 }

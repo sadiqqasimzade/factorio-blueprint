@@ -171,7 +171,7 @@ export default (
     for (let j = 0; j < row_of_substations.length; j++) {
       let substation = row_of_substations[j] as BpSubstaion
       if (j < row_of_substations.length - 1) {
-        substation.AddNeighbour(row_of_substations[j + 1] as BpSubstaion)
+        substation.addNeighbour(row_of_substations[j + 1] as BpSubstaion)
       }
     }
   }
@@ -181,7 +181,7 @@ export default (
     for (let j = 0; j < col_of_substations.length; j++) {
       let substation = col_of_substations[j] as BpSubstaion
       if (j < col_of_substations.length - 1) {
-        substation.AddNeighbour(col_of_substations[j + 1] as BpSubstaion)
+        substation.addNeighbour(col_of_substations[j + 1] as BpSubstaion)
       }
     }
   }

@@ -1,3 +1,4 @@
+import { BpStaticMethods } from "../stuctures/BpStaticMethods";
 import { cable_colors, entity_names } from "../stuctures/Enums";
 import { IBpConnectable } from "../stuctures/IBpConnectable";
 import { TBpEntityConnection, TBpEntityConnectionPort } from "../stuctures/TBpEntityConnection";
@@ -9,18 +10,7 @@ export class BpMediumPole extends BpEntity implements IBpConnectable {
     constructor(x: number, y: number) {
         super(entity_names.MEDIUM_ELECTRIC_POLE, x, y);
     }
-    makeConnection(entity: BpEntity, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void {
-        if (!this.connections) {
-            this.connections = {}
-        }
-        if (!this.connections[port]) {
-            this.connections[port] = {
-
-            };
-        }
-        if (!this.connections[port][cable]) {
-            this.connections[port][cable] = [];
-        }
-        this.connections[port][cable].push({ entity_id: entity.entity_number, circuit_id: destinationPort })
+    public makeConnection(entity: BpEntity & IBpConnectable, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void {
+        BpStaticMethods.makeConnection(this, entity, port, destinationPort, cable)
     }
 }

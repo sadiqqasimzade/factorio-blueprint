@@ -4,5 +4,5 @@ import { TBpEntityConnection, TBpEntityConnectionPort } from "./TBpEntityConnect
 
 export interface IBpConnectable {
     connections: TBpEntityConnection;
-    makeConnection(entity: BpEntity, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void
+    makeConnection(entity: BpEntity & IBpConnectable, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void
 }

@@ -6,7 +6,7 @@ export default abstract class BpEntity {
   entity_number: number;
   name: entity_names;
   position: TBpPosition;
-  
+
 
   constructor(
     name: entity_names,
@@ -19,8 +19,6 @@ export default abstract class BpEntity {
     this.position = { x, y };
     BpEntity.entity_number++;
   }
-
-
 }
 
 
