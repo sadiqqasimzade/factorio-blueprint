@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import validateFiles from "../../utils/image/validateFiles";
+import validateFiles from "../../utils/handlers/validateFiles";
 import styles from "./FileDragAndDrop.module.scss";
 type Props = {
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement>>;

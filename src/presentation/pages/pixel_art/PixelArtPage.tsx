@@ -21,13 +21,17 @@ type Props = {
 
 const PixelArtPage = ({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Props) => {
 
-    const [cells, setCells] = useState(typeof (sizex) == 'number' ? Array<string[]>(sizex).fill(Array<string>(sizey).fill("ffffff")) : calculateColorsInCanvas(resultCanvas, convertTo == 'lamp' ? lampColorsArr : tileColorsArr))
+    const [cells, setCells] = useState(typeof (sizex) == 'number' ?
+        Array<string[]>(sizex).fill(Array<string>(sizey).fill(convertTo == 'lamp' ? lampColorsArr[0] : tileColorsArr[0])) :
+        calculateColorsInCanvas(resultCanvas, convertTo == 'lamp' ? lampColorsArr : tileColorsArr))
+
     const [selectedColor, setSelectedColor] = useState(convertTo == 'lamp' ? lampColorsArr[0] : tileColorsArr[0])
     const colors = convertTo == 'lamp' ? lampColorsArr : tileColorsArr
 
     if (typeof (sizex) != 'number') {
-        sizex = resultCanvas.width
-        sizey = resultCanvas.height
+        let canvas=resultCanvas as HTMLCanvasElement
+        sizex = canvas.width
+        sizey = canvas.height
     }
 
     const updateCell = (x: number, y: number) => {

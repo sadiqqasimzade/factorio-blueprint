@@ -1,0 +1,18 @@
+.cell {
+  width: 20px;
+  height: 20px;
+  background-color: var(--color, "red");
+  outline: 2px solid black;
+  min-width: 20px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.overflow {
+  overflow: auto;
+  display: flex;
+}/*# sourceMappingURL=PixelArtGrid.module.css.map */

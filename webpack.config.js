@@ -1,6 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
 const { SourceMapDevToolPlugin } = require("webpack");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
   entry: "./src/presentation/index.tsx",
   output: {
@@ -36,11 +38,14 @@ module.exports = {
   optimization: {
     minimize: true,
   },
-  
+  devServer: {  historyApiFallback: true },
   plugins: [
     new SourceMapDevToolPlugin({
       filename: "[file].map",
     }),
+    new HtmlWebpackPlugin({
+      template: 'index.html'
+    })
   ],
   // externalsPresets: { node: true },
   // resolve: {

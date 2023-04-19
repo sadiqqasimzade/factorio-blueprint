@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Result.module.scss";
-import { calculateColorsForLamps, calculateColorsInCanvas } from "../../utils/image/calculateColors";
+import { calculateColorsForLamps } from "../../utils/image/calculateColors";
 import imgToLampBlueprintConvertor from "../../utils/convertors/imgToLampBlueprintConvertor";
 import blueprintEncoder from "../../utils/convertors/blueprintEncoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";

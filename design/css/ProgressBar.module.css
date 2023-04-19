@@ -1,0 +1,37 @@
+.loader {
+  transform: rotate(-90deg);
+}
+.loader--wrapper {
+  position: relative;
+}
+.loader--indicator--spinner {
+  animation: spinner 0.75s linear infinite;
+  transform-origin: center;
+}
+.loader--label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.loader--label__loading {
+  opacity: 0.5;
+  font-size: 0.75em;
+  display: block;
+  color: white;
+}
+.loader--label__progress {
+  font-size: 1.5em;
+  font-weight: bold;
+  display: block;
+  color: white;
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}/*# sourceMappingURL=ProgressBar.module.css.map */

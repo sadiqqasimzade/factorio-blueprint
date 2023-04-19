@@ -9,6 +9,8 @@ import { TBpEntityConnectionPort } from "./TBpEntityConnection";
 export abstract class BpStaticMethods {
     /** 
      *This method can be used to make connections between two entities without overriding it in each class
+
+     game understands connection even 1 object refer to another so there is no need to add entity id of 1st object into 2nd
      **/
     public static makeConnection(entity1: IBpConnectable & BpEntity, entity2: IBpConnectable & BpEntity, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: cable_colors): void {
         if (!entity1.connections) {

@@ -1,12 +1,12 @@
 
 --ui
 contact me page footer 
-remove clg in handlecopyclick (toast )
 button design
 transition page change
+remove clg in handlecopyclick (toast )
+make modal agreement for pixel art ram usage
 custom warning
 usecontext 2 themes
-make modal agreement for pixel art ram usage
 
 
 
@@ -27,11 +27,11 @@ img=>solar img
 --code
 add service workers pwd
 i18
-show approx items count
-write tests
-make unused comonents lazy
 make pixelArt array without state
 seperate types control behaviur=>control behaviour generic? 
-seperate arrays at main function
+
+
+make unused comonents lazy
 check all functions documentation
+write tests
 

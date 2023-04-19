@@ -6,7 +6,7 @@ import {
   tileColors,
 } from "../../../domain/entity/stuctures/Enums";
 
-export default (pixelArt: string[][]) => {
+export default (pixelArt: string[][]):Blueprint => {
   var tiles: BpTile[] = [];
 
 
@@ -16,7 +16,6 @@ export default (pixelArt: string[][]) => {
       tiles.push(new BpTile(j, i, tileColors[pixelArt[j][i]]));
     }
   }
-
   return new Blueprint(
     [new Blueprint_Icon(signals.signal_white, 1)],
     [],

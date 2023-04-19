@@ -1,0 +1,42 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.container {
+  padding: 0 30px;
+}
+
+.suspense {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+.suspense--icon {
+  animation: rotate 1s linear infinite;
+  transform: rotate(360deg);
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#app {
+  background: linear-gradient(90deg, hsl(256, 33%, 10%) 21px, transparent 1%) center, linear-gradient(hsl(256, 33%, 10%) 21px, transparent 1%) center, hsl(256, 33%, 70%);
+  background-size: 22px 22px;
+  padding-bottom: 50px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}/*# sourceMappingURL=style.css.map */

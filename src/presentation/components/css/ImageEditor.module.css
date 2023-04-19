@@ -1,0 +1,50 @@
+.imageeditor {
+  display: inline-block;
+  position: relative;
+}
+.imageeditor--settings {
+  color: white;
+  display: grid;
+  place-items: center;
+  gap: 10px 0;
+}
+.imageeditor--settings--container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-top: 20px;
+}
+.imageeditor--settings--label {
+  font-size: 24px;
+}
+.imageeditor--settings--helper {
+  font-size: 16px;
+}
+.imageeditor--settings--input {
+  border: none;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  padding: 10px 0;
+  width: 100%;
+  outline: none;
+  color: #fff;
+  max-width: 100%;
+}
+.imageeditor--settings--input::placeholder {
+  color: #fff;
+}
+.imageeditor--canvas {
+  padding: 10px;
+}
+.imageeditor--preresult {
+  display: flex;
+}
+.imageeditor--preresult--img {
+  width: 30px;
+  height: 30px;
+}
+.imageeditor--preresult--text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}/*# sourceMappingURL=ImageEditor.module.css.map */

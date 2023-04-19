@@ -1,0 +1,26 @@
+.row {
+  display: flex;
+  place-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+  max-width: 100vw;
+}
+
+.color {
+  width: 30px;
+  height: 30px;
+  background-color: var(--color, white);
+  transition: all 1s;
+  border-radius: 100%;
+  outline: 1px solid black;
+}
+.color:hover {
+  outline: 4px solid white;
+  transform: scale(1.5);
+}
+
+.active {
+  outline: 4px solid white;
+  transform: scale(1.5);
+}/*# sourceMappingURL=ColorPicker.module.css.map */

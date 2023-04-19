@@ -1,0 +1,13 @@
+.result {
+  word-break: break-all;
+  max-height: 240px;
+  overflow: auto;
+  outline: 1px solid white;
+}
+.result--container {
+  color: white;
+}
+.result--help {
+  color: white;
+  font-size: 46px;
+}/*# sourceMappingURL=Result.module.css.map */

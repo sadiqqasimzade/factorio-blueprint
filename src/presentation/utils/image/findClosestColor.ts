@@ -1,14 +1,8 @@
 /**
-RGB = (R\*65536)+(G\*256)+B , (when R is RED, G is GREEN and B is BLUE)
-Calculation examples
-White RGB Color
-White RGB code = 255\*65536+255\*256+255 = #FFFFFF
-
-Blue RGB Color
-Blue RGB code = 0\*65536+0\*256+255 = #0000FF
-
-Red RGB Color
-Red RGB code = 255\*65536+0\*256+0 = #FF0000
+  @param colorarr - array of available hex strings
+  @param hexstr - hex string to find closest match from colorarr
+  @returns closest match from colorarr as value
+  @description Converts hex string to decimal 
 */
 export default function findClosestColor(
   colorarr: string[],
@@ -17,7 +11,7 @@ export default function findClosestColor(
   var min = 0xffffff;
   var best, current, i;
   for (i = 0; i < colorarr.length; i++) {
-    current = dist(colorarr[i], hexstr);
+    current = hexToDecimal(colorarr[i], hexstr);
     if (current < min) {
       min = current;
       best = colorarr[i];
@@ -26,10 +20,11 @@ export default function findClosestColor(
   return best;
 }
 
-function dist(hexstring: string, t: string): number {
-  if (!hexstring.length || !t.length) return 0;
+function hexToDecimal(hexString1: string, hexString2: string): number {
+  if (!hexString1.length || !hexString2.length) return 0;
   return (
-    dist(hexstring.slice(2), t.slice(2)) +
-    Math.abs(parseInt(hexstring.slice(0, 2), 16) - parseInt(t.slice(0, 2), 16))
+    hexToDecimal(hexString1.slice(2), hexString2.slice(2)) +
+    Math.abs(parseInt(hexString1.slice(0, 2), 16) - parseInt(hexString2.slice(0, 2), 16))
+
   );
 }

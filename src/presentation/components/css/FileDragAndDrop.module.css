@@ -1,0 +1,35 @@
+.dragdrop {
+  height: 200px;
+  border: 2px dashed yellow;
+  background: #061260;
+  margin: 10px 0;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.dragdrop--warning {
+  background: red !important;
+}
+.dragdrop--info {
+  background: #0b20ad !important;
+}
+.dragdrop--title {
+  color: white;
+  font-size: x-large;
+  font-weight: bolder;
+  text-align: center;
+}
+.dragdrop--area {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+}
+.dragdrop--input {
+  display: none;
+}
+.dragdrop--result {
+  color: red;
+  font-size: large;
+  font-weight: bold;
+}/*# sourceMappingURL=FileDragAndDrop.module.css.map */
