@@ -31,8 +31,8 @@ export default memo(function Modal({ setSkipInput, skipInput, setPixelArtSize, m
   }, [skipInput]);
 
 
-  const widthRef = useRef<HTMLInputElement>()
-  const heightRef = useRef<HTMLInputElement>()
+  const widthRef = useRef<HTMLInputElement>(null)
+  const heightRef = useRef<HTMLInputElement>(null)
   return (
     <div
       className={`${styles["modal--container"]} `}
@@ -70,8 +70,8 @@ export default memo(function Modal({ setSkipInput, skipInput, setPixelArtSize, m
           <button type="button" onClick={
             () => {
               setPixelArtSize({
-                width: parseInt(widthRef.current.value),
-                height: parseInt(heightRef.current.value)
+                width: parseInt(widthRef.current!.value),
+                height: parseInt(heightRef.current!.value)
               });
             }
           }>Submit</button>

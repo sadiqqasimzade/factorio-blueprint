@@ -8,8 +8,9 @@ import { BpStaticMethods } from "../stuctures/BpStaticMethods";
 
 export default class BpArithmeticCombinator extends BpEntity implements IBpConnectable, IBpDirectionable {
     control_behavior: TBpControlBehaviorArithmetic
-    connections: TBpEntityConnection;
-    direction: directions;
+    connections: TBpEntityConnection | undefined;
+    direction: directions|undefined;
+    
 
     constructor(control_behavior: TBpControlBehaviorArithmetic, x: number, y: number, direction?: directions | undefined) {
         super(entity_names.ARITHMETIC_COMBINATOR, x, y);

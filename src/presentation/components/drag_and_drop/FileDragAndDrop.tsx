@@ -1,39 +1,38 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import validateFiles from "../../utils/handlers/validateFiles";
 import styles from "./FileDragAndDrop.module.scss";
 type Props = {
-  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement>>;
+  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement|null>>;
 };
 const FileDragAndDrop = ({ setImage }: Props) => {
   //Refs
-  const inputRef: React.MutableRefObject<HTMLInputElement> = useRef(null);
-  const resultRef: React.MutableRefObject<HTMLParagraphElement> = useRef(null);
-  const dragdropareaRef: React.MutableRefObject<HTMLDivElement> = useRef(null);
-  const dragdroptitleRef: React.MutableRefObject<HTMLParagraphElement> =
-    useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLParagraphElement>(null);
+  const dragdropareaRef = useRef<HTMLDivElement>(null);
+  const dragdroptitleRef = useRef<HTMLParagraphElement>(null);
 
   //#region handlers
   function handleDragIn(e: React.DragEvent<HTMLDivElement>): void {
     e.preventDefault();
     if (e.dataTransfer.items && e.dataTransfer.items.length > 1) {
-      dragdroptitleRef.current.innerText = "Only first image will be used";
-      dragdropareaRef.current.classList.add(styles["dragdrop--warning"]);
+      dragdroptitleRef.current!.innerText = "Only first image will be used";
+      dragdropareaRef.current!.classList.add(styles["dragdrop--warning"]);
     } else if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
-      dragdropareaRef.current.classList.add(styles["dragdrop--info"]);
+      dragdropareaRef.current!.classList.add(styles["dragdrop--info"]);
     }
   }
   function handleDragOut(e: React.DragEvent<HTMLDivElement>): void {
     e.preventDefault();
-    dragdropareaRef.current.classList.remove(
+    dragdropareaRef.current!.classList.remove(
       styles["dragdrop--warning"],
       styles["dragdrop--info"]
     );
-    dragdroptitleRef.current.innerText = "Drop Image file here,or click";
+    dragdroptitleRef.current!.innerText = "Drop Image file here,or click";
   }
   function handleDivClick(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ): void {
-    inputRef.current.click();
+    inputRef.current!.click();
   }
   //#endregion
   //#region Input
@@ -42,7 +41,7 @@ const FileDragAndDrop = ({ setImage }: Props) => {
     if (e.dataTransfer.items) {
       let result = validateFiles(e.dataTransfer.files);
       if (typeof result == "string") {
-        resultRef.current.innerText = result;
+        resultRef.current!.innerText = result;
       } else {
         var img = new Image();
         img.src = window.URL.createObjectURL(result);
@@ -57,7 +56,7 @@ const FileDragAndDrop = ({ setImage }: Props) => {
     if (e.target.files) {
       let result = validateFiles(e.target.files);
       if (typeof result == "string") {
-        resultRef.current.innerText = result;
+        resultRef.current!.innerText = result;
       } else {
         var img = new Image();
         img.src = window.URL.createObjectURL(result);

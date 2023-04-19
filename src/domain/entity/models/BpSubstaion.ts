@@ -7,8 +7,8 @@ import BpEntity from "./BpEntity";
 
 
 export default class BpSubstaion extends BpEntity implements IBpConnectable, IBpNeightbourable {
-    neighbours: number[];
-    connections: TBpEntityConnection;
+    neighbours: number[]|undefined;
+    connections: TBpEntityConnection | undefined;
 
     constructor(x: number, y: number) {
         super(entity_names.SUBSTATION, x, y);

@@ -8,21 +8,21 @@ type Props = {
     sizex: number,
     sizey: number,
     resultCanvas?: undefined,
-    setPixelArt: React.Dispatch<React.SetStateAction<string[][]>>
+    setPixelArt: React.Dispatch<React.SetStateAction<string[][]|null>>
     convertTo: 'lamp' | 'brick'
 
 } | {
     sizex?: undefined,
     sizey?: undefined,
     resultCanvas: HTMLCanvasElement,
-    setPixelArt: React.Dispatch<React.SetStateAction<string[][]>>
+    setPixelArt: React.Dispatch<React.SetStateAction<string[][]|null>>
     convertTo: 'lamp' | 'brick'
 }
 
 const PixelArtPage = ({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Props) => {
 
     const [cells, setCells] = useState(typeof (sizex) == 'number' ?
-        Array<string[]>(sizex).fill(Array<string>(sizey).fill(convertTo == 'lamp' ? lampColorsArr[0] : tileColorsArr[0])) :
+        Array<string[]>(sizex).fill(Array<string>(sizey!).fill(convertTo == 'lamp' ? lampColorsArr[0] : tileColorsArr[0])) :
         calculateColorsInCanvas(resultCanvas, convertTo == 'lamp' ? lampColorsArr : tileColorsArr))
 
     const [selectedColor, setSelectedColor] = useState(convertTo == 'lamp' ? lampColorsArr[0] : tileColorsArr[0])

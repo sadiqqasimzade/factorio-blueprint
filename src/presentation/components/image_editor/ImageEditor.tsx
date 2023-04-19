@@ -4,8 +4,8 @@ import { calculateEntitiesCount } from "../../utils/calculateEntitiesCount";
 
 type Props = {
   Image: HTMLImageElement;
-  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement>>;
-  setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement>>;
+  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement|null>>;
+  setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement|null>>;
   maxW: number,
   maxH: number,
   minW: number,
@@ -28,7 +28,7 @@ const ImageEditor: React.FC<Props> = ({
   const [width, setWidth] = useState<number>(Image.naturalWidth);
   const [height, setHeight] = useState<number>(Image.naturalHeight);
   const [aspectRatio, setAspectRatio] = useState<boolean>(true);
-  const entityCount:[number,number,number,number] = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
+  const entityCount:[number,number,number,number]|undefined = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
 
 
   const handleResize = () => {
@@ -149,9 +149,9 @@ const ImageEditor: React.FC<Props> = ({
             onClick={() => {
               let canvas = canvasRef.current;
 
-              if (canvas.width > maxW) {
+              if (canvas!.width > maxW) {
                 alert("wrong width");
-              } else if (canvas.height > maxH) {
+              } else if (canvas!.height > maxH) {
                 alert("wrong height");
               } else {
                 setresultCanvas(canvasRef.current);
@@ -161,7 +161,7 @@ const ImageEditor: React.FC<Props> = ({
           >
             Continue
           </button>
-          {convertTo == 'lamp' ? (<div>
+          {entityCount != undefined ? (<div>
             <div className={styles["imageeditor--preresult"]}>
               <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/constantCombinator.png"></img>
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[0]}</p>

@@ -15,13 +15,13 @@ type Props = {
 };
 
 const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
-  const [validatedImage, setValidatedImage] = useState<HTMLImageElement>();
-  const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement>();
-  const [pixelArt, setPixelArt] = useState<string[][]>()
-  const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number }>(null);
-  const [skipInputState, setSkipInput] = useState<boolean>(skipInput)
+  const [validatedImage, setValidatedImage] = useState<HTMLImageElement|null>(null);
+  const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement|null>(null);
+  const [pixelArt, setPixelArt] = useState<string[][]|null>(null)
+  const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number }>({width: 0, height: 0});
+  const [skipInputState, setSkipInput] = useState<boolean>(skipInput == undefined ? false : skipInput)
 
-  const minW=5,minH=5;
+  const minW = 5, minH = 5;
   return (
     <section className="container">
       <Suspense fallback={<SuspenseComponent />}>
@@ -29,8 +29,8 @@ const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
           pixelArt ? <Result pixelArt={pixelArt} convert_to={convertTo} /> :
             resultCanvas ? <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} convertTo={convertTo} /> :
               pixelArtSize ? <PixelArtPage sizex={pixelArtSize.width} sizey={pixelArtSize.height} convertTo={convertTo} setPixelArt={setPixelArt} /> :
-                skipInputState ? <Modal setSkipInput={setSkipInput} skipInput={skipInput} setPixelArtSize={setPixelArtSize} maxW={maxW} maxH={maxH} minW={minW} minH={minH} /> :
-                  validatedImage ? <ImageEditor Image={validatedImage} setImage={setValidatedImage} setresultCanvas={setresultCanvas} maxW={maxW} maxH={maxH} convertTo={convertTo} minW={minW} minH={minH}/> :
+                skipInputState ? <Modal setSkipInput={setSkipInput} skipInput={skipInputState} setPixelArtSize={setPixelArtSize} maxW={maxW} maxH={maxH} minW={minW} minH={minH} /> :
+                  validatedImage ? <ImageEditor Image={validatedImage} setImage={setValidatedImage} setresultCanvas={setresultCanvas} maxW={maxW} maxH={maxH} convertTo={convertTo} minW={minW} minH={minH} /> :
                     <FileDragAndDrop setImage={setValidatedImage} />
         }
 

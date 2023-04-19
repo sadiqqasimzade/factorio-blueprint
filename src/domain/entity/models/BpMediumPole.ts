@@ -6,7 +6,7 @@ import BpEntity from "./BpEntity";
 
 
 export class BpMediumPole extends BpEntity implements IBpConnectable {
-    connections: TBpEntityConnection;
+    connections: TBpEntityConnection | undefined;
     constructor(x: number, y: number) {
         super(entity_names.MEDIUM_ELECTRIC_POLE, x, y);
     }

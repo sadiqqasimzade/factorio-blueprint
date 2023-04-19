@@ -24,11 +24,11 @@ export default (
   //#region substation array
   var substation_cordinates_w = [4];
   var substation_cordinates_h = [4];
-  while (substation_cordinates_w.at(-1) + 9 < Math.ceil(width / 9) * 9) {
-    substation_cordinates_w.push(substation_cordinates_w.at(-1) + 9);
+  while (substation_cordinates_w.at(-1)! + 9 < Math.ceil(width / 9) * 9) {
+    substation_cordinates_w.push(substation_cordinates_w.at(-1)! + 9);
   }
-  while (substation_cordinates_h.at(-1) + 9 < Math.ceil(height / 9) * 9) {
-    substation_cordinates_h.push(substation_cordinates_h.at(-1) + 9);
+  while (substation_cordinates_h.at(-1)! + 9 < Math.ceil(height / 9) * 9) {
+    substation_cordinates_h.push(substation_cordinates_h.at(-1)! + 9);
   }
   //#endregion
 
@@ -120,7 +120,7 @@ export default (
   let arithmetic_combinators = mainEntities.filter(entity => entity instanceof BpArithmeticCombinator && entity.position.y == 1) as BpArithmeticCombinator[]
   for (let i = 0; i < arithmetic_combinators.length; i++) {
     let combinator = arithmetic_combinators[i]
-    i == 0 ? combinator.makeConnection(constCombinators.at(-1), 1, 1, cable_colors.GREEN) :
+    i == 0 ? combinator.makeConnection(constCombinators.at(-1)!, 1, 1, cable_colors.GREEN) :
       combinator.makeConnection(arithmetic_combinators[i - 1], 1, 1, cable_colors.GREEN)
   }
 
@@ -157,17 +157,17 @@ export default (
 
   //#region add offgrid substation and connect all substations
 
-  if (substation_cordinates_h.at(-1) > height) {
+  if (substation_cordinates_h.at(-1)! > height) {
     for (let j = 0; j < substation_cordinates_w.length; j++) {
-      mainEntities.push(new BpSubstaion(substation_cordinates_w[j] * 2 + 0.5, substation_cordinates_h.at(-1) * 2 + 0.5))
+      mainEntities.push(new BpSubstaion(substation_cordinates_w[j] * 2 + 0.5, substation_cordinates_h.at(-1)! * 2 + 0.5))
     }
   }
 
 
-  if (substation_cordinates_w.at(-1) > width) {
+  if (substation_cordinates_w.at(-1)! > width) {
     //last substation already placed by previous 
     for (let j = 0; j < substation_cordinates_h.length -(height%9==5?0:1); j++) {
-      mainEntities.push(new BpSubstaion(substation_cordinates_w.at(-1) * 2 + 0.5, substation_cordinates_h[j] * 2 + 0.5))
+      mainEntities.push(new BpSubstaion(substation_cordinates_w.at(-1)! * 2 + 0.5, substation_cordinates_h[j] * 2 + 0.5))
     }
   }
 

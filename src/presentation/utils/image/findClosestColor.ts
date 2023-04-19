@@ -9,7 +9,8 @@ export default function findClosestColor(
   hexstr: string
 ): string {
   var min = 0xffffff;
-  var best, current, i;
+  var best = colorarr[0]
+  var current, i;
   for (i = 0; i < colorarr.length; i++) {
     current = hexToDecimal(colorarr[i], hexstr);
     if (current < min) {

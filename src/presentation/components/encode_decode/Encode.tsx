@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Encode = ({ styles }: Props) => {
-  const encodedTextRef = useRef(undefined);
+  const encodedTextRef = useRef<HTMLParagraphElement>(null);
 
   const decodedInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     var p = encodedTextRef.current as HTMLParagraphElement;

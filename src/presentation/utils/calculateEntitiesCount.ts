@@ -9,7 +9,7 @@
  * @ and Lamps in this order
  */
 export function calculateEntitiesCount(x: number, y: number): [number, number, number, number] {
-    let result: [number, number, number, number] = [undefined, undefined, undefined, undefined]
+    let result: [number, number, number, number] = [0,0,0,0]
     //const combinatior
     result[0] = Math.ceil(y / 20) * x + 1
     //substation

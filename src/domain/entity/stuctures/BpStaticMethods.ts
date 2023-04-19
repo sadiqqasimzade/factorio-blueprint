@@ -20,10 +20,10 @@ export abstract class BpStaticMethods {
             entity1.connections[port] = {
             };
         }
-        if (!entity1.connections[port][cable]) {
-            entity1.connections[port][cable] = [];
+        if (!entity1.connections[port]![cable]) {
+            entity1.connections[port]![cable] = [];
         }
-        entity1.connections[port][cable].push({ entity_id: entity2.entity_number, circuit_id: destinationPort })
+        entity1.connections[port]![cable]!.push({ entity_id: entity2.entity_number, circuit_id: destinationPort })
     }
 
     public static addNeighbour(neighbour1: IBpNeightbourable & BpEntity, neighbour2: IBpNeightbourable & BpEntity): void {

@@ -9,7 +9,7 @@ import { BpStaticMethods } from "../stuctures/BpStaticMethods";
 
 export default class extends BpEntity  {
     control_behavior: TBpControlBehaviorCompare
-    connections: TBpEntityConnection;
+    connections: TBpEntityConnection | undefined;
 
     constructor(control_behavior: TBpControlBehaviorCompare, x: number, y: number) {
         super(entity_names.LAMP, x, y);

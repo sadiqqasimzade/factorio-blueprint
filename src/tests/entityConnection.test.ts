@@ -17,8 +17,8 @@ describe('test entity', () => {
     })
     test('substation neightour',()=>{
         substation1.addNeighbour(substation2)
-        expect(substation1.neighbours.length).toBe(1)
-        expect(substation2.neighbours.length).toBe(1)
+        expect(substation1.neighbours?.length).toBe(1)
+        expect(substation2.neighbours?.length).toBe(1)
 
     })
     

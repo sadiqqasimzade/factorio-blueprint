@@ -9,8 +9,8 @@ import { BpStaticMethods } from "../stuctures/BpStaticMethods";
 
 export default class BpConstCombinator extends BpEntity implements IBpConnectable, IBpDirectionable {
     control_behavior: TBpConstCombinatorControlBehavior
-    connections: TBpEntityConnection;
-    direction: directions;
+    connections: TBpEntityConnection | undefined;
+    direction: directions|undefined;
 
 
     constructor(control_behavior: TBpConstCombinatorControlBehavior, x: number, y: number, direction?: directions | undefined) {
