@@ -4,8 +4,8 @@ import { calculateEntitiesCount } from "../../utils/calculateEntitiesCount";
 
 type Props = {
   Image: HTMLImageElement;
-  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement|null>>;
-  setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement|null>>;
+  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
+  setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | undefined>>;
   maxW: number,
   maxH: number,
   minW: number,
@@ -28,7 +28,7 @@ const ImageEditor: React.FC<Props> = ({
   const [width, setWidth] = useState<number>(Image.naturalWidth);
   const [height, setHeight] = useState<number>(Image.naturalHeight);
   const [aspectRatio, setAspectRatio] = useState<boolean>(true);
-  const entityCount:[number,number,number,number]|undefined = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
+  const entityCount: [number, number, number, number] | undefined = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
 
 
   const handleResize = () => {
@@ -127,40 +127,46 @@ const ImageEditor: React.FC<Props> = ({
           </p>
         </div>
         <div className={styles["imageeditor--settings"]}>
-          <p className={styles["imageeditor--settings--label"]}>
-            Maintain aspect ratio
-          </p>
-          <input
-            type="checkbox"
-            checked={aspectRatio}
-            onChange={handleAspectRatioChange}
-            className={styles["imageeditor--settings--input"]}
-          />
+          <div className={styles["imageeditor--settings--button--container"]}>
+            <p className={styles["imageeditor--settings--label"]}>
+              Maintain aspect ratio
+            </p>
+            <input
+              type="checkbox"
+              checked={aspectRatio}
+              onChange={handleAspectRatioChange}
+            />
+          </div>
         </div>
         <div className={styles["imageeditor--settings"]}>
-          <button
-            onClick={() => {
-              setImage(null);
-            }}
-          >
-            BACK
-          </button>
-          <button
-            onClick={() => {
-              let canvas = canvasRef.current;
+          <div className={styles["imageeditor--settings--button--container"]}>
+            <button
+              onClick={() => {
+                setImage(undefined);
+              }}
+              className="button button__light"
+            >
+              Back
+            </button>
+            <button
+              className="button button__light"
+              onClick={() => {
+                let canvas = canvasRef.current;
 
-              if (canvas!.width > maxW) {
-                alert("wrong width");
-              } else if (canvas!.height > maxH) {
-                alert("wrong height");
-              } else {
-                setresultCanvas(canvasRef.current);
-                setImage(null);
-              }
-            }}
-          >
-            Continue
-          </button>
+                if (canvas!.width > maxW) {
+                  alert("wrong width");
+                } else if (canvas!.height > maxH) {
+                  alert("wrong height");
+                } else {
+                  setresultCanvas(canvasRef.current!);
+                  setImage(undefined);
+                }
+              }}
+            >
+              Continue
+            </button>
+          </div>
+
           {entityCount != undefined ? (<div>
             <div className={styles["imageeditor--preresult"]}>
               <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/constantCombinator.png"></img>

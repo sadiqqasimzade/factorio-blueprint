@@ -15,15 +15,17 @@ type Props = {
 };
 
 const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
-  const [validatedImage, setValidatedImage] = useState<HTMLImageElement|null>(null);
-  const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement|null>(null);
-  const [pixelArt, setPixelArt] = useState<string[][]|null>(null)
-  const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number }>({width: 0, height: 0});
+  const [validatedImage, setValidatedImage] = useState<HTMLImageElement | undefined>(undefined);
+  const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement | undefined>(undefined);
+  const [pixelArt, setPixelArt] = useState<string[][] | undefined>(undefined)
+  const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number } | undefined>(undefined);
   const [skipInputState, setSkipInput] = useState<boolean>(skipInput == undefined ? false : skipInput)
 
   const minW = 5, minH = 5;
   return (
     <section className="container">
+      <p className="fs-l white">Convert image to {convertTo} Blueprint</p>
+
       <Suspense fallback={<SuspenseComponent />}>
         {
           pixelArt ? <Result pixelArt={pixelArt} convert_to={convertTo} /> :

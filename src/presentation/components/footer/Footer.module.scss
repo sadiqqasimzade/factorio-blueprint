@@ -1,0 +1,50 @@
+
+
+
+.footer {
+    width: 100%;
+    min-height: 70px;
+    background: linear-gradient(45deg, #441dac, transparent, #441dac);
+    position: absolute;
+    display: flex;
+    place-content: center;
+    z-index: -1;
+    &--container {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+    }
+
+    &--left {
+        place-content: start;
+        display: grid;
+        gap: 10px;
+        height: 100%;
+    }
+
+    &--right {
+        place-content: end;
+        display: grid;
+        height: 100%;
+        gap: 10px;
+    }
+
+    &--icon {
+        width: 30px;
+        aspect-ratio: 1;
+        &--container {
+            display: flex;
+            gap: 10px;
+            justify-content: inherit;
+        }
+    }
+
+    &--text {
+        font-size: large;
+        color: white;
+        font-weight: bolder;
+    }
+}

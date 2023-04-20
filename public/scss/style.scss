@@ -7,11 +7,19 @@
 }
 
 .w-100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .container {
-  padding: 0 30px;
+  padding: 20px 30px;
+}
+
+.white {
+  color: white;
+}
+
+.fs-l {
+  font-size: large;
 }
 
 .suspense {
@@ -19,38 +27,80 @@
   height: 100vh;
   display: grid;
   place-items: center;
-  &--icon{
+
+  &--icon {
     animation: rotate 1s linear infinite;
+
     @keyframes rotate {
-      from{
+      from {
         transform: rotate(0deg);
       }
-      to{
+
+      to {
         transform: rotate(360deg);
 
       }
     }
+
     transform: rotate(360deg);
   }
 }
 
-// Colors
-$bg-color: hsl(256,33%,10%);
-$dot-color: hsl(256,33%,70%);
-
-// Dimensions
-$dot-size: 1px;
-$dot-space: 22px;
 #app {
-  background:
-		linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
-		linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
-		$dot-color;
-	background-size: $dot-space $dot-space;
-  // background: linear-gradient(180deg, #1b2838, #221229);
   padding-bottom: 50px;
-  min-height: 100vh;
   overflow-x: hidden;
 }
 
+main {
+  min-height: 90vh;
+}
 
+body {
+  // Colors
+  $bg-color: hsl(256, 33%, 10%);
+  $dot-color: hsl(256, 33%, 70%);
+  min-height: 100vh;
+
+  // Dimensions
+  $dot-size: 1px;
+  $dot-space: 22px;
+  background:
+    linear-gradient(90deg, $bg-color (
+      $dot-space - $dot-size),
+    transparent 1%) center,
+    linear-gradient($bg-color (
+      $dot-space - $dot-size),
+    transparent 1%) center,
+    $dot-color;
+  background-size: $dot-space $dot-space;
+}
+
+.button {
+  width: 100px;
+  background: none;
+  background-color: none;
+  font-size: 16px;
+  font-weight: bolder;
+  transition: 1s all;
+
+  &__light {
+
+    border: 1px solid white;
+    color: white;
+
+    &:hover {
+      background-color: white;
+      color: black;
+    }
+  }
+
+  &__dark {
+    border: 1px solid black;
+    color: black;
+
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+}

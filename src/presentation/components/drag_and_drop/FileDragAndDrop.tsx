@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import validateFiles from "../../utils/handlers/validateFiles";
 import styles from "./FileDragAndDrop.module.scss";
 type Props = {
-  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement|null>>;
+  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement|undefined>>;
 };
 const FileDragAndDrop = ({ setImage }: Props) => {
   //Refs

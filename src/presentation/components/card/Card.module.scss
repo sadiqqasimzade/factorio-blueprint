@@ -115,6 +115,7 @@ $card-link-color: #257cee;
   }
   &--link{
     color: $card-link-color;
+    text-decoration: none;
   }
   &:hover {
     .card {

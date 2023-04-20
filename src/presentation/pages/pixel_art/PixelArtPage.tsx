@@ -8,14 +8,14 @@ type Props = {
     sizex: number,
     sizey: number,
     resultCanvas?: undefined,
-    setPixelArt: React.Dispatch<React.SetStateAction<string[][]|null>>
+    setPixelArt: React.Dispatch<React.SetStateAction<string[][] | undefined>>
     convertTo: 'lamp' | 'brick'
 
 } | {
     sizex?: undefined,
     sizey?: undefined,
     resultCanvas: HTMLCanvasElement,
-    setPixelArt: React.Dispatch<React.SetStateAction<string[][]|null>>
+    setPixelArt: React.Dispatch<React.SetStateAction<string[][] | undefined>>
     convertTo: 'lamp' | 'brick'
 }
 
@@ -29,7 +29,7 @@ const PixelArtPage = ({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Pr
     const colors = convertTo == 'lamp' ? lampColorsArr : tileColorsArr
 
     if (typeof (sizex) != 'number') {
-        let canvas=resultCanvas as HTMLCanvasElement
+        let canvas = resultCanvas as HTMLCanvasElement
         sizex = canvas.width
         sizey = canvas.height
     }
@@ -41,13 +41,13 @@ const PixelArtPage = ({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Pr
     }
 
     return (
-        <div className={styles['grid']}>
+        <section className={styles['grid']}>
             <PixelArtGrid cells={cells} updateCell={updateCell} />
             <ColorPicker selectedColor={selectedColor} setColor={setSelectedColor} colors={colors} />
-            <button className={styles['btn']} onClick={(e) => {
+            <button className='button button__light' onClick={(e) => {
                 setPixelArt(cells)
-            }} />
-        </div>
+            }}>Continue</button>
+        </section>
     )
 }
 

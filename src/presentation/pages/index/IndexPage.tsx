@@ -25,20 +25,14 @@ const IndexPage = (props: Props) => {
         imgSrc=""
       />
       <Card
-        title="Audio to Blueprint"
-        desc="Converts image to factorio blueprint"
-        link="music-converter"
-        imgSrc=""
-      />
-      <Card
-        title="Pixel Art-Lamp"
-        desc="Converts image to factorio blueprint"
+        title="Pixel Art - Lamp"
+        desc="Converts Pixel Art to factorio blueprint"
         link="pixel-art-lamp"
         imgSrc=""
       />
       <Card
-        title="Pixel Art-Brick"
-        desc="Converts image to factorio blueprint"
+        title="Pixel Art - Brick"
+        desc="Converts Pixel Art to factorio blueprint"
         link="pixel-art-brick"
         imgSrc=""
       />
