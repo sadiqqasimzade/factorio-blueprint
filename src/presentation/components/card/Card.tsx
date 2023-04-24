@@ -5,10 +5,10 @@ type Props = {
   title: string;
   desc: string;
   link: string;
-  imgSrc:string;
+  imgSrc: string;
 };
 
-const Card = ({ title, desc, link,imgSrc }: Props) => {
+const Card = ({ title, desc, link, imgSrc }: Props) => {
   return (
     <div className={styles["card"]}>
       <div>
@@ -24,7 +24,8 @@ const Card = ({ title, desc, link,imgSrc }: Props) => {
         <div className={styles["card--gear--rail"]}></div>
         <div className={styles["card--gear--rail"]}></div>
       </div>
-      <div className={styles["card--video--container"]}>WIP</div>
+      <div className={styles["card--video--container"]} style={{ backgroundImage: `url(./imgs/${imgSrc})` }}>
+      </div>
       <div className={styles["card--inner"]}>
         <div className={styles["card--inner--container"]}>
           <p>{desc}</p>

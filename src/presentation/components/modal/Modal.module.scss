@@ -1,6 +1,4 @@
-$input-border: 1px solid #000;
-$input-padding: 10px 0;
-$input-color: #000;
+
 
 .modal {
     &--container {
@@ -25,28 +23,7 @@ $input-color: #000;
     }
 
     &--content {
-        display: grid;
-        place-content: center;
         padding: 30px;
-        grid-template-areas:"a b"
-                            "c c" ; 
     }
 
-    &--input {
-        border: none;
-        border-bottom: $input-border;
-        background: transparent;
-        padding: $input-padding;
-        width: 100%;
-        outline: none;
-        color: $input-color;
-        max-width: 100%;
-
-        &::placeholder {
-            color: $input-color;
-        }
-        &--group{
-            padding: 10px;
-        }
-    }
 }

@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "typecheck": "tsc --p .",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "test": "jest",
     "sass": "sass -w ./public/scss/style.scss ./public/css/style.min.css --style=compressed"
@@ -33,6 +34,7 @@
     "sass": "^1.62.0",
     "sass-loader": "^13.1.0",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "vite": "^3.2.3",
+    "vite-plugin-pwa": "^0.14.7"
   }
 }

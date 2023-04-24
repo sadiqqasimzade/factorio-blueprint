@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styles from './PixelArtPage.module.scss'
 import PixelArtGrid from '../../components/pixel_art_grid/PixelArtGrid'
 import ColorPicker from '../../components/color_picker/ColorPicker'
@@ -34,11 +34,13 @@ const PixelArtPage = ({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Pr
         sizey = canvas.height
     }
 
-    const updateCell = (x: number, y: number) => {
-        const temp = cells.map((arr) => [...arr]);
-        temp[y][x] = selectedColor
-        setCells(temp)
-    }
+ 
+    const updateCell =
+        (x: number, y: number) => {
+            const temp = cells.map((arr) => [...arr]);
+            temp[y][x] = selectedColor
+            setCells(temp)
+        }
 
     return (
         <section className={styles['grid']}>

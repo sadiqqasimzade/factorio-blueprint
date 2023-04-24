@@ -23,6 +23,17 @@ $card-gear-rail-color: gray;
 $card-gear-rail-w: 5px;
 
 $card-link-color: #257cee;
+
+.t {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
 .card {
   position: relative;
   background-color: $card-background;
@@ -32,6 +43,7 @@ $card-link-color: #257cee;
 
   z-index: 2;
   margin-top: $card-transform-y;
+
   &--video {
     &--container {
       border-left: $card-video-border;
@@ -42,31 +54,40 @@ $card-link-color: #257cee;
       position: absolute;
       transition: $card-transition;
       z-index: 1;
-      top: 0;    
+      top: 0;
       display: grid;
       place-items: center;
       padding: 20px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
     }
   }
+
   &--gear {
     width: $card-gear-w;
     aspect-ratio: 1;
     position: absolute;
     transition: $card-transition;
     z-index: 3;
+
     &:not(:nth-child(2n)) {
       left: 0;
     }
+
     &:nth-child(2n) {
       right: 0;
     }
+
     &--rail {
       &:not(:nth-child(2n)) {
         left: calc($card-gear-w/2 - $card-gear-rail-w/2);
       }
+
       &:nth-child(2n) {
         right: calc($card-gear-w/2 - $card-gear-rail-w/2);
       }
+
       width: $card-gear-rail-w;
       bottom: calc($card-h - $card-header-h);
       background-color: $card-gear-rail-color;
@@ -77,6 +98,7 @@ $card-link-color: #257cee;
       height: $card-transform-y;
     }
   }
+
   &--inner {
     padding: 10px;
     position: absolute;
@@ -90,12 +112,14 @@ $card-link-color: #257cee;
     border-left: $card-border;
     border-right: $card-border;
     border-bottom: $card-border;
+
     &--container {
       display: flex;
       align-items: flex-end;
       justify-content: center;
     }
   }
+
   &--header {
     width: 100%;
     height: $card-header-h;
@@ -113,30 +137,34 @@ $card-link-color: #257cee;
     border-right: $card-header-border;
     border-top: $card-header-border;
   }
-  &--link{
+
+  &--link {
     color: $card-link-color;
     text-decoration: none;
   }
+
   &:hover {
     .card {
       &--header {
         transform: translateY(-$card-transform-y);
       }
+
       &--video {
         &--container {
           transform: translateY(-$card-transform-y);
           height: $card-header-h + $card-transform-y;
         }
       }
+
       &--gear {
         &:not(:nth-child(2n)) {
-          transform: translateY(-$card-transform-y + $card-gear-w)
-            rotate(-$card-transform-rotate);
+          transform: translateY(-$card-transform-y + $card-gear-w) rotate(-$card-transform-rotate);
         }
+
         &:nth-child(2n) {
-          transform: translateY(-$card-transform-y + $card-gear-w)
-            rotate($card-transform-rotate);
+          transform: translateY(-$card-transform-y + $card-gear-w) rotate($card-transform-rotate);
         }
+
         &--rail {
           max-height: $card-transform-y;
         }

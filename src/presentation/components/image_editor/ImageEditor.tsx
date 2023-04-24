@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./ImageEditor.module.scss";
 import { calculateEntitiesCount } from "../../utils/calculateEntitiesCount";
+import AlertContainer from "../alert/AlertContainer";
 
 type Props = {
   Image: HTMLImageElement;
@@ -28,6 +29,7 @@ const ImageEditor: React.FC<Props> = ({
   const [width, setWidth] = useState<number>(Image.naturalWidth);
   const [height, setHeight] = useState<number>(Image.naturalHeight);
   const [aspectRatio, setAspectRatio] = useState<boolean>(true);
+  const [alertMessage, setAlertMessage] = useState<string|undefined>(undefined);
   const entityCount: [number, number, number, number] | undefined = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
 
 
@@ -95,8 +97,10 @@ const ImageEditor: React.FC<Props> = ({
     handleResize();
   }, [width, height]);
 
+
   return (
-    <div>
+    <>
+      {alertMessage && <AlertContainer text={alertMessage} />}
       <div className={styles["imageeditor--settings--container"]}>
         <div className={styles["imageeditor--settings"]}>
           <p className={styles["imageeditor--settings--label"]}>Width</p>
@@ -153,10 +157,16 @@ const ImageEditor: React.FC<Props> = ({
               onClick={() => {
                 let canvas = canvasRef.current;
 
-                if (canvas!.width > maxW) {
-                  alert("wrong width");
-                } else if (canvas!.height > maxH) {
-                  alert("wrong height");
+                if (canvas!.width > maxW || canvas!.width < minW) {
+                  setAlertMessage('Wrong width')
+                  setTimeout(() => {
+                    setAlertMessage(undefined)
+                  }, 2000);
+                } else if (canvas!.height > maxH || canvas!.height < minH) {
+                  setAlertMessage('Wrong height')
+                  setTimeout(() => {
+                    setAlertMessage(undefined)
+                  }, 2000);
                 } else {
                   setresultCanvas(canvasRef.current!);
                   setImage(undefined);
@@ -169,19 +179,19 @@ const ImageEditor: React.FC<Props> = ({
 
           {entityCount != undefined ? (<div>
             <div className={styles["imageeditor--preresult"]}>
-              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/constantCombinator.png"></img>
+              <img className={styles["imageeditor--preresult--img"]} src="/imgs/entites/constantCombinator.png"></img>
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[0]}</p>
             </div>
             <div className={styles["imageeditor--preresult"]}>
-              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/substation.png"></img>
+              <img className={styles["imageeditor--preresult--img"]} src="/imgs/entites/substation.png"></img>
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[1]}</p>
             </div>
             <div className={styles["imageeditor--preresult"]}>
-              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/arithmeticCombinator.png"></img>
+              <img className={styles["imageeditor--preresult--img"]} src="/imgs/entites/arithmeticCombinator.png"></img>
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[2]}</p>
             </div>
             <div className={styles["imageeditor--preresult"]}>
-              <img className={styles["imageeditor--preresult--img"]} src="/public/imgs/entites/lamp.png"></img>
+              <img className={styles["imageeditor--preresult--img"]} src="/imgs/entites/lamp.png"></img>
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[3]}</p>
             </div>
           </div>) : (<></>)}
@@ -189,7 +199,7 @@ const ImageEditor: React.FC<Props> = ({
         </div>
       </div>
       <canvas className={styles["imageeditor--canvas"]} ref={canvasRef} />
-    </div>
+    </>
   );
 };
 

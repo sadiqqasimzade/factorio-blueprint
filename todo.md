@@ -1,7 +1,5 @@
 
 --ui
-contact me page footer 
-button design
 transition page change
 remove clg in handlecopyclick (toast )
 make modal agreement for pixel art ram usage
@@ -30,7 +28,7 @@ i18
 make pixelArt array without state
 seperate types control behaviur=>control behaviour generic? 
 
-
+-0
 make unused comonents lazy
 check all functions documentation
 write tests
@@ -38,3 +36,5 @@ write tests
 
 makeConnection static method says type error but everything is fine (idk)
 
+favicon
+meta tags

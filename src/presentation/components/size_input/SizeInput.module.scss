@@ -1,0 +1,22 @@
+$input-border: 1px solid #000;
+$input-padding: 10px 0;
+$input-color: #000;
+
+.input {
+    border: none;
+    border-bottom: $input-border;
+    background: transparent;
+    padding: $input-padding;
+    width: 100%;
+    outline: none;
+    color: $input-color;
+    max-width: 100%;
+
+    &::placeholder {
+        color: $input-color;
+    }
+
+    &--group {
+        padding: 10px;
+    }
+}

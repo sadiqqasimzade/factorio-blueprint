@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useState } from "react";
 import SuspenseComponent from "../../components/suspense/SuspenseComponent";
 
-const Modal = lazy(() => import("../../components/modal/Modal"));
+const SizeInput = lazy(() => import("../../components/size_input/SizeInput"));
 const PixelArtPage = lazy(() => import("../pixel_art/PixelArtPage"));
 const FileDragAndDrop = lazy(() => import("../../components/drag_and_drop/FileDragAndDrop"));
 const ImageEditor = lazy(() => import("../../components/image_editor/ImageEditor"));
@@ -31,7 +31,7 @@ const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
           pixelArt ? <Result pixelArt={pixelArt} convert_to={convertTo} /> :
             resultCanvas ? <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} convertTo={convertTo} /> :
               pixelArtSize ? <PixelArtPage sizex={pixelArtSize.width} sizey={pixelArtSize.height} convertTo={convertTo} setPixelArt={setPixelArt} /> :
-                skipInputState ? <Modal setSkipInput={setSkipInput} skipInput={skipInputState} setPixelArtSize={setPixelArtSize} maxW={maxW} maxH={maxH} minW={minW} minH={minH} /> :
+                skipInputState ? <SizeInput setSkipInput={setSkipInput} skipInput={skipInputState} setPixelArtSize={setPixelArtSize} maxW={maxW} maxH={maxH} minW={minW} minH={minH} /> :
                   validatedImage ? <ImageEditor Image={validatedImage} setImage={setValidatedImage} setresultCanvas={setresultCanvas} maxW={maxW} maxH={maxH} convertTo={convertTo} minW={minW} minH={minH} /> :
                     <FileDragAndDrop setImage={setValidatedImage} />
         }

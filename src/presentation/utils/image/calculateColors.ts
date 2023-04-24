@@ -44,7 +44,7 @@ export function calculateColorsInCanvas(canvas:HTMLCanvasElement,availableColors
   for (let i = 0; i < canvas.width; i++) {
     let col = []
     for (let j = 0; j < canvas.height; j++) {
-      let data = context.getImageData(i, j, 1, 1).data;
+      let data = context!.getImageData(i, j, 1, 1).data;
       let hex = rgbToHex(data[0], data[1], data[2]);
       hex = hex.length < 6 ? hex.replace(/(.)/g, "$1$1") : hex;
       var match = findClosestColor(availableColors, hex);
