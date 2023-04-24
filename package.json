@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "typecheck": "tsc --p .",
+    "typecheck": "tsc",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite preview",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "jest | tsc",
     "sass": "sass -w ./public/scss/style.scss ./public/css/style.min.css --style=compressed"
   },
   "dependencies": {
