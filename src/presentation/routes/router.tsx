@@ -3,9 +3,7 @@ import { Route, Routes } from "react-router-dom";
 const ErrorPage = lazy(() => import("../pages/error_pages/ErrorPage"));
 const NotFound = lazy(() => import("../pages/error_pages/NotFound"));
 const DecodeEncodePage = lazy(() => import("../pages/decodeEncode/DecodeEncodePage"));
-const ImageConverterPage = lazy(
-  () => import("../pages/image_converter/ImageConverterPage")
-);
+const ImageConverterPage = lazy(() => import("../pages/image_converter/ImageConverterPage"));
 const IndexPage = lazy(() => import("../pages/index/IndexPage"));
 
 type Props = {};

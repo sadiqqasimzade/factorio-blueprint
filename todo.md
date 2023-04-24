@@ -29,12 +29,8 @@ make pixelArt array without state
 seperate types control behaviur=>control behaviour generic? 
 
 -0
-make unused comonents lazy
 check all functions documentation
 write tests
 
 
 makeConnection static method says type error but everything is fine (idk)
-
-favicon
-meta tags

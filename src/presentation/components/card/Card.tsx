@@ -12,8 +12,8 @@ const Card = ({ title, desc, link, imgSrc }: Props) => {
   return (
     <div className={styles["card"]}>
       <div>
-        <img src="./imgs/gear.ico" className={styles["card--gear"]} />
-        <img src="./imgs/gear.ico" className={styles["card--gear"]} />
+        <img src="./imgs/gear.ico" className={styles["card--gear"]} alt="Gear"/>
+        <img src="./imgs/gear.ico" className={styles["card--gear"]} alt="Gear"/>
       </div>
       <div className={styles["card--header"]}>
         <Link className={styles["card--link"]} to={link}>
