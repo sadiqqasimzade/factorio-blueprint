@@ -8,7 +8,7 @@ const IndexPage = lazy(() => import("../pages/index/IndexPage"));
 
 type Props = {};
 
-const Router = (props: Props) => {
+const MainRouter = (props: Props) => {
   return (
     <Routes>
       <Route path="/" element={<IndexPage />} errorElement={<ErrorPage />} />
@@ -34,4 +34,4 @@ const Router = (props: Props) => {
   );
 };
 
-export default Router;
+export default MainRouter;
