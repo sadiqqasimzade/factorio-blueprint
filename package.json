@@ -6,7 +6,8 @@
   "scripts": {
     "typecheck": "tsc",
     "dev": "vite",
-    "build": "vite build && vite preview",
+    "prod":"vite build && vite preview",
+    "build": "vite build",
     "preview": "vite preview",
     "test": "jest | tsc",
     "sass": "sass -w ./public/scss/style.scss ./public/css/style.min.css --style=compressed"
