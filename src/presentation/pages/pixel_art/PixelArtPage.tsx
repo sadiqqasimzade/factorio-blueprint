@@ -23,7 +23,7 @@ const PixelArtPage = ({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Pr
 
     const [cells, setCells] = useState(typeof (sizex) == 'number' ?
         Array<string[]>(sizex).fill(Array<string>(sizey!).fill(convertTo == 'lamp' ? lampColorsArr[0] : tileColorsArr[0])) :
-        calculateColorsInCanvas(resultCanvas, convertTo == 'lamp' ? lampColorsArr : tileColorsArr))
+        calculateColorsInCanvas(resultCanvas!, convertTo == 'lamp' ? lampColorsArr : tileColorsArr))
 
     const [selectedColor, setSelectedColor] = useState(convertTo == 'lamp' ? lampColorsArr[0] : tileColorsArr[0])
     const colors = convertTo == 'lamp' ? lampColorsArr : tileColorsArr

@@ -1,36 +1,11 @@
 
---ui
-transition page change
-remove clg in handlecopyclick (toast )
-make modal agreement for pixel art ram usage
-custom warning
-usecontext 2 themes
-
-
-
-
-
---final maybe
-
-loading screen with %
-video=>display
-audio=>blueprint
-img=>solar img
-
-
-
-
-
-
---code
-add service workers pwd
-i18
-make pixelArt array without state
-seperate types control behaviur=>control behaviour generic? 
-
--0
-check all functions documentation
-write tests
-
-
-makeConnection static method says type error but everything is fine (idk)
+TODO
+>Add transition between page changes|AlertContainer
+>Type problems in inline styles where variables declared e.g(--color:#000)
+>Add alert using react context to achive it anywhere in app
+>Pixel art-using too much ram
+>Add bright theme?
+>Add translation (i18)
+>Add control behaviour types (generic?)
+>Convert video to blueprint?
+>Convert audio to blueprint?
