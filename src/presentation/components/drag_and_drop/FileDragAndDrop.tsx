@@ -2,9 +2,10 @@ import React, { useRef } from "react";
 import validateFiles from "../../utils/handlers/validateFiles";
 import styles from "./FileDragAndDrop.module.scss";
 type Props = {
-  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement|undefined>>;
+  setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
+  setSkipInput: React.Dispatch<React.SetStateAction<boolean>>
 };
-const FileDragAndDrop = ({ setImage }: Props) => {
+const FileDragAndDrop = ({ setImage, setSkipInput }: Props) => {
   //Refs
   const inputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLParagraphElement>(null);
@@ -94,6 +95,9 @@ const FileDragAndDrop = ({ setImage }: Props) => {
         </p>
       </div>
       <p ref={resultRef} className={styles["dragdrop--result"]}></p>
+      <button className="button button__light" onClick={() => {
+        setSkipInput(true);
+      }}>Create pixel art without image</button>
     </div>
   );
 };

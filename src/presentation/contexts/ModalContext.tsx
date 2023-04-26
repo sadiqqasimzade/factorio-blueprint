@@ -3,11 +3,13 @@ import { createContext } from 'react';
 type ModalContextProps = {
     showModal: (content: JSX.Element) => void;
     hideModal: () => void;
+    getContent: () => boolean;
 };
 
 const ModalContext = createContext<ModalContextProps>({
-    showModal: () => { },
-    hideModal: () => { },
+    showModal: (): void => { },
+    hideModal: (): void => { },
+    getContent: (): boolean => { return true}
 });
 
 

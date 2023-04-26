@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react'
-import Modal from '../modal/Modal'
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styles from './SizeInput.module.scss'
 import AlertContainer from '../alert/AlertContainer'
+import ModalContext from '../../contexts/ModalContext'
+
 type Props = {
     setPixelArtSize: React.Dispatch<React.SetStateAction<{ width: number, height: number } | undefined>>
     maxW: number;
@@ -13,11 +14,13 @@ type Props = {
 }
 
 const SizeInput = ({ setPixelArtSize, maxW, maxH, minW, minH, skipInput, setSkipInput }: Props) => {
+    const { showModal, getContent,hideModal } = useContext(ModalContext)
     const widthRef = useRef<HTMLInputElement>(null)
     const heightRef = useRef<HTMLInputElement>(null)
     const [alertMessage, setAlertMessage] = useState<string | undefined>(undefined)
-    return (
-        <Modal isActive={skipInput} setIsActive={setSkipInput}>
+    const isActive = getContent()
+    useEffect(() => {
+        showModal(
             <div>
                 {alertMessage && <AlertContainer text={alertMessage} />}
                 <div className={styles["input--group"]}>
@@ -56,21 +59,29 @@ const SizeInput = ({ setPixelArtSize, maxW, maxH, minW, minH, skipInput, setSkip
                                 setAlertMessage("Please enter a valid height")
                                 setTimeout(() => {
                                     setAlertMessage(undefined)
-                                },2000)
+                                }, 2000)
                             }
                             else {
                                 setPixelArtSize({
                                     width: parseInt(widthRef.current!.value),
                                     height: parseInt(heightRef.current!.value)
                                 });
+                                hideModal()
                             }
 
                         }
                     }>Submit</button>
                 </div>
             </div>
-
-        </Modal>
+        )
+        if (isActive) {
+            setSkipInput(false)
+        }
+        return () => {
+        }
+    }, [isActive])
+    return (
+        <></>
     )
 }
 

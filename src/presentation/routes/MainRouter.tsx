@@ -19,7 +19,6 @@ const MainRouter = () => {
   useEffect(() => {
     if (location.pathname !== displayedLocation)
       settransitionStage("fadeOut");
-    console.log(location, displayedLocation)
   }, [location, displayedLocation]);
   return (
     <section className={`${styles[transitionStage ? transitionStage : '']} container`} onAnimationEnd={() => {

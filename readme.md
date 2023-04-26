@@ -2,6 +2,8 @@
 
 This web aplication converts images into display using lamps or tiles using bricks.App uses React/Typescript so works mostly stable and fast.You can also install it and run offline anytime.
 
+The purpose of this project is to make factories more beautiful without needing other tools. You can resize images, change the colors of individual pixels or create your own pixel art on 1 site and it can also work offline.
+
 [Link to app](https://factorio-blueprint.netlify.app)
 
 
