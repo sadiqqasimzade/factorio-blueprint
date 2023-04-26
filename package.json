@@ -6,7 +6,7 @@
   "scripts": {
     "typecheck": "tsc",
     "dev": "vite",
-    "prod":"vite build && vite preview",
+    "prod": "vite build && vite preview",
     "build": "vite build",
     "preview": "vite preview",
     "test": "jest | tsc",
@@ -18,8 +18,7 @@
     "pako": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.2",
-    "react-transition-group": "^4.4.5"
+    "react-router-dom": "^6.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",

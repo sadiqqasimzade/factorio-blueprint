@@ -3,10 +3,10 @@ import styles from './PixelArtGrid.module.scss'
 import Cell from './Cell'
 type Props = {
     cells: string[][],
-    updateCell: (x:number,y:number)=>void
+    updateCell: (x: number, y: number) => void
 }
 
-const PixelArtGrid = ({ cells,updateCell }: Props) => {
+const PixelArtGrid = ({ cells, updateCell }: Props) => {
     return (
         <>
             <div className={styles['overflow']}>
@@ -16,8 +16,7 @@ const PixelArtGrid = ({ cells,updateCell }: Props) => {
                             <Cell x={cindex} y={rindex} color={cell} updateCell={updateCell} key={cellrow.length * rindex + cindex} />
                         ))}
                     </div>
-                )
-                )}
+                ))}
             </div>
         </>
 

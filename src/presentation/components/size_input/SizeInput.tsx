@@ -10,7 +10,6 @@ type Props = {
     minH: number;
     skipInput: boolean;
     setSkipInput: React.Dispatch<React.SetStateAction<boolean>>
-
 }
 
 const SizeInput = ({ setPixelArtSize, maxW, maxH, minW, minH, skipInput, setSkipInput }: Props) => {

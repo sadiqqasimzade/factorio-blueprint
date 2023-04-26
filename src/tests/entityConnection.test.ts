@@ -1,6 +1,3 @@
-import BpArithmeticCombinator from "../domain/entity/models/BpArithmeticCombinator"
-import BpEntity from "../domain/entity/models/BpEntity"
-import BpLamp from "../domain/entity/models/BpLamp"
 import BpSubstaion from "../domain/entity/models/BpSubstaion"
 import { cable_colors } from "../domain/entity/stuctures/Enums"
 

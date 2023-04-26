@@ -23,7 +23,7 @@ const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
 
   const minW = 5, minH = 5;
   return (
-    <section className="container">
+    <>
       <p className="fs-l white">Convert image to {convertTo} Blueprint</p>
 
       <Suspense fallback={<SuspenseComponent />}>
@@ -37,7 +37,7 @@ const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
         }
 
       </Suspense>
-    </section>
+    </>
   );
 };
 

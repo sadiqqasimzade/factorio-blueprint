@@ -5,7 +5,7 @@ type Props = {};
 
 const IndexPage = (props: Props) => {
   return (
-    <section className={styles["grid"]}>
+    <div className={styles["grid"]}>
       <Card
         title="Decoder/Encoder"
         desc="Decodes or Encodes factorio blueprint strings"
@@ -36,7 +36,7 @@ const IndexPage = (props: Props) => {
         link="pixel-art-brick"
         imgSrc="img-to-blueprint.png"
       />
-    </section>
+    </div>
   );
 };
 

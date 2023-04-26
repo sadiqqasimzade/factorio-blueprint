@@ -4,7 +4,7 @@ type Props = {}
 
 const NotFound = (props: Props) => {
   return (
-    <div>NotFound</div>
+    <div className='white'>Not Found</div>
   )
 }
 

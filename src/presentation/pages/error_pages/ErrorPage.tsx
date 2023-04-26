@@ -1,10 +1,12 @@
 import React from 'react'
+import { isRouteErrorResponse, useRouteError } from 'react-router-dom'
 
 type Props = {}
 
 const ErrorPage = (props: Props) => {
+  const error = useRouteError()
   return (
-    <div>Error_Page</div>
+    <div className='white'>Something went wrong</div>
   )
 }
 

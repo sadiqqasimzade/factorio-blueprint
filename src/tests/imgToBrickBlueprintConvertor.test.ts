@@ -1,4 +1,4 @@
-import { tileColors, tileColorsArr } from "../domain/entity/stuctures/Enums"
+import { tileColorsArr } from "../domain/entity/stuctures/Enums"
 import imgToBrickBlueprintConvertor from "../presentation/utils/convertors/imgToBrickBlueprintConvertor"
 
 describe('imgToBrick test', () => {

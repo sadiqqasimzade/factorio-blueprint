@@ -1,19 +1,17 @@
-import React, { Suspense } from "react";
+import React from "react";
 import Footer from "./footer/Footer";
 import Navbar from "./navbar/Navbar";
-import SuspenseComponent from "./suspense/SuspenseComponent";
 import MainRouter from "../routes/MainRouter";
+import ModalProvider from "../contexts/ModalProvider";
 
 export const App: React.FC<{}> = () => {
   return (
-    <>
+    <ModalProvider>
       <Navbar />
       <main>
-        <Suspense fallback={<SuspenseComponent />}>
-          <MainRouter />
-        </Suspense>
+        <MainRouter />
       </main>
       <Footer />
-    </>
+    </ModalProvider>
   );
 };
