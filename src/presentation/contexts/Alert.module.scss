@@ -3,11 +3,20 @@
     place-content: center;
     height: 100%;
     align-items: center;
-    &--container {
+    min-height: 40px;
+    height: 40px;
+
+    &--success {
+        border: 1px solid green;
+        background: rgba($color: green, $alpha: 0.3);
+    }
+
+    &--error {
         border: 1px solid red;
         background: rgba($color: red, $alpha: 0.3);
-        min-height: 40px;
-        height: 40px;
+    }
+
+    &--container {
         position: fixed;
         z-index: 100;
         top: 0;
@@ -21,6 +30,6 @@
     &--text {
         color: white;
         font-weight: bolder;
-        font-size: 16;
+        font-size: 16px;
     }
 }

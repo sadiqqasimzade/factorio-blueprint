@@ -39,29 +39,29 @@ export enum arithmetic_operations {
   XOR = "XOR",
 }
 
-export enum compare_operations{
+export enum compare_operations {
   GREATER_THAN = ">",
   LESS_THAN = "<",
   EQUAL = "=",
-  NOT_EQUAL='!=',
-  GREATER_THAN_OR_EQUAL='>=',
-  LESS_THAN_OR_EQUAL='<=',
+  NOT_EQUAL = '!=',
+  GREATER_THAN_OR_EQUAL = '>=',
+  LESS_THAN_OR_EQUAL = '<=',
 }
 
-export enum cable_colors{
-  RED="red",
-  GREEN="green",
-} 
+export enum cable_colors {
+  RED = "red",
+  GREEN = "green",
+}
 
 export enum directions {
-  NORTH=0,
-  NORTH_EAST=1,
-  EAST=2,
-  SOUTH_EAST=3,
-  SOUTH=4,
-  SOUTH_WEST=5,
-  WEST=6,
-  NORTH_WEST=7,
+  NORTH = 0,
+  NORTH_EAST = 1,
+  EAST = 2,
+  SOUTH_EAST = 3,
+  SOUTH = 4,
+  SOUTH_WEST = 5,
+  WEST = 6,
+  NORTH_WEST = 7,
 }
 //signals enum
 
@@ -183,7 +183,7 @@ export const signals: { [color_hex: string]: TBpSignal } = {
     type: item_types.VIRTUAL,
     name: "signal-J",
   },
-} ;
+};
 
 export const color_priority = [
   signals.signal_white,

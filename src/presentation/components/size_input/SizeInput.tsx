@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from './SizeInput.module.scss'
-import AlertContainer from '../alert/AlertContainer'
 import ModalContext from '../../contexts/ModalContext'
+import AlertContext from '../../contexts/AlertContext'
 
 type Props = {
     setPixelArtSize: React.Dispatch<React.SetStateAction<{ width: number, height: number } | undefined>>
@@ -9,20 +9,18 @@ type Props = {
     maxH: number;
     minW: number;
     minH: number;
-    skipInput: boolean;
     setSkipInput: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const SizeInput = ({ setPixelArtSize, maxW, maxH, minW, minH, skipInput, setSkipInput }: Props) => {
-    const { showModal, getContent,hideModal } = useContext(ModalContext)
+const SizeInput = ({ setPixelArtSize, maxW, maxH, minW, minH, setSkipInput }: Props) => {
+    const { showModal, getContent, hideModal } = useContext(ModalContext)
+    const { addAlert } = useContext(AlertContext)
     const widthRef = useRef<HTMLInputElement>(null)
     const heightRef = useRef<HTMLInputElement>(null)
-    const [alertMessage, setAlertMessage] = useState<string | undefined>(undefined)
     const isActive = getContent()
     useEffect(() => {
         showModal(
             <div>
-                {alertMessage && <AlertContainer text={alertMessage} />}
                 <div className={styles["input--group"]}>
                     <input type="number" placeholder="width" min={minW} max={maxW} ref={widthRef} className={styles["input"]} onChange={(e) => {
                         parseInt(e.target.value) > maxW ?
@@ -30,7 +28,6 @@ const SizeInput = ({ setPixelArtSize, maxW, maxH, minW, minH, skipInput, setSkip
                             parseInt(e.target.value) < minW ?
                                 e.target.value = minW.toString() :
                                 e.target.value = Math.floor(parseInt(e.target.value)).toString()
-
                     }} />
                     <p>max:{maxW} min:{minW}</p>
                 </div>
@@ -50,16 +47,10 @@ const SizeInput = ({ setPixelArtSize, maxW, maxH, minW, minH, skipInput, setSkip
                             let w = parseInt(widthRef.current!.value)
                             let h = parseInt(heightRef.current!.value)
                             if (w < minW || w > maxW || isNaN(w)) {
-                                setAlertMessage("Please enter a valid width")
-                                setTimeout(() => {
-                                    setAlertMessage(undefined)
-                                }, 2000)
+                                addAlert("Please enter a valid width",'error')
                             }
                             else if (h < minH || h > maxH || isNaN(h)) {
-                                setAlertMessage("Please enter a valid height")
-                                setTimeout(() => {
-                                    setAlertMessage(undefined)
-                                }, 2000)
+                                addAlert("Please enter a valid height",'error')
                             }
                             else {
                                 setPixelArtSize({
@@ -68,7 +59,6 @@ const SizeInput = ({ setPixelArtSize, maxW, maxH, minW, minH, skipInput, setSkip
                                 });
                                 hideModal()
                             }
-
                         }
                     }>Submit</button>
                 </div>

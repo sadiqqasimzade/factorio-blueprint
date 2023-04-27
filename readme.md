@@ -1,8 +1,8 @@
 # Factorio Blueprint Generator
 
-This web aplication converts images into display using lamps or tiles using bricks.App uses React/Typescript so works mostly stable and fast.You can also install it and run offline anytime.
+This web aplication converts images into display with lamps or tiles using bricks . App is builded with React/Typescript so works mostly stable and fast.You can also install it and run offline anytime.
 
-The purpose of this project is to make factories more beautiful without needing other tools. You can resize images, change the colors of individual pixels or create your own pixel art on 1 site and it can also work offline.
+The purpose of this project is to make factories more beautiful without needing other tools. You can resize images, change the colors of individual pixels or create your own pixel art in one place.
 
 [Link to app](https://factorio-blueprint.netlify.app)
 
@@ -33,5 +33,7 @@ The purpose of this project is to make factories more beautiful without needing 
     Runs sass compiler with watch mode
 
 
+## How to use
+
 ## Thanks
-[how display works](https://forums.factorio.com/viewtopic.php?t=37490)
+[How display is made](https://forums.factorio.com/viewtopic.php?t=37490)

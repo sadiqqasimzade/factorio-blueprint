@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./ImageEditor.module.scss";
 import { calculateEntitiesCount } from "../../utils/calculateEntitiesCount";
-import AlertContainer from "../alert/AlertContainer";
+import AlertContext from "../../contexts/AlertContext";
 
 type Props = {
   Image: HTMLImageElement;
@@ -25,11 +25,11 @@ const ImageEditor: React.FC<Props> = ({
   convertTo
 }: Props) => {
 
+  const { addAlert } = useContext(AlertContext)
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState<number>(Image.naturalWidth);
   const [height, setHeight] = useState<number>(Image.naturalHeight);
   const [aspectRatio, setAspectRatio] = useState<boolean>(true);
-  const [alertMessage, setAlertMessage] = useState<string|undefined>(undefined);
   const entityCount: [number, number, number, number] | undefined = convertTo == 'lamp' ? calculateEntitiesCount(width, height) : undefined
 
 
@@ -100,7 +100,6 @@ const ImageEditor: React.FC<Props> = ({
 
   return (
     <>
-      {alertMessage && <AlertContainer text={alertMessage} />}
       <div className={styles["imageeditor--settings--container"]}>
         <div className={styles["imageeditor--settings"]}>
           <p className={styles["imageeditor--settings--label"]}>Width</p>
@@ -156,28 +155,20 @@ const ImageEditor: React.FC<Props> = ({
               className="button button__light"
               onClick={() => {
                 let canvas = canvasRef.current;
-
                 if (canvas!.width > maxW || canvas!.width < minW) {
-                  setAlertMessage('Wrong width')
-                  setTimeout(() => {
-                    setAlertMessage(undefined)
-                  }, 2000);
+                  addAlert('Wrong width', 'error')
                 } else if (canvas!.height > maxH || canvas!.height < minH) {
-                  setAlertMessage('Wrong height')
-                  setTimeout(() => {
-                    setAlertMessage(undefined)
-                  }, 2000);
+                  addAlert('Wrong height', 'error')
                 } else {
                   setresultCanvas(canvasRef.current!);
                   setImage(undefined);
                 }
-              }}
-            >
+              }}>
               Continue
             </button>
           </div>
 
-          {entityCount != undefined ? (<div>
+          {entityCount !== undefined ? (<div>
             <div className={styles["imageeditor--preresult"]}>
               <img className={styles["imageeditor--preresult--img"]} src="/imgs/entites/constantCombinator.png"></img>
               <p className={styles["imageeditor--preresult--text"]}>{entityCount[0]}</p>

@@ -31,11 +31,10 @@ const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
           pixelArt ? <Result pixelArt={pixelArt} convert_to={convertTo} /> :
             resultCanvas ? <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} convertTo={convertTo} /> :
               pixelArtSize ? <PixelArtPage sizex={pixelArtSize.width} sizey={pixelArtSize.height} convertTo={convertTo} setPixelArt={setPixelArt} /> :
-                skipInputState ? <SizeInput setSkipInput={setSkipInput} skipInput={skipInputState} setPixelArtSize={setPixelArtSize} maxW={maxW} maxH={maxH} minW={minW} minH={minH} /> :
+                skipInputState ? <SizeInput setSkipInput={setSkipInput} setPixelArtSize={setPixelArtSize} maxW={maxW} maxH={maxH} minW={minW} minH={minH} /> :
                   validatedImage ? <ImageEditor Image={validatedImage} setImage={setValidatedImage} setresultCanvas={setresultCanvas} maxW={maxW} maxH={maxH} convertTo={convertTo} minW={minW} minH={minH} /> :
                     <FileDragAndDrop setImage={setValidatedImage} setSkipInput={setSkipInput} />
         }
-
       </Suspense>
     </>
   );

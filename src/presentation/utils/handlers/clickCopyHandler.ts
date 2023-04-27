@@ -1,6 +1,6 @@
 export default function clickCopyHandler(
   e: React.MouseEvent<any, MouseEvent>
-): void {
+): Promise<boolean> {
   var text = e.target as HTMLElement;
-  navigator.clipboard.writeText(text.innerText)
+  return navigator.clipboard.writeText(text.innerText).then(() => true).catch(() => false)
 }

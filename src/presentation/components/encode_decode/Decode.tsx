@@ -1,13 +1,14 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import blueprintDecoder from "../../utils/convertors/blueprintDecoder";
 import clickCopyHandler from "../../utils/handlers/clickCopyHandler";
+import AlertContext from "../../contexts/AlertContext";
 type Props = {
   styles: any
 };
 
 const Decode = ({ styles }: Props) => {
   const decodedTextRef = useRef<HTMLParagraphElement>(null);
-
+  const { addAlert } = useContext(AlertContext)
   const encodedInputChange = (e: React.ChangeEvent<any>) => {
     var p = decodedTextRef.current as HTMLParagraphElement;
     try {
@@ -27,8 +28,8 @@ const Decode = ({ styles }: Props) => {
       <p
         className={styles["decode--result"]}
         ref={decodedTextRef}
-        onClick={clickCopyHandler}
-      ></p>
+        onClick={(e) => { clickCopyHandler(e).then(result => result ? addAlert('Succesfully copied', 'success') : addAlert('Unable to copy', 'error')) }}>
+      </p>
     </div>
   );
 };

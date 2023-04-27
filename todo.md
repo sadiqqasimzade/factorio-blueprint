@@ -10,3 +10,4 @@
 - [ ] Convert video to blueprint?
 - [ ] Convert audio to blueprint?
 - [ ] Write tests
+- [ ] Change images in cards
