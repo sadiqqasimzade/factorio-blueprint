@@ -1,10 +1,9 @@
 import React from 'react'
 
-type Props = {}
 
-const NotFound = (props: Props) => {
+const NotFound = () => {
   return (
-    <div className='white'>Not Found</div>
+    <div className='white text-center'>Not Found</div>
   )
 }
 

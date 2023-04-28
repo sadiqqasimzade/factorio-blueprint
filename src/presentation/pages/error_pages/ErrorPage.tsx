@@ -1,12 +1,11 @@
 import React from 'react'
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom'
 
-type Props = {}
 
-const ErrorPage = (props: Props) => {
+const ErrorPage = () => {
   const error = useRouteError()
   return (
-    <div className='white'>Something went wrong</div>
+    <div className='white text-center'>Something went wrong</div>
   )
 }
 
