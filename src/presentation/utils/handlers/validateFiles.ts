@@ -1,7 +1,7 @@
 /**
  * 
  * @param files 
- * @returns Error string or File if validated
+ * @returns Error string or File if validation failed
  */
 export default function validateFiles(files: FileList): File | string {
   if (files.length < 1) {
