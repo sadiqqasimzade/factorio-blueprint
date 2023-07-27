@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "../../components/card/Card";
 import styles from "./IndexPage.module.scss";
 

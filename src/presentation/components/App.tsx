@@ -4,6 +4,7 @@ import Navbar from "./navbar/Navbar";
 import MainRouter from "../routes/MainRouter";
 import ModalProvider from "../contexts/ModalProvider";
 import AlertProvider from "../contexts/AlertProvider";
+import VideoToImages from "./videoToBlueprint/VideoToBp";
 
 export const App: React.FC<{}> = () => {
   return (
@@ -14,6 +15,7 @@ export const App: React.FC<{}> = () => {
           <MainRouter />
         </main>
         <Footer />
+        <VideoToImages fps={1} height={20} width={20}/>
       </ModalProvider>
     </AlertProvider>
   );
