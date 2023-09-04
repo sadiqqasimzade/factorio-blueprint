@@ -6,7 +6,7 @@ import Blueprint from "../../../domain/entity/models/Blueprint";
  * encodes given json to factorio base64 blueprint string
  * @param myjson blueprint json
  */
-const blueprintEncoder = (myjson: { blueprint: Blueprint }): string => {
+export default function BlueprintEncoder(myjson: { blueprint: Blueprint }): string  {
   var blueprint = JSON.stringify(myjson)
     .replace(/(null)|(,null)/g, "")
     .replace(/(\[,)/g, "[");
@@ -14,4 +14,3 @@ const blueprintEncoder = (myjson: { blueprint: Blueprint }): string => {
   var based = Buffer.from(encoded).toString("base64");
   return 0 + based;
 };
-export default blueprintEncoder

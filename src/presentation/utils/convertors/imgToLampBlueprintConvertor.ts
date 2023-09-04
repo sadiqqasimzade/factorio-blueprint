@@ -16,11 +16,9 @@ import {
 } from "../../../domain/entity/stuctures/Enums";
 import { TBpControlBehaviorArithmetic, TBpControlBehaviorCompare, TBpConstCombinatorControlBehavior, TBpConstCombinatorControlBehaviorFilter } from "../../../domain/entity/stuctures/TBpControlBehavior";
 
-export default (
-  width: number,
-  height: number,
-  color_indexes: number[][][]): Blueprint => {
-
+export default function (color_indexes: number[][][]): Blueprint {
+  const width = color_indexes.length
+  const height = color_indexes[0].length * (color_indexes[0][0].length && color_indexes[0][0].length)
   //#region substation array
   var substation_cordinates_w = [4];
   var substation_cordinates_h = [4];
@@ -166,7 +164,7 @@ export default (
 
   if (substation_cordinates_w.at(-1)! > width) {
     //last substation already placed by previous 
-    for (let j = 0; j < substation_cordinates_h.length -(height%9==5?0:1); j++) {
+    for (let j = 0; j < substation_cordinates_h.length - (height % 9 == 5 ? 0 : 1); j++) {
       mainEntities.push(new BpSubstaion(substation_cordinates_w.at(-1)! * 2 + 0.5, substation_cordinates_h[j] * 2 + 0.5))
     }
   }

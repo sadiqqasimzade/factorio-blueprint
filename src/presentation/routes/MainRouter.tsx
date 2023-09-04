@@ -11,7 +11,7 @@ const IndexPage = lazy(() => import("../pages/index/IndexPage"));
 
 
 
-const MainRouter = () => {
+export default function MainRouter() {
   const [transitionStage, settransitionStage] = useState<'fadeIn' | 'fadeOut'>('fadeIn')
   const [displayedLocation, setDisplayedLocation] = useState<string>()
   const location = useLocation()
@@ -54,4 +54,3 @@ const MainRouter = () => {
   );
 };
 
-export default MainRouter;

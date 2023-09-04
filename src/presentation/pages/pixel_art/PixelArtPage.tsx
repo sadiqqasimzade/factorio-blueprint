@@ -1,4 +1,4 @@
-import  { useState } from 'react'
+import { useState } from 'react'
 import styles from './PixelArtPage.module.scss'
 import PixelArtGrid from '../../components/pixel_art_grid/PixelArtGrid'
 import ColorPicker from '../../components/color_picker/ColorPicker'
@@ -19,7 +19,7 @@ type Props = {
     convertTo: 'lamp' | 'brick'
 }
 
-const PixelArtPage = ({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Props) => {
+export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Props) {
 
     const [cells, setCells] = useState(typeof (sizex) == 'number' ?
         Array<string[]>(sizex).fill(Array<string>(sizey!).fill(convertTo == 'lamp' ? lampColorsArr[0] : tileColorsArr[0])) :
@@ -52,5 +52,3 @@ const PixelArtPage = ({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Pr
         </>
     )
 }
-
-export default PixelArtPage

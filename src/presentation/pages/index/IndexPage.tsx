@@ -1,7 +1,7 @@
 import Card from "../../components/card/Card";
 import styles from "./IndexPage.module.scss";
 
-const IndexPage = () => {
+export default function IndexPage() {
   return (
     <div className={styles["grid"]}>
       <Card
@@ -38,4 +38,3 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;

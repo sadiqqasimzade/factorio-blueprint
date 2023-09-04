@@ -15,7 +15,7 @@ export const App: React.FC<{}> = () => {
           <MainRouter />
         </main>
         <Footer />
-        <VideoToImages fps={1} height={20} width={20}/>
+        <VideoToImages fps={4} height={20} width={20}/>
       </ModalProvider>
     </AlertProvider>
   );

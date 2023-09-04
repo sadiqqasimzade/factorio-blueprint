@@ -1,7 +1,4 @@
-import {
-  color_priority,
-  lampColors,
-} from "../../../domain/entity/stuctures/Enums";
+import { color_priority, lampColors } from "../../../domain/entity/stuctures/Enums";
 import findClosestColor from "./findClosestColor";
 import rgbToHex from "./rgbToHex";
 
@@ -9,9 +6,7 @@ import rgbToHex from "./rgbToHex";
  *
  * @param imageColors result of calculateColors function
  */
-export function calculateColorsForLamps(
-  imageColors:string[][]
-): number[][][] {
+export function calculateColorsForLamps(imageColors: string[][]): number[][][] {
 
   var color_indexes: number[][] = [];
   let part20: number[] = [];
@@ -22,7 +17,7 @@ export function calculateColorsForLamps(
     for (let count = 0; count < step; count++) {
       part20 = [];
       for (let j = 0; j < imageColors[0].length; j += step) {
-        
+
         part20.push(-(color_priority.indexOf(lampColors[imageColors[i][j]]) + 1));
       }
       color_indexes.push(part20);
@@ -38,7 +33,7 @@ export function calculateColorsForLamps(
  * @param availableColors array of color strings
  * @returns string array of color arrays for cols
  */
-export function calculateColorsInCanvas(canvas:HTMLCanvasElement,availableColors:string[]):string[][]{
+export function calculateColorsInCanvas(canvas: HTMLCanvasElement, availableColors: string[]): string[][] {
   var context = canvas.getContext("2d", { willReadFrequently: true });
   let result = []
   for (let i = 0; i < canvas.width; i++) {

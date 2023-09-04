@@ -20,14 +20,8 @@ const Result = ({ pixelArt, convert_to }: Props) => {
       <p className={styles["result"]} onClick={(e) => { clickCopyHandler(e).then(result => result ? addAlert('Succesfully copied', 'success') : addAlert('Unable to copy', 'error')) }}>
         {blueprintEncoder({
           blueprint: convert_to == 'lamp'
-            ? imgToLampBlueprintConvertor(
-              pixelArt.length,
-              pixelArt[0].length,
-              calculateColorsForLamps(pixelArt)
-            )
-            : imgToBrickBlueprintConvertor(
-              pixelArt
-            ),
+            ? imgToLampBlueprintConvertor(calculateColorsForLamps(pixelArt))
+            : imgToBrickBlueprintConvertor(pixelArt),
         })}
       </p>
     </div>

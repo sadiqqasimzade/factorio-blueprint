@@ -14,7 +14,7 @@ type Props = {
   skipInput?: boolean | undefined
 };
 
-const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
+export default function ImageConverterPage({ convertTo, maxW, maxH, skipInput }: Props) {
   const [validatedImage, setValidatedImage] = useState<HTMLImageElement | undefined>(undefined);
   const [resultCanvas, setresultCanvas] = useState<HTMLCanvasElement | undefined>(undefined);
   const [pixelArt, setPixelArt] = useState<string[][] | undefined>(undefined)
@@ -40,4 +40,3 @@ const ImageConverterPage = ({ convertTo, maxW, maxH, skipInput }: Props) => {
   );
 };
 
-export default ImageConverterPage;

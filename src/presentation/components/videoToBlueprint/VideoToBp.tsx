@@ -1,16 +1,30 @@
 import React, { useEffect, useRef } from 'react';
 import { calculateColorsForLamps, calculateColorsInCanvas } from '../../utils/image/calculateColors';
-import { lampColorsArr } from '../../../domain/entity/stuctures/Enums';
+import { lampColorsArr, signals } from '../../../domain/entity/stuctures/Enums';
 import imgToLampBlueprintConvertor from '../../utils/convertors/imgToLampBlueprintConvertor';
 import blueprintEncoder from '../../utils/convertors/blueprintEncoder';
+import BpEntity from '../../../domain/entity/models/BpEntity';
+import { CreateMemoryBlock } from '../../utils/convertors/videoToBlueprintConvertor';
+import BpConstCombinator from '../../../domain/entity/models/BpConstCombinator';
+import Blueprint from '../../../domain/entity/models/Blueprint';
+import Blueprint_Icon from "../../../domain/entity/models/BpIcon";
+import BlueprintDecoder from '../../utils/convertors/blueprintDecoder';
 
-export default function VideoToBp({ fps, width, height }: { fps: number, width: number, height: number }) {
+interface VideoToBpProps {
+    fps: number;
+    width: number;
+    height: number;
+}
+
+const VideoToBp: React.FC<VideoToBpProps> = ({ fps, width, height }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const progressRef = useRef<HTMLParagraphElement>(null);
+    const lastFrameTimeRef = useRef<number>(0);
 
     useEffect(() => {
+        const images: number[][][][] = []
         const extractFrames = () => {
             const video = videoRef.current as HTMLVideoElement;
             const array: Blob[] = [];
@@ -24,50 +38,37 @@ export default function VideoToBp({ fps, width, height }: { fps: number, width: 
                 canvas.height = height;
             }
 
-            function drawFrame(this: HTMLVideoElement) {
-                this.pause();
-                ctx.drawImage(this, 0, 0, width, height);
+            const drawFrame = (time: number) => {
+                lastFrameTimeRef.current = time;
+                ctx.drawImage(video, 0, 0, width, height);
 
                 canvas.toBlob((blob) => {
                     array.push(blob as Blob);
                 }, 'image/jpeg');
 
-                progress.innerHTML = ((this.currentTime / this.duration) * 100).toFixed(2) + ' %';
+                progress.innerHTML = ((video.currentTime / video.duration) * 100).toFixed(2) + ' %';
                 frameCount++;
 
-                if (this.duration <= this.currentTime) {
-                    // const pixelArt = calculateColorsInCanvas(canvas, lampColorsArr)
-                    // console.log(blueprintEncoder({
-                    //     blueprint: imgToLampBlueprintConvertor(
-                    //         pixelArt.length,
-                    //         pixelArt[0].length,
-                    //         calculateColorsForLamps(pixelArt)
-                    //     )
-                    // }))
+                if (video.duration <= video.currentTime) {
+                    // console.log(images)
+                    const entities=CreateMemoryBlock(images)
+                    const result: Blueprint = new Blueprint(
+                        [new Blueprint_Icon(signals.signal_white, 1)],
+                        entities,
+                    );
+                    console.log(blueprintEncoder({ blueprint: result }))
 
-                    this.removeEventListener('timeupdate', drawFrame, false);
-                    this.play()
+
+                    video.removeEventListener('timeupdate', drawFrame, false);
+                    video.play();
                 } else {
-                    console.log('fc:' + frameCount + '\ndc:' + this.duration + '\nct:' + this.currentTime)
-                    console.log(this.getVideoPlaybackQuality().totalVideoFrames)
-                    this.play();
+                    console.log('first')
+                    const pixelArt = calculateColorsInCanvas(canvas, lampColorsArr)
+                    images.push(calculateColorsForLamps(pixelArt))
+                    video.play();
                 }
-            }
 
-
-
-            // function onend(this: HTMLVideoElement) {
-            //     // let img: HTMLImageElement;
-            //     // for (let i = 0; i < array.length; i++) {
-            //     //     img = new Image();
-            //     //     img.onload = () => URL.revokeObjectURL(this.src);;
-            //     //     img.src = URL.createObjectURL(array[i]);
-            //     //     document.body.appendChild(img);
-            //     // }
-            //     // URL.revokeObjectURL(this.src);
-            //     console.log(this)
-            //     console.log('end2')
-            // }
+            };
 
             video.muted = true;
             video.addEventListener('loadedmetadata', initCanvas, false);
@@ -84,7 +85,7 @@ export default function VideoToBp({ fps, width, height }: { fps: number, width: 
         return () => {
             inputRef.current?.removeEventListener('change', extractFrames, false);
         };
-    }, [fps]);
+    }, [fps, width, height]);
 
     return (
         <div>
@@ -96,3 +97,4 @@ export default function VideoToBp({ fps, width, height }: { fps: number, width: 
     );
 };
 
+export default VideoToBp;
