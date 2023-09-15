@@ -1,15 +1,14 @@
 
 # TODO
-- [ ] Type problems in inline styles where variables declared e.g(--color:#000)
-- [ ] Convert video to blueprint?
-- [ ] Convert audio to blueprint?
+- [ ] Convert video to blueprint
+- [ ] Convert audio to blueprint
 - [ ] Change images in cards
+- [ ] Add batter Json visualizer to blueprint decoder
+- [ ] Pixel art page updatePixel slows app
+- [ ] Test for 14/21 failing in calculateEntitiesCount
 
-- [ ] size hoping in modal cant chose properly
-- [ ] black color in poixel editor hardly visible
+
+20x24 video at 3 and -3 undefined const combinator data
+20x24 substation missing 
 
 
-pixel art page updatePixel slows app
-convert to next.js
-try next js api
-add dark/light mode  tailwind?

@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  // Colors
+  $bg-color: hsl(256, 33%, 10%);
+  $dot-color: hsl(256, 33%, 70%);
+  min-height: 100vh;
+
+  // Dimensions
+  $dot-size: 1px;
+  $dot-space: 22px;
+  background:
+    linear-gradient(90deg, $bg-color (
+      $dot-space - $dot-size),
+    transparent 1%) center,
+    linear-gradient($bg-color (
+      $dot-space - $dot-size),
+    transparent 1%) center,
+    $dot-color;
+  background-size: $dot-space $dot-space;
+}
+
+.page-transition-enter {
+  opacity: 0;
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}

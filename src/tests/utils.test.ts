@@ -1,6 +1,6 @@
-import { lampColorsArr } from "../domain/entity/stuctures/Enums"
-import findClosestColor from "../presentation/utils/image/findClosestColor"
-import rgbToHex from "../presentation/utils/image/rgbToHex"
+import { lampColorsArr } from "../consts/colorsEnum"
+import findClosestColor from "../utils/image/findClosestColor"
+import rgbToHex from "../utils/image/rgbToHex"
 
 describe('Test rgbToHex', () => {
     test('Test rgbToHex', () => {

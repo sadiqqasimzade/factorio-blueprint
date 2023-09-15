@@ -1,68 +1,112 @@
-import Blueprint from "../domain/entity/models/Blueprint"
-import BpArithmeticCombinator from "../domain/entity/models/BpArithmeticCombinator"
-import BpConstCombinator from "../domain/entity/models/BpConstCombinator"
-import BpLamp from "../domain/entity/models/BpLamp"
-import BpSubstaion from "../domain/entity/models/BpSubstaion"
-import { calculateEntitiesCount } from "../presentation/utils/calculateEntitiesCount"
-import imgToLampBlueprintConvertor from "../presentation/utils/convertors/imgToLampBlueprintConvertor"
+import Blueprint from "../classes/Blueprint"
+import BpArithmeticCombinator from "../classes/BpArithmeticCombinator"
+import BpConstCombinator from "../classes/BpConstCombinator"
+import BpLamp from "../classes/BpLamp"
+import BpSubstaion from "../classes/BpSubstaion"
+import { calculateEntitiesCount } from "../utils/calculateEntitiesCount"
+import imgToLampBlueprintConvertor from "../utils/convertors/imgToLampBlueprintConvertor"
 
 describe('calculateEntitiesCount', () => {
     const getRealValue = (x: number, y: number): Blueprint => {
-        let res = imgToLampBlueprintConvertor(x, y, Array<number[][]>(x).fill(Array<number[]>(Math.ceil(y / 20)).fill(Array<number>(Math.ceil(y / Math.ceil(y / 20))).fill(0))))
+        const res = imgToLampBlueprintConvertor(Array<number[][]>(x).fill(Array<number[]>(Math.ceil(y / 20)).fill(Array<number>(Math.ceil(y / Math.ceil(y / 20))).fill(0))))
         return res
     }
+
+    const dublicatesExist =(blueprint:Blueprint):boolean => {
+        const res = blueprint.entities.filter(e => blueprint.entities.filter(e2 => e2.position.x === e.position.x && e2.position.y === e.position.y).length > 1)
+        return res.length > 0
+    }
+
     test('equal width and height', () => {
-        let res = getRealValue(20, 20)
+        const result = getRealValue(20, 20)
+        expect(dublicatesExist(result)).toBeFalsy()
         expect(calculateEntitiesCount(20, 20)).toEqual([
-            res.entities.filter(e => e instanceof BpConstCombinator).length,
-            res.entities.filter(e => e instanceof BpSubstaion).length,
-            res.entities.filter(e => e instanceof BpArithmeticCombinator).length,
-            res.entities.filter(e => e instanceof BpLamp).length,
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
         ])
     })
     test('max width max height', () => {
-        let res = getRealValue(300, 100)
+        const result = getRealValue(300, 100)
         expect(calculateEntitiesCount(300, 100)).toEqual([
-            res.entities.filter(e => e instanceof BpConstCombinator).length,
-            res.entities.filter(e => e instanceof BpSubstaion).length,
-            res.entities.filter(e => e instanceof BpArithmeticCombinator).length,
-            res.entities.filter(e => e instanceof BpLamp).length,
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
         ])
     })
     test('min width min height', () => {
-        let res = getRealValue(5, 5)
+        const result = getRealValue(5, 5)
+        expect(dublicatesExist(result)).toBeFalsy()
         expect(calculateEntitiesCount(5, 5)).toEqual([
-            res.entities.filter(e => e instanceof BpConstCombinator).length,
-            res.entities.filter(e => e instanceof BpSubstaion).length,
-            res.entities.filter(e => e instanceof BpArithmeticCombinator).length,
-            res.entities.filter(e => e instanceof BpLamp).length,
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
         ])
     })
     test('substation in width corner', () => {
-        let res = getRealValue(14, 21)
+        const result = getRealValue(14, 21)
+        expect(dublicatesExist(result)).toBeFalsy()
         expect(calculateEntitiesCount(14, 21)).toEqual([
-            res.entities.filter(e => e instanceof BpConstCombinator).length,
-            res.entities.filter(e => e instanceof BpSubstaion).length,
-            res.entities.filter(e => e instanceof BpArithmeticCombinator).length,
-            res.entities.filter(e => e instanceof BpLamp).length,
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
         ])
     })
     test('substation in height corner', () => {
-        let res = getRealValue(21, 14)
+        const result = getRealValue(21, 14)
+        expect(dublicatesExist(result)).toBeFalsy()
         expect(calculateEntitiesCount(21, 14)).toEqual([
-            res.entities.filter(e => e instanceof BpConstCombinator).length,
-            res.entities.filter(e => e instanceof BpSubstaion).length,
-            res.entities.filter(e => e instanceof BpArithmeticCombinator).length,
-            res.entities.filter(e => e instanceof BpLamp).length,
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
         ])
     })
-    test('substation both in width and height corner', () => {
-        let res = getRealValue(14, 14)
+    test('Substations both in width and height corner with lamps', () => {
+        const result = getRealValue(14, 14)
+        expect(dublicatesExist(result)).toBeFalsy()
         expect(calculateEntitiesCount(14, 14)).toEqual([
-            res.entities.filter(e => e instanceof BpConstCombinator).length,
-            res.entities.filter(e => e instanceof BpSubstaion).length,
-            res.entities.filter(e => e instanceof BpArithmeticCombinator).length,
-            res.entities.filter(e => e instanceof BpLamp).length,
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
+        ])
+    })
+
+    test('Substations both in width and height corner without lamps', () => {
+        const result = getRealValue(13, 13)
+        expect(dublicatesExist(result)).toBeFalsy()
+        expect(calculateEntitiesCount(13, 13)).toEqual([
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
+        ])
+    })
+
+    test('-', () => {
+        const result = getRealValue(20, 24)
+        expect(dublicatesExist(result)).toBeFalsy()
+        expect(calculateEntitiesCount(20, 24)).toEqual([
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
+        ])
+    })
+
+    test('-', () => {
+        const result = getRealValue(24, 20)
+        expect(dublicatesExist(result)).toBeFalsy()
+        expect(calculateEntitiesCount(24, 20)).toEqual([
+            result.entities.filter(e => e instanceof BpConstCombinator).length,
+            result.entities.filter(e => e instanceof BpSubstaion).length,
+            result.entities.filter(e => e instanceof BpArithmeticCombinator).length,
+            result.entities.filter(e => e instanceof BpLamp).length,
         ])
     })
 })

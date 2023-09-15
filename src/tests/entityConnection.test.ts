@@ -1,15 +1,15 @@
-import BpSubstaion from "../domain/entity/models/BpSubstaion"
-import { cable_colors } from "../domain/entity/stuctures/Enums"
+import BpSubstaion from "../classes/BpSubstaion"
+import { CableColors } from "../consts/enums"
 
 
 describe('test entity', () => {
-    let substation1 = new BpSubstaion(0, 0)
-    let substation2 = new BpSubstaion(2, 2)
+    const substation1 = new BpSubstaion(0, 0)
+    const substation2 = new BpSubstaion(2, 2)
     test('substation connect', () => {
-        substation1.makeConnection(substation2, 1, 1, cable_colors.GREEN)
-        expect(substation1.connections![1]![cable_colors.GREEN]!.length).toBe(1)
-        expect(substation1.connections![1]![cable_colors.GREEN]![0].entity_id).toBe(substation2.entity_number)
-        expect(substation1.connections![1]![cable_colors.RED]).toBeUndefined()
+        substation1.makeConnection(substation2, 1, 1, CableColors.GREEN)
+        expect(substation1.connections![1]![CableColors.GREEN]!.length).toBe(1)
+        expect(substation1.connections![1]![CableColors.GREEN]![0].entity_id).toBe(substation2.entity_number)
+        expect(substation1.connections![1]![CableColors.RED]).toBeUndefined()
         expect(substation1.connections![2]).toBeUndefined()
     })
     test('substation neightour', () => {
