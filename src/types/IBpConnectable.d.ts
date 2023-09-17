@@ -1,5 +1,4 @@
 import BpEntity from "../models/BpEntity";
-import { CableColors } from "../consts/enums";
 import { TBpEntityConnection, TBpEntityConnectionPort } from "./TBpEntityConnection";
 
 declare global {

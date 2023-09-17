@@ -1,17 +1,18 @@
-import { Directions, EntityNames, CableColors } from "../consts/enums";
+import { Directions, EntityNames } from "../consts/enums";
+import DeciderCondition from "./BpDeciderCondition";
 import BpEntity from "./BpEntity";
 import { BpStaticMethods } from "./BpStaticMethods";
 
 export default class BpDeciderCombinator extends BpEntity implements IBpConnectable, IBpDirectionable {
-    control_behavior:  TBpControlBehaviorCompare 
+    control_behavior: { decider_conditions: DeciderCondition }
     connections: TBpEntityConnection | undefined;
     direction: Directions | undefined;
 
 
 
-    constructor(control_behavior: TBpControlBehaviorCompare, x: number, y: number, direction?: Directions | undefined) {
+    constructor(deciderCondition: DeciderCondition, x: number, y: number, direction?: Directions | undefined) {
         super(EntityNames.DECIDER_COMBINATOR, x, y);
-        this.control_behavior =  control_behavior 
+        this.control_behavior = { decider_conditions: deciderCondition }
         this.direction = direction
     }
 

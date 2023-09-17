@@ -1,16 +1,17 @@
-import { Directions, EntityNames, CableColors } from "../consts/enums";
+import { Directions, EntityNames} from "../consts/enums";
+import ArithmeticCondition from "./BpArithmeticCondition";
 import BpEntity from "./BpEntity";
 import { BpStaticMethods } from "./BpStaticMethods";
 
 export default class BpArithmeticCombinator extends BpEntity implements IBpConnectable, IBpDirectionable {
-    control_behavior: TBpControlBehaviorArithmetic
+    control_behavior: {arithmetic_conditions:ArithmeticCondition}
     connections: TBpEntityConnection | undefined;
     direction: Directions|undefined;
     
 
-    constructor(control_behavior: TBpControlBehaviorArithmetic, x: number, y: number, direction?: Directions | undefined) {
+    constructor(arithmetic_conditions: ArithmeticCondition, x: number, y: number, direction?: Directions | undefined) {
         super(EntityNames.ARITHMETIC_COMBINATOR, x, y);
-        this.control_behavior = control_behavior
+        this.control_behavior = {arithmetic_conditions: arithmetic_conditions}
         this.direction = direction
     }
 

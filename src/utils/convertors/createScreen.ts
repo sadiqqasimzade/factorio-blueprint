@@ -1,9 +1,11 @@
 import BpArithmeticCombinator from "@/src/classes/BpArithmeticCombinator";
+import ArithmeticCondition from "@/src/classes/BpArithmeticCondition";
 import BpConstCombinator from "@/src/classes/BpConstCombinator";
+import DeciderCondition from "@/src/classes/BpDeciderCondition";
 import BpEntity from "@/src/classes/BpEntity";
 import BpLamp from "@/src/classes/BpLamp";
 import BpSubstaion from "@/src/classes/BpSubstaion";
-import { ArithmeticOperations, CompareOperations, CableColors, Directions } from "@/src/consts/enums";
+import { Directions } from "@/src/consts/enums";
 import { signals, signal_priority, color_priority } from "@/src/consts/signalsEnum";
 
 export function CreateScreen(width: number, height: number): BpEntity[] {
@@ -25,28 +27,9 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
     }
     //#endregion
 
-    const createArithmeticCombinatorBehavior = (height: number): TBpControlBehaviorArithmetic => {
-        return {
-            arithmetic_conditions: {
-                first_signal: signals.signal_each,
-                second_signal:
-                    signal_priority[
-                    Math.floor(height / combinatorsCount)
-                    ],
-                operation: ArithmeticOperations.SUBTRACT,
-                output_signal: signals.signal_each,
-            }
-        }
-    }
-    const lamp_circuit_condition: TBpControlBehaviorCompare = {
-        circuit_condition: {
-            first_signal: signals.signal_white,
-            constant: 1,
-            comparator: CompareOperations.GREATER_THAN,
-        },
-        use_colors: true
-    }
-
+    const lamp_circuit_condition=new DeciderCondition(signals.signal_white,'>',1); 
+    
+  
 
 
     //#region create lamp grid with combinators
@@ -55,20 +38,25 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
         for (let j = 0; j < height; j++) {
             if (substation_cordinates_w.includes(i) && substation_cordinates_h.includes(j)) {
                 const substation = new BpSubstaion(i * 2 + 0.5, j * 2 + 0.5)
-                substation.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, CableColors.GREEN)
-                substation.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, CableColors.RED)
+                substation.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, 'green')
+                substation.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, 'red')
                 row.push(substation)
             }
             else {
-                const combinator = new BpArithmeticCombinator(createArithmeticCombinatorBehavior(j), i * 2 + 1, j * 2 + 1, Directions.WEST)
+                const combinator = new BpArithmeticCombinator(
+                    new ArithmeticCondition(signals.signal_each, '-', signal_priority[Math.floor(j / combinatorsCount)], signals.signal_each),
+                    i * 2 + 1,
+                    j * 2 + 1,
+                    Directions.WEST)
+
                 const lamp_l = new BpLamp(lamp_circuit_condition, i * 2, j * 2)
                 const lamp_r = new BpLamp(lamp_circuit_condition, i * 2 + 1, j * 2)
 
-                lamp_r.makeConnection(lamp_l, 1, 1, CableColors.RED)
-                lamp_l.makeConnection(combinator, 1, 2, CableColors.RED)
+                lamp_r.makeConnection(lamp_l, 1, 1, 'red')
+                lamp_l.makeConnection(combinator, 1, 2, 'red')
 
-                row.at(-combinatorsCount) && combinator.makeConnection(row.at(-combinatorsCount) as BpArithmeticCombinator, 1, 1, CableColors.RED)
-                row.at(-1) && combinator.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, CableColors.GREEN)
+                row.at(-combinatorsCount) && combinator.makeConnection(row.at(-combinatorsCount) as BpArithmeticCombinator, 1, 1, 'red')
+                row.at(-1) && combinator.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, 'green')
 
                 row.push(combinator)
                 lampEntites.push(lamp_l, lamp_r)
@@ -105,8 +93,8 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
     const arithmetic_combinators = mainEntities.filter(entity => entity instanceof BpArithmeticCombinator && entity.position.y === 1) as BpArithmeticCombinator[]
     for (let i = 0; i < arithmetic_combinators.length; i++) {
         const combinator = arithmetic_combinators[i]
-        i === 0 ? combinator.makeConnection(constCombinators.at(-1)!, 1, 1, CableColors.GREEN) :
-            combinator.makeConnection(arithmetic_combinators[i - 1], 1, 1, CableColors.GREEN)
+        i === 0 ? combinator.makeConnection(constCombinators.at(-1)!, 1, 1, 'green') :
+            combinator.makeConnection(arithmetic_combinators[i - 1], 1, 1, 'green')
     }
     //#endregion
 
@@ -154,6 +142,5 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
 
     mainEntities.push(...constCombinators)
     mainEntities.push(...lampEntites)
-
     return mainEntities;
 }

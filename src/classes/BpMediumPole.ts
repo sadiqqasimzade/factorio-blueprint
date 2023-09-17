@@ -1,4 +1,4 @@
-import { EntityNames, CableColors } from "../consts/enums";
+import { EntityNames } from "../consts/enums";
 import BpEntity from "./BpEntity";
 import { BpStaticMethods } from "./BpStaticMethods";
 

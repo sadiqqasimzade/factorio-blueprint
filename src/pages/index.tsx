@@ -38,6 +38,12 @@ export default function Home() {
         link="pixel-art-brick"
         imgSrc="img-to-blueprint.png"
       />
+      <Card
+        title="Video converter - Lamp"
+        desc="Converts video to factorio blueprint"
+        link="video-converter"
+        imgSrc="img-to-blueprint.png"
+      />
     </div>
   )
 }

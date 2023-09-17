@@ -3,7 +3,6 @@ import BpArithmeticCombinator from "@/src/classes/BpArithmeticCombinator";
 import BpConstCombinator from "@/src/classes/BpConstCombinator";
 import BpEntity from "@/src/classes/BpEntity";
 import BpSubstaion from "@/src/classes/BpSubstaion";
-import { CableColors } from "@/src/consts/enums";
 import { signal_priority, signals } from "@/src/consts/signalsEnum";
 import { CreateScreen } from "./createScreen";
 import BpIcon from "@/src/classes/BpIcon";
@@ -39,7 +38,7 @@ export default function ImgToLampBlueprintConvertor(color_indexes: number[][][])
       if (arithmetic_combinator === undefined) {
         arithmetic_combinator = mainEntities.find(e => e.position.x === i * 2 + 0.5 && e.position.y === (color_indexes[0].length - j - 1) * 2 + 0.5) as BpSubstaion
       }
-      arithmetic_combinator.makeConnection(combinator, 1, 1, CableColors.RED)
+      arithmetic_combinator.makeConnection(combinator, 1, 1, 'red')
       temp_combinators.push(combinator)
     }
     constCombinators.push(...temp_combinators)
