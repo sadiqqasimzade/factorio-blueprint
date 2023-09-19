@@ -12,7 +12,6 @@ export default function VideoConverter() {
     const minW = 5, maxW = 200, minH = 5, maxH = 100
 
 
-    const inputRef = useRef<HTMLInputElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const progressRef = useRef<HTMLSpanElement>(null);
@@ -23,61 +22,52 @@ export default function VideoConverter() {
     const [width, setWidth] = useState<number>(170);
     const [height, setHeight] = useState<number>(100);
 
+
+
+
     useEffect(() => {
         const images: number[][][][] = []
-        const video = videoRef.current as HTMLVideoElement;
         const canvas = canvasRef.current as HTMLCanvasElement;
         const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
         const progress = progressRef.current as HTMLSpanElement;
+        const video = videoRef.current as HTMLVideoElement;
 
-        const extractFrames = () => {
 
-            function initCanvas() {
-                canvas.width = width;
-                canvas.height = height;
+        canvasRef.current!.width = width;
+        canvasRef.current!.height = height;
+
+
+
+        const drawFrame = () => {
+            ctx.drawImage(video, 0, 0, width, height);
+
+            progress.innerHTML = ((video.currentTime / video.duration) * 100).toFixed(2) + ' %';
+            const newCanvas = document.createElement('canvas')
+            newCanvas.width = width
+            newCanvas.height = height
+            const newCtx = newCanvas.getContext('2d')!
+            newCtx.drawImage(canvas, 0, 0, width, height)
+            canvasContainerRef.current?.appendChild(newCtx.canvas)
+            if (video.duration <= video.currentTime) {
+                const pixelArt = calculateColorsInCanvas(canvas, lampColorsArr)
+                images.push(calculateColorsForLamps(pixelArt))
+                const bp = CreateMemoryBlock(images)
+
+                resultRef.current!.innerText = blueprintEncoder(bp)
+
+                video.removeEventListener('timeupdate', drawFrame, false);
+                video.play();
+            } else {
+                const pixelArt = calculateColorsInCanvas(canvas, lampColorsArr)
+                images.push(calculateColorsForLamps(pixelArt))
+                video.play();
             }
+        }
 
-            const drawFrame = () => {
-                ctx.drawImage(video, 0, 0, width, height);
-
-                progress.innerHTML = ((video.currentTime / video.duration) * 100).toFixed(2) + ' %';
-                const newCanvas = document.createElement('canvas')
-                newCanvas.width = width
-                newCanvas.height = height
-                const newCtx = newCanvas.getContext('2d')!
-                newCtx.drawImage(canvas, 0, 0, width, height)
-                canvasContainerRef.current?.appendChild(newCtx.canvas)
-                if (video.duration <= video.currentTime) {
-                    const pixelArt = calculateColorsInCanvas(canvas, lampColorsArr)
-                    images.push(calculateColorsForLamps(pixelArt))
-                    const bp = CreateMemoryBlock(images)
-
-                    resultRef.current!.innerText = blueprintEncoder(bp)
-
-                    video.removeEventListener('timeupdate', drawFrame, false);
-                    video.play();
-                } else {
-                    console.log('frame')
-                    const pixelArt = calculateColorsInCanvas(canvas, lampColorsArr)
-                    images.push(calculateColorsForLamps(pixelArt))
-                    video.play();
-                }
-            };
-
-            video.muted = true;
-            video.addEventListener('loadedmetadata', initCanvas, false);
-            video.addEventListener('timeupdate', drawFrame, false);
-
-
-            if (inputRef.current?.files && inputRef.current.files[0]) {
-                video.src = URL.createObjectURL(inputRef.current.files[0]);
-            }
-        };
-
-        inputRef.current?.addEventListener('change', extractFrames, false);
+        video.addEventListener('timeupdate', drawFrame, false);
 
         return () => {
-            inputRef.current?.removeEventListener('change', extractFrames, false);
+            video.removeEventListener('timeupdate', drawFrame, false);
         };
     }, [width, height]);
 
@@ -88,9 +78,14 @@ export default function VideoConverter() {
                 <title>Video to Blueprint Converter</title>
             </Head>
             <div className="flex flex-col gap-4">
-                <video ref={videoRef} style={{ display: 'none' }} />
+                <video muted ref={videoRef} className="hidden"/>
+                <p className="font-bold text-2xl">This generator creates very huge Blueprints even for 10 second video. I recommend using GIFs instead, you just need to convert them to videos. Converter I use:<a className="underline text-blue-400 hover:text-blue-800 transition-colors" href="https://convertio.co/gif-mp4/">https://convertio.co/gif-mp4/</a></p>
                 <div className="flex gap-4 items-center">
-                    <input type="file" accept="video/*" ref={inputRef} />
+                    <input type="file" accept="video/*" onChange={(e) => {
+                        if (e.target.files && e.target.files[0]) {
+                            videoRef.current!.src = URL.createObjectURL(e.target.files[0]);
+                        }
+                    }} />
                     <p className="flex">Progress: <span ref={progressRef}>Not started</span></p>
                     {/* <div className="flex gap-2">
                         <label>Old version</label>
@@ -119,13 +114,13 @@ export default function VideoConverter() {
                             else if (height < minH || height > maxH || isNaN(height)) {
                                 toast.error("Please enter a valid height")
                             }
-                            else if(videoRef.current?.readyState ===0){
+                            else if (videoRef.current?.readyState === 0) {
                                 toast.error("Load video first")
                             }
-                            else if(videoRef.current?.readyState !==4){
+                            else if (videoRef.current?.readyState !== 4) {
                                 toast.error("Video is not loaded yet")
                             }
-                            else{
+                            else {
                                 videoRef.current.play()
                             }
                         }}>Convert</button>

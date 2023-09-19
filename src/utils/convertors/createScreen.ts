@@ -1,7 +1,7 @@
 import BpArithmeticCombinator from "@/src/classes/BpArithmeticCombinator";
 import ArithmeticCondition from "@/src/classes/BpArithmeticCondition";
+import CircuitCondition from "@/src/classes/BpCircuitCondition";
 import BpConstCombinator from "@/src/classes/BpConstCombinator";
-import DeciderCondition from "@/src/classes/BpDeciderCondition";
 import BpEntity from "@/src/classes/BpEntity";
 import BpLamp from "@/src/classes/BpLamp";
 import BpSubstaion from "@/src/classes/BpSubstaion";
@@ -27,9 +27,8 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
     }
     //#endregion
 
-    const lamp_circuit_condition=new DeciderCondition(signals.signal_white,'>',1); 
-    
-  
+    const lamp_circuit_condition = new CircuitCondition(signals.signal_white, 1, '>')
+
 
 
     //#region create lamp grid with combinators
@@ -49,9 +48,8 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
                     j * 2 + 1,
                     Directions.WEST)
 
-                const lamp_l = new BpLamp(lamp_circuit_condition, i * 2, j * 2)
-                const lamp_r = new BpLamp(lamp_circuit_condition, i * 2 + 1, j * 2)
-
+                const lamp_l = new BpLamp(lamp_circuit_condition, i * 2, j * 2,true)
+                const lamp_r = new BpLamp(lamp_circuit_condition, i * 2 + 1, j * 2,true)
                 lamp_r.makeConnection(lamp_l, 1, 1, 'red')
                 lamp_l.makeConnection(combinator, 1, 2, 'red')
 
