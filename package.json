@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "prod": "next build && next start",
+    "build": "next build ",
     "start": "next start",
     "lint": "next lint",
     "test": "jest | tsc",
