@@ -13,18 +13,18 @@ export default function Document() {
         <meta property="og:site_name" content="Factorio Toolso" />
         <meta property="og:title" content="Factorio Tools" />
         <meta property="og:description" content="Factorio tools for generaing Blueprints" />
-        <meta property="og:image" content="https://factorio-blueprint.netlify.app/imgs/favicons/android-chrome-512x512.png" />
-        <meta property="og:url" content="https://factorio-blueprint.netlify.app" />
+        <meta property="og:image" content="https://factorio-blueprint.vercel.app/imgs/favicons/android-chrome-512x512.png" />
+        <meta property="og:url" content="https://factorio-blueprint.vercel.app" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="https://factorio-blueprint.netlify.app" />
+        <meta name="twitter:site" content="https://factorio-blueprint.vercel.app" />
         <meta name="twitter:creator" content="sadiq_qasimzade" />
         <meta name="twitter:description" content="Factorio tools for generaing Blueprints" />
-        <meta name="twitter:image" content="https://factorio-blueprint.netlify.app/imgs/favicons/android-chrome-512x512.png" />
+        <meta name="twitter:image" content="https://factorio-blueprint.vercel.app/imgs/favicons/android-chrome-512x512.png" />
 
         <link rel="manifest" href="manifest.json" />
-        <meta name="google-site-verification" content="MbQsveDx56v1MWMVfO2uoGi-XMV3eSilmUtrSYtS45M" />
-        <meta name="yandex-verification" content="4b6cf7725a792739" />
+        <meta name="google-site-verification" content="pcVqOWBcshqtczsXmc7uPJNVNQogS1wN4WJmaDeNPpM" />
+        <meta name="yandex-verification" content="e8eb17829dd8cb60" />
 
         <meta name="application-name" content="Sadiq's Portfolio" />
 
