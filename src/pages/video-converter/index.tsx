@@ -9,7 +9,7 @@ import { useRef, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function VideoConverter() {
-    const minW = 5, maxW = 200, minH = 5, maxH = 100
+    const minW = 5, maxW = 200, minH = 5, maxH = 80
 
 
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,8 +19,8 @@ export default function VideoConverter() {
     const resultRef = useRef<HTMLParagraphElement>(null)
 
 
-    const [width, setWidth] = useState<number>(170);
-    const [height, setHeight] = useState<number>(100);
+    const [width, setWidth] = useState<number>(130);
+    const [height, setHeight] = useState<number>(80);
 
 
 
