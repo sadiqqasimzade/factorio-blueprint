@@ -53,7 +53,10 @@ export function CreateMemoryBlock(images: number[][][][]): Blueprint {
                 deciderCombinator.makeConnection(mediumPole, 2, 1, 'red')
 
                 deciderCombinators.at(-1) && deciderCombinator.makeConnection(deciderCombinators.at(-1)!, 1, 1, 'red')
-
+                if (i === 0 && j === 0) {
+                const mediumPole2 = mediumPoles.at((-width * height / 20) + (height / 20)-1)
+                    mediumPole2 && mediumPole.addNeighbour(mediumPole2)
+                }
                 mediumPoles.at(-1) && mediumPole.addNeighbour(mediumPoles.at(-1)!)
                 if (mediumPoles.at(-colorIndexes.length * colorIndexes[0].length)) {
                     mediumPole.makeConnection(mediumPoles.at(-colorIndexes.length * colorIndexes[0].length)!, 1, 1, 'red')

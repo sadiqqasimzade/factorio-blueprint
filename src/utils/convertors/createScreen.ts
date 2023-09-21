@@ -38,7 +38,7 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
             if (substation_cordinates_w.includes(i) && substation_cordinates_h.includes(j)) {
                 const substation = new BpSubstaion(i * 2 + 0.5, j * 2 + 0.5)
                 substation.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, 'green')
-                substation.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, 'red')
+                row.at(-combinatorsCount) && substation.makeConnection(row.at(-combinatorsCount) as BpArithmeticCombinator | BpSubstaion, 1, 1, 'red')
                 row.push(substation)
             }
             else {
@@ -48,12 +48,12 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
                     j * 2 + 1,
                     Directions.WEST)
 
-                const lamp_l = new BpLamp(lamp_circuit_condition, i * 2, j * 2,true)
-                const lamp_r = new BpLamp(lamp_circuit_condition, i * 2 + 1, j * 2,true)
+                const lamp_l = new BpLamp(lamp_circuit_condition, i * 2, j * 2, true)
+                const lamp_r = new BpLamp(lamp_circuit_condition, i * 2 + 1, j * 2, true)
                 lamp_r.makeConnection(lamp_l, 1, 1, 'red')
                 lamp_l.makeConnection(combinator, 1, 2, 'red')
 
-                row.at(-combinatorsCount) && combinator.makeConnection(row.at(-combinatorsCount) as BpArithmeticCombinator, 1, 1, 'red')
+                row.at(-combinatorsCount) && combinator.makeConnection(row.at(-combinatorsCount) as BpArithmeticCombinator | BpSubstaion, 1, 1, 'red')
                 row.at(-1) && combinator.makeConnection(row.at(-1) as BpArithmeticCombinator, 1, 1, 'green')
 
                 row.push(combinator)
