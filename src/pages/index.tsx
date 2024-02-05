@@ -7,6 +7,11 @@ export default function Home() {
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5 '>
       <Head>
         <title>Factorio Blueprint Generator</title>
+        <meta property="og:title" content="Factorio Blueprint Generator" />
+        <meta name="twitter:title" content="Factorio Blueprint Generator" />
+        <meta name="description" content="Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions." />
+        <meta property="og:description" content="Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions." />
+        <meta name="twitter:description" content="Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions." />
       </Head>
       <Card
         title="Decoder/Encoder"

@@ -3,7 +3,7 @@ import blueprintDecoder from "@/src/utils/convertors/blueprintDecoder";
 import BlueprintEncoder from "@/src/utils/convertors/blueprintEncoder";
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
 import Head from "next/head";
-import { useRef} from "react";
+import { useRef } from "react";
 import { toast } from "react-toastify";
 
 export default function DecodeEncodePage() {
@@ -31,7 +31,12 @@ export default function DecodeEncodePage() {
     return (
         <Container>
             <Head>
-                <title>Decode/Encode Blueprint</title>
+                <title>Factorio Blueprint Decoder & Encoder</title>
+                <meta property="og:title" content="Factorio Blueprint Decoder & Encoder" />
+                <meta name="twitter:title" content="Factorio Blueprint Decoder & Encoder" />
+                <meta name="description" content="Effortlessly decode and encode Factorio blueprints into readable JSON with this online tool. Simplify your workflow and enhance blueprint management." />
+                <meta property="og:description" content="Effortlessly decode and encode Factorio blueprints into readable JSON with this online tool. Simplify your workflow and enhance blueprint management." />
+                <meta name="twitter:description" content="Effortlessly decode and encode Factorio blueprints into readable JSON with this online tool. Simplify your workflow and enhance blueprint management." />
             </Head>
             <div className="flex flex-col justify-center gap-5">
                 <p className="text-2xl font-bold">Paste Blueprint JSON to encode or Blueprint String to decode it</p>

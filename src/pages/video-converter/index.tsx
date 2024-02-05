@@ -76,9 +76,14 @@ export default function VideoConverter() {
         <Container>
             <Head>
                 <title>Video to Blueprint Converter</title>
+                <meta property="og:title" content="Video to Blueprint Converter" />
+                <meta name="twitter:title" content="Video to Blueprint Converter" />
+                <meta name="description" content="Effortlessly convert video into Factorio blueprints with this online tool. Transform your visual content into playable game elements seamlessly." />
+                <meta property="og:description" content="Effortlessly convert video into Factorio blueprints with this online tool. Transform your visual content into playable game elements seamlessly." />
+                <meta name="twitter:description" content="Effortlessly convert video into Factorio blueprints with this online tool. Transform your visual content into playable game elements seamlessly." />
             </Head>
             <div className="flex flex-col gap-4">
-                <video muted ref={videoRef} className="hidden"/>
+                <video muted ref={videoRef} className="hidden" />
                 <p className="font-bold text-2xl">This generator creates very huge Blueprints even for 10 second video. I recommend using GIFs instead, you just need to convert them to videos. Converter I use:<a className="underline text-blue-400 hover:text-blue-800 transition-colors" href="https://convertio.co/gif-mp4/">https://convertio.co/gif-mp4/</a></p>
                 <div className="flex gap-4 items-center">
                     <input type="file" accept="video/*" onChange={(e) => {

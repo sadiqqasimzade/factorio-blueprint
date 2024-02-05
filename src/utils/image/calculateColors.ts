@@ -8,17 +8,15 @@ import rgbToHex from "./rgbToHex";
  * @param imageColors result of calculateColors function
  */
 export function calculateColorsForLamps(imageColors: string[][]): number[][][] {
-
-  var color_indexes: number[][] = [];
-  
+  let color_indexes: number[][] = [];
   const result: number[][][] = [];
-  const step = Math.ceil(imageColors[0].length / 20);
+  const length = imageColors[0].length;
+  const step = Math.ceil(length / 20);
   for (let i = 0; i < imageColors.length; i++) {
     color_indexes = [];
     for (let count = 0; count < step; count++) {
       const part20: number[] = [];
-      for (let j = 0; j < imageColors[0].length; j += step) {
-
+      for (let j = 0; j < length; j += step) {
         part20.push(-(color_priority.indexOf(lampColors[imageColors[i][j]]) + 1));
       }
       color_indexes.push(part20);
