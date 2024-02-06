@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang='en'>
       <Head>
-        <meta name="keywords" content="Factorio,Blueprint,Converter,Blueprint-Converter,Image to Blueprint" />
+        <meta name="keywords" content="Factorio,Blueprint,Converter,Blueprint-Converter,Image to Blueprint,Blueprint Generator" />
         <meta name="author" content="Sadiq Qasimzade" />
         <meta name="theme-color" content="#0C343D" />
 
