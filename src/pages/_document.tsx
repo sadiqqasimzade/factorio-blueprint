@@ -10,13 +10,13 @@ export default function Document() {
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Factorio Tools" />
-        <meta property="og:image" content="https://factorio-blueprint.vercel.app/imgs/favicons/android-chrome-512x512.png" />
+        <meta property="og:image" content="https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif" />
         <meta property="og:url" content="https://factorio-blueprint.vercel.app" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="https://factorio-blueprint.vercel.app" />
         <meta name="twitter:creator" content="sadiq_qasimzade" />
-        <meta name="twitter:image" content="https://factorio-blueprint.vercel.app/imgs/favicons/android-chrome-512x512.png" />
+        <meta name="twitter:image" content="https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif" />
 
         <link rel="manifest" href="manifest.json" />
         <meta name="google-site-verification" content="pcVqOWBcshqtczsXmc7uPJNVNQogS1wN4WJmaDeNPpM" />
