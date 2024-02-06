@@ -24,7 +24,6 @@ export default function App({ Component, pageProps }: AppProps) {
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
-            rtl={false}
             pauseOnFocusLoss
             draggable
             pauseOnHover
