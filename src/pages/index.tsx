@@ -1,8 +1,21 @@
 import Head from 'next/head'
 import Card from '../components/card/card'
+import { useContext, useEffect } from 'react'
+import ModalContext from '../contexts/modalContext'
 
 
 export default function Home() {
+  const { hideModal, modalIsActive } = useContext(ModalContext)
+  useEffect(() => {
+    if (modalIsActive()) {
+      hideModal()
+    }
+
+    return () => {
+
+    }
+  }, [])
+
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5 '>
       <Head>
