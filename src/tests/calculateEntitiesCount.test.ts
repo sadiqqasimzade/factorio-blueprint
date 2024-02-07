@@ -5,10 +5,11 @@ import BpLamp from "../classes/BpLamp"
 import BpSubstaion from "../classes/BpSubstaion"
 import { calculateEntitiesCount } from "../utils/calculateEntitiesCount"
 import imgToLampBlueprintConvertor from "../utils/convertors/imgToLampBlueprintConvertor"
+import { calculateColorsForLamps } from "../utils/image/calculateColors"
 
 describe('calculateEntitiesCount', () => {
     const getRealValue = (x: number, y: number): Blueprint => {
-        const res = imgToLampBlueprintConvertor(Array<number[][]>(x).fill(Array<number[]>(Math.ceil(y / 20)).fill(Array<number>(Math.ceil(y / Math.ceil(y / 20))).fill(0))))
+        const res = imgToLampBlueprintConvertor(calculateColorsForLamps(Array<string[]>(x).fill(Array<string>(y).fill('ffffff'))))      
         return res
     }
 

@@ -4,25 +4,27 @@ import findClosestColor from "./findClosestColor";
 import rgbToHex from "./rgbToHex";
 
 /**
- *
- * @param imageColors result of calculateColors function
+ * * @param array of colums array which contains string [col1[row1,row2...],col2[row1,row2]....]
+ * 
  */
 export function calculateColorsForLamps(imageColors: string[][]): number[][][] {
   let color_indexes: number[][] = [];
   const result: number[][][] = [];
   const length = imageColors[0].length;
   const step = Math.ceil(length / 20);
-  for (let i = 0; i < imageColors.length; i++) {
+
+  imageColors.forEach(col => {
     color_indexes = [];
     for (let count = 0; count < step; count++) {
       const part20: number[] = [];
-      for (let j = 0; j < length; j += step) {
-        part20.push(-(color_priority.indexOf(lampColors[imageColors[i][j]]) + 1));
+      for (let j = count; j < length; j += step) {
+        part20.push(-(color_priority.indexOf(lampColors[col[j]]) + 1));
       }
       color_indexes.push(part20);
     }
     result.push(color_indexes);
-  }
+  });
+
   return result;
 }
 

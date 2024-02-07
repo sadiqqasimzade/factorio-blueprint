@@ -8,7 +8,7 @@ export const lampColors: { [color_hex: string]: TBpSignal } = {
     "FFFFFF": signals.signal_white,
     "FFFF00": signals.signal_yellow,
     "008000": signals.signal_green,
-    "FFC0Cb": signals.signal_pink,
+    "fd00fb": signals.signal_pink,
     "30D5C8": signals.signal_cyan,
     "000000": signals.signal_black,
 };
