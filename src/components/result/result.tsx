@@ -17,11 +17,6 @@ export default function Result({ pixelArt, convert_to }: Props) {
         ? imgToLampBlueprintConvertor(calculateColorsForLamps(pixelArt))
         : imgToBrickBlueprintConvertor(pixelArt),
     ))
-
-
-    return () => {
-
-    }
   }, [])
 
   return (

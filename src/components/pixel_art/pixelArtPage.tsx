@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { lampColorsArr, tileColorsArr } from '@/src/consts/colorsEnum'
 import { calculateColorsInCanvas } from '@/src/utils/image/calculateColors'
 import ColorPicker from './colorPicker'
@@ -35,11 +35,9 @@ export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, 
     }
 
 
-    const updateCell = (x: number, y: number) => {
-        const temp = cells.map((arr) => [...arr]);
-        temp[y][x] = selectedColor
-        setCells(temp)
-    }
+    const updateCell = useCallback((x: number, y: number) => {
+        setCells(prev => prev!.map((col, j) => j === y ? col.map((cell, i) => i === x ? selectedColor : cell) : col))
+    }, [selectedColor])
 
     return (
         <>
