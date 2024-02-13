@@ -84,7 +84,7 @@ export default function VideoConverter() {
             </Head>
             <div className="flex flex-col gap-4">
                 <video muted ref={videoRef} className="hidden" />
-                <p className="font-bold text-2xl">This generator creates very huge Blueprints even for 10 second video. I recommend using GIFs instead, you just need to convert them to videos. Converter I use:<a className="underline text-blue-400 hover:text-blue-800 transition-colors" href="https://convertio.co/gif-mp4/">https://convertio.co/gif-mp4/</a></p>
+                <p className="font-bold text-2xl">This generator creates very huge Blueprints even for 10 second video. I recommend using GIFs instead, you just need to convert them to videos.<a className="underline text-blue-400 hover:text-blue-800 transition-colors" target="_blank" href="https://convertio.co/gif-mp4/">Converter I used</a></p>
                 <div className="flex gap-4 items-center">
                     <input type="file" accept="video/*" onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
@@ -102,12 +102,12 @@ export default function VideoConverter() {
                 <div className="flex gap-2 justify-between">
                     <div className="flex flex-col gap-2 w-full">
                         <label>Width</label>
-                        <input type="number" className="text-black px-2 py-1 rounded-md" value={width} onChange={(e) => setWidth(Number(e.target.value))} />
+                        <input type="number" className="text-black px-2 py-1 rounded-md" value={width} onChange={(e) => setWidth(Number(e.target.value))} min={minW} max={maxW} />
                         <label>min:{minW} max:{maxW} </label>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <label>Height</label>
-                        <input type="number" className="text-black px-2 py-1 rounded-md" value={height} onChange={(e) => setHeight(Number(e.target.value))} />
+                        <input type="number" className="text-black px-2 py-1 rounded-md" value={height} onChange={(e) => setHeight(Number(e.target.value))} min={minH} max={maxH} />
                         <label>min:{minH} max:{maxH} </label>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
@@ -141,7 +141,7 @@ export default function VideoConverter() {
                 </div>
                 <div>
                     <p>Result</p>
-                    <p ref={resultRef} onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Succesfully copied') : toast.error('Unable to copy')) }} className="h-96 overflow-y-auto mt-5 break-all transition-all" />
+                    <p ref={resultRef} onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Succesfully copied') : toast.error('Unable to copy')) }} className="max-h-80 overflow-y-auto mt-5 break-all transition-all" />
                 </div>
             </div>
         </Container>

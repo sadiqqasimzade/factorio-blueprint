@@ -21,6 +21,7 @@ body {
     transparent 1%) center,
     $dot-color;
   background-size: $dot-space $dot-space;
+  background-position: top;
 }
 
 .page-transition-enter {

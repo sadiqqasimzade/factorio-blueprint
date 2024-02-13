@@ -1,12 +1,20 @@
 import validateFiles from "@/src/utils/handlers/validateFiles";
-import { useRef } from "react";
+import React, { useRef } from "react";
 
+
+
+
+
+function reset(dragdropareaRef: React.RefObject<HTMLDivElement>, dragdroptitleRef: React.RefObject<HTMLParagraphElement>,resultRef:React.RefObject<HTMLParagraphElement>) {
+  dragdropareaRef.current!.classList.remove('bg-red-600', 'bg-purple-600');
+  dragdroptitleRef.current!.innerText = "Drop Image file here,or click";
+  resultRef.current!.innerText=""
+}
 
 type Props = {
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
   setSkipInput: React.Dispatch<React.SetStateAction<boolean>>
 };
-
 
 export default function FileDragAndDrop({ setImage, setSkipInput }: Props) {
   //Refs
@@ -18,6 +26,7 @@ export default function FileDragAndDrop({ setImage, setSkipInput }: Props) {
   //#region handlers
   function handleDragIn(e: React.DragEvent<HTMLDivElement>): void {
     e.preventDefault();
+    reset(dragdropareaRef, dragdroptitleRef, resultRef);
     if (e.dataTransfer.items && e.dataTransfer.items.length > 0 && e.dataTransfer.items[0].kind === "file" && e.dataTransfer.items[0].type.includes("image")) {
       if (e.dataTransfer.items.length > 1) {
         dragdroptitleRef.current!.innerText = "Only first image will be used";
@@ -30,8 +39,7 @@ export default function FileDragAndDrop({ setImage, setSkipInput }: Props) {
   }
   function handleDragOut(e: React.DragEvent<HTMLDivElement>): void {
     e.preventDefault();
-    dragdropareaRef.current!.classList.remove('bg-red-600', 'bg-purple-600');
-    dragdroptitleRef.current!.innerText = "Drop Image file here,or click";
+    reset(dragdropareaRef, dragdroptitleRef,resultRef);
   }
   //#endregion
   //#region Input
@@ -76,7 +84,7 @@ export default function FileDragAndDrop({ setImage, setSkipInput }: Props) {
         accept="image/*"
         onChange={handleInputChange}
       ></input>
-      <div className="h-52 border-2 mt-4 border-dashed border-yellow-400 bg-purple-900 grid place-items-center relative" ref={dragdropareaRef}>
+      <div className="h-52 border-2 mt-4 border-dashed border-yellow-400 bg-purple-900 grid place-items-center relative cursor-pointer" ref={dragdropareaRef}>
         <div
           className="absolute w-full h-full"
           onDragEnter={handleDragIn}

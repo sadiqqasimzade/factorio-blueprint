@@ -50,7 +50,7 @@ $card-link-color: #257cee;
       padding: 20px;
       background-repeat: no-repeat;
       background-size: cover;
-      background-position: center center;
+      background-position: center $card-header-h;
     }
   }
 
@@ -93,21 +93,17 @@ $card-link-color: #257cee;
     padding: 10px;
     position: absolute;
     color: $card-text-color;
-    bottom: 0;
     top: $card-header-h;
+    bottom: 0;
     left: 0;
     right: 0;
+    display: flex;
+    align-items: center;
     background: $card-background;
     z-index: 2;
     border-left: $card-border;
     border-right: $card-border;
     border-bottom: $card-border;
-
-    &--container {
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
   }
 
   &--header {
@@ -116,22 +112,14 @@ $card-link-color: #257cee;
     background: $card-header-background;
     position: absolute;
     transition: $card-transition;
-    text-align: center;
-    display: grid;
-    place-items: center;
     color: $card-text-color;
-    font-size: $card-header-font-size;
-    font-weight: $card-header-font-weight;
     z-index: 3;
     border-left: $card-header-border;
     border-right: $card-header-border;
     border-top: $card-header-border;
   }
 
-  &--link {
-    color: $card-link-color;
-    text-decoration: none;
-  }
+
 
   &:hover {
     .card {

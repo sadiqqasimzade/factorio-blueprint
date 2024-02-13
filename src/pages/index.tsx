@@ -10,10 +10,6 @@ export default function Home() {
     if (modalIsActive()) {
       hideModal()
     }
-
-    return () => {
-
-    }
   }, [])
 
   return (
@@ -27,40 +23,34 @@ export default function Home() {
         <meta name="twitter:description" content="Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions." />
       </Head>
       <Card
-        title="Decoder/Encoder"
-        desc="Decodes or Encodes factorio blueprint strings"
+        title="Blueprint Decoder and Encoder"
         link="decode-encode"
         imgSrc="decoder.png"
       />
       <Card
-        title="Image converter - Lamp"
-        desc="Converts image to factorio blueprint"
+        title="Image to Lamp Blueprint Converter"
         link="image-converter-lamp"
-        imgSrc="img-to-blueprint.png"
+        imgSrc="img_to_lamp.png"
       />
       <Card
-        title="Image converter - Brick"
-        desc="Converts image to factorio blueprint"
+        title="Image to Floor Blueprint Converter"
         link="image-converter-brick"
-        imgSrc="img-to-blueprint.png"
+        imgSrc="img_to_brick.png"
       />
       <Card
-        title="Pixel Art - Lamp"
-        desc="Converts Pixel Art to factorio blueprint"
+        title="Pixel Art to Lamp Blueprint Converter"
         link="pixel-art-lamp"
-        imgSrc="img-to-blueprint.png"
+        imgSrc="pixel_art_lamp.png"
       />
       <Card
-        title="Pixel Art - Brick"
-        desc="Converts Pixel Art to factorio blueprint"
+        title="Pixel Art to Floor Blueprint Converter"
         link="pixel-art-brick"
-        imgSrc="img-to-blueprint.png"
+        imgSrc="pixel_art_brick.png"
       />
       <Card
-        title="Video converter - Lamp"
-        desc="Converts video to factorio blueprint"
+        title="Video to Blueprint Converter"
         link="video-converter"
-        imgSrc="img-to-blueprint.png"
+        imgSrc="video_to_lamp.gif"
       />
     </div>
   )
