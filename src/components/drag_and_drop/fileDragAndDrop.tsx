@@ -1,75 +1,76 @@
 import validateFiles from "@/src/utils/handlers/validateFiles";
 import React, { useRef } from "react";
+import { toast } from "react-toastify";
 
-
-
-
-
-function reset(dragdropareaRef: React.RefObject<HTMLDivElement>, dragdroptitleRef: React.RefObject<HTMLParagraphElement>,resultRef:React.RefObject<HTMLParagraphElement>) {
-  dragdropareaRef.current!.classList.remove('bg-red-600', 'bg-purple-600');
-  dragdroptitleRef.current!.innerText = "Drop Image file here,or click";
-  resultRef.current!.innerText=""
-}
 
 type Props = {
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
   setSkipInput: React.Dispatch<React.SetStateAction<boolean>>
 };
 
+const cssDragDropAreaError = "!bg-red-600"
+const cssDragDropAreaSuccess = "!bg-purple-600"
+const cssDragDropAreaNormal = "bg-purple-900"
+const fileType = "image"
+
 export default function FileDragAndDrop({ setImage, setSkipInput }: Props) {
   //Refs
   const inputRef = useRef<HTMLInputElement>(null);
-  const resultRef = useRef<HTMLParagraphElement>(null);
-  const dragdropareaRef = useRef<HTMLDivElement>(null);
-  const dragdroptitleRef = useRef<HTMLParagraphElement>(null);
+  const dragDropAreaRef = useRef<HTMLDivElement>(null);
+  const dragDropTitleRef = useRef<HTMLParagraphElement>(null);
+
+  function resetDragDropArea() {
+    dragDropAreaRef.current!.classList.remove(cssDragDropAreaError, cssDragDropAreaSuccess);
+    dragDropTitleRef.current!.innerText = `Drop ${fileType} file here,or click`;
+  }
+
 
   //#region handlers
   function handleDragIn(e: React.DragEvent<HTMLDivElement>): void {
     e.preventDefault();
-    reset(dragdropareaRef, dragdroptitleRef, resultRef);
-    if (e.dataTransfer.items && e.dataTransfer.items.length > 0 && e.dataTransfer.items[0].kind === "file" && e.dataTransfer.items[0].type.includes("image")) {
+    resetDragDropArea();
+    if (e.dataTransfer.items && e.dataTransfer.items.length > 0 && e.dataTransfer.items[0].kind === "file" && e.dataTransfer.items[0].type.includes(fileType)) {
       if (e.dataTransfer.items.length > 1) {
-        dragdroptitleRef.current!.innerText = "Only first image will be used";
+        dragDropTitleRef.current!.innerText = `Only first ${fileType} will be used`;
       }
-      dragdropareaRef.current!.classList.add('bg-purple-600');
+      dragDropAreaRef.current!.classList.add(cssDragDropAreaSuccess);
     } else {
-      dragdroptitleRef.current!.innerText = "File must be Image";
-      dragdropareaRef.current!.classList.add('bg-red-600');
+      dragDropTitleRef.current!.innerText = "File must be " + fileType;
+      dragDropAreaRef.current!.classList.add(cssDragDropAreaError);
     }
   }
   function handleDragOut(e: React.DragEvent<HTMLDivElement>): void {
     e.preventDefault();
-    reset(dragdropareaRef, dragdroptitleRef,resultRef);
+    resetDragDropArea();
   }
-  //#endregion
-  //#region Input
   function handleDragDrop(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
     if (e.dataTransfer.items) {
-      const result = validateFiles(e.dataTransfer.files);
+      const result = validateFiles(e.dataTransfer.files, fileType);
       if (typeof result === "string") {
-        resultRef.current!.innerText = result;
-      } else {
+        toast.error(result);
+      }
+      else {
         var img = new Image();
         img.src = window.URL.createObjectURL(result);
-        img.onload = () => {
-          setImage(img);
-        };
+        img.onload = () => setImage(img);
       }
     }
   }
+  //#endregion
+
+  //#region Input
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
     e.preventDefault();
     if (e.target.files) {
-      const result = validateFiles(e.target.files);
+      const result = validateFiles(e.target.files, fileType);
       if (typeof result === "string") {
-        resultRef.current!.innerText = result;
-      } else {
+        toast.error(result);
+      }
+      else {
         const img = new Image();
         img.src = window.URL.createObjectURL(result);
-        img.onload = () => {
-          setImage(img);
-        };
+        img.onload = () => setImage(img);
       }
     }
   }
@@ -81,10 +82,10 @@ export default function FileDragAndDrop({ setImage, setSkipInput }: Props) {
         type="file"
         className="hidden"
         ref={inputRef}
-        accept="image/*"
+        accept={fileType + '/*'}
         onChange={handleInputChange}
       ></input>
-      <div className="h-52 border-2 mt-4 border-dashed border-yellow-400 bg-purple-900 grid place-items-center relative cursor-pointer" ref={dragdropareaRef}>
+      <div className={"h-52 border-2 mt-4 border-dashed border-yellow-400 grid place-items-center relative cursor-pointer " + cssDragDropAreaNormal} ref={dragDropAreaRef}>
         <div
           className="absolute w-full h-full"
           onDragEnter={handleDragIn}
@@ -96,11 +97,10 @@ export default function FileDragAndDrop({ setImage, setSkipInput }: Props) {
             e.preventDefault();
           }}
         ></div>
-        <p ref={dragdroptitleRef} className="font-bold text-center text-xl">
+        <p ref={dragDropTitleRef} className="font-bold text-center text-xl">
           Drop Image file here,or click
         </p>
       </div>
-      <p ref={resultRef} className="text-red-600 text-xl font-bold"></p>
       <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
         setSkipInput(true);
       }}>Create pixel art without image</button>

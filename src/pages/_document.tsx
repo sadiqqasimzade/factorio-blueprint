@@ -21,7 +21,7 @@ export default function Document() {
         <link rel="manifest" href="manifest.json" />
         <meta name="google-site-verification" content="pcVqOWBcshqtczsXmc7uPJNVNQogS1wN4WJmaDeNPpM" />
         <meta name="yandex-verification" content="e8eb17829dd8cb60" />
-        <meta name="robots" content="index, follow"/>
+        <meta name="robots" content="index, follow" />
 
         <meta name="application-name" content="Factorio Tools" />
 
