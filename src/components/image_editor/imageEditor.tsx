@@ -1,9 +1,11 @@
 import { calculateEntitiesCount } from "@/src/utils/calculateEntitiesCount";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
+
 type Props = {
-  Image: HTMLImageElement;
+  image: HTMLImageElement;
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
   setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | undefined>>;
   maxW: number,
@@ -13,11 +15,11 @@ type Props = {
   convertTo: 'lamp' | 'brick'
 };
 
-export default function ImageEditor({ Image, setImage, setresultCanvas, maxW, maxH, minW, minH, convertTo }: Props) {
+export default function ImageEditor({ image, setImage, setresultCanvas, maxW, maxH, minW, minH, convertTo }: Props) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [width, setWidth] = useState<number>(Image.naturalWidth);
-  const [height, setHeight] = useState<number>(Image.naturalHeight);
+  const [width, setWidth] = useState<number>(image.naturalWidth);
+  const [height, setHeight] = useState<number>(image.naturalHeight);
   const [aspectRatio, setAspectRatio] = useState<boolean>(true);
   const entityCount: [number, number, number, number] | undefined = convertTo === 'lamp' ? calculateEntitiesCount(width, height) : undefined
 
@@ -34,7 +36,7 @@ export default function ImageEditor({ Image, setImage, setresultCanvas, maxW, ma
     canvas.width = width;
     canvas.height = height;
 
-    context.drawImage(Image, 0, 0, width, height);
+    context.drawImage(image, 0, 0, width, height);
   };
 
   const handleAspectRatioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,11 +48,11 @@ export default function ImageEditor({ Image, setImage, setresultCanvas, maxW, ma
     if (newWidth > maxW) {
       newWidth = maxW;
     }
-    if (aspectRatio && Image) {
-      let newHeight = (newWidth / Image.width) * Image.height;
+    if (aspectRatio && image) {
+      let newHeight = (newWidth / image.width) * image.height;
       if (newHeight > maxH) {
         setHeight(Math.floor(maxH));
-        setWidth(Math.floor((maxH / Image.height) * Image.width));
+        setWidth(Math.floor((maxH / image.height) * image.width));
       } else {
         setHeight(Math.floor(newHeight));
         setWidth(Math.floor(newWidth));
@@ -66,11 +68,11 @@ export default function ImageEditor({ Image, setImage, setresultCanvas, maxW, ma
       newHeight = maxH;
     }
 
-    if (aspectRatio && Image) {
-      let newWidth = (newHeight / Image.height) * Image.width;
+    if (aspectRatio && image) {
+      let newWidth = (newHeight / image.height) * image.width;
       if (newWidth > maxW) {
         setWidth(Math.floor(maxW));
-        setWidth(Math.floor((newHeight / Image.height) * maxW));
+        setWidth(Math.floor((newHeight / image.height) * maxW));
       } else {
         setWidth(Math.floor(newWidth));
         setHeight(Math.floor(newHeight));
@@ -101,7 +103,6 @@ export default function ImageEditor({ Image, setImage, setresultCanvas, maxW, ma
             />
             <p>Min:{minW}/Max:{maxW}</p>
           </div>
-
           <div className="flex flex-col">
             <p className="text-xl font-bold">Height</p>
             <input
@@ -126,19 +127,19 @@ export default function ImageEditor({ Image, setImage, setresultCanvas, maxW, ma
           </div>
           {entityCount && <div>
             <p className="flex font-bold gap-2">
-              <img className="w-8 h-8" src="/imgs/entites/constantCombinator.png" />
+              <Image className="w-8 h-8" alt="" src={require("@/public/imgs/entites/constantCombinator.png")} />
               {entityCount[0]}</p>
-
+              
             <p className="flex font-bold gap-2">
-              <img className="w-8 h-8" src="/imgs/entites/substation.png" />
+              <Image className="w-8 h-8" alt="" src={require("@/public/imgs/entites/substation.png")} />
               {entityCount[1]}</p>
 
             <p className="flex font-bold gap-2">
-              <img className="w-8 h-8" src="/imgs/entites/arithmeticCombinator.png" />
+              <Image className="w-8 h-8" alt="" src={require("@/public/imgs/entites/arithmeticCombinator.png")} />
               {entityCount[2]}</p>
 
             <p className="flex font-bold gap-2">
-              <img className="w-8 h-8" src="/imgs/entites/lamp.png" />
+              <Image className="w-8 h-8" alt="" src={require("@/public/imgs/entites/lamp.png")} />
               {entityCount[3]}</p>
           </div>
           }

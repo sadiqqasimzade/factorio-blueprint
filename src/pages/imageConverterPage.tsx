@@ -27,7 +27,7 @@ export default function ImageConverterPage({ convertTo, skipInput }: Props) {
                 pixelArt ? <Result pixelArt={pixelArt} convert_to={convertTo} /> :
                     resultCanvas ? <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} convertTo={convertTo} /> :
                         pixelArtSize ? <PixelArtPage sizex={pixelArtSize.width} sizey={pixelArtSize.height} convertTo={convertTo} setPixelArt={setPixelArt} /> :
-                            validatedImage ? <ImageEditor Image={validatedImage} setImage={setValidatedImage} setresultCanvas={setResultCanvas} maxW={maxW} maxH={maxH} convertTo={convertTo} minW={5} minH={5} /> :
+                            validatedImage ? <ImageEditor image={validatedImage} setImage={setValidatedImage} setresultCanvas={setResultCanvas} maxW={maxW} maxH={maxH} convertTo={convertTo} minW={5} minH={5} /> :
                                 <FileDragAndDrop setImage={setValidatedImage} setSkipInput={setSkipInput} />
             }
             {
