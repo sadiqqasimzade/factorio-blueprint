@@ -9,6 +9,5 @@
 
 
 # Ideas
-- Convert large video by passing chunks of memory blocks?
-- Audio to blueprint? Laplace transform for signal processing? Midi only format?
+- Convert large video by passing chunks of memory blocks (book with multiple blueprints?)?  //too big.Factorio will freeze
 - Batter Json visualizer for blueprint decoder pege?
