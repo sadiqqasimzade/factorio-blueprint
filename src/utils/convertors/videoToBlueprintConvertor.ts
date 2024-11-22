@@ -4,7 +4,7 @@ import BpConstCombinator from "@/src/classes/BpConstCombinator";
 import BpDeciderCombinator from "@/src/classes/BpDeciderCombinator";
 import { BpMediumPole } from "@/src/classes/BpMediumPole";
 import { Directions } from "@/src/consts/enums";
-import { signal_priority, signals } from "@/src/consts/signalsEnum";
+import { signal_priority, Signals } from "@/src/consts/signalsEnum";
 import { CreateScreen } from "./createScreen";
 import BpIcon from "@/src/classes/BpIcon";
 import ArithmeticCondition from "@/src/classes/BpArithmeticCondition";

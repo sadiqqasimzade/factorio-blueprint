@@ -4,6 +4,7 @@ import ImageEditor from "../components/image_editor/imageEditor";
 import SizeInput from "../components/size_input/sizeInput";
 import PixelArtPage from "../components/pixel_art/pixelArtPage";
 import Result from "../components/result/result";
+import { signal_priority } from "../consts/signalsEnum";
 
 
 type Props = {
@@ -18,13 +19,13 @@ export default function ImageConverterPage({ convertTo, skipInput }: Props) {
     const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number } | undefined>(undefined);
     const [skipInputState, setSkipInput] = useState<boolean>(skipInput)
     const maxW = 500
-    const maxH = convertTo === 'lamp' ? 100 : 500
+    const maxH = convertTo === 'lamp' ? signal_priority.length : 500
     return (
         <>
             <p className="text-white font-bold text-2xl mb-4">Convert image to {convertTo} Blueprint</p>
 
             {
-                pixelArt ? <Result pixelArt={pixelArt} convert_to={convertTo} /> :
+                pixelArt ? <Result canvas={resultCanvas!} pixelArt={pixelArt} convert_to={convertTo} /> :
                     resultCanvas ? <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} convertTo={convertTo} /> :
                         pixelArtSize ? <PixelArtPage sizex={pixelArtSize.width} sizey={pixelArtSize.height} convertTo={convertTo} setPixelArt={setPixelArt} /> :
                             validatedImage ? <ImageEditor image={validatedImage} setImage={setValidatedImage} setresultCanvas={setResultCanvas} maxW={maxW} maxH={maxH} convertTo={convertTo} minW={5} minH={5} /> :

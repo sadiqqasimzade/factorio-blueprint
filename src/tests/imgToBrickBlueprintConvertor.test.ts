@@ -193,7 +193,7 @@ describe('imgToBrick test', () => {
                     }
                 ],
                 "item": "blueprint",
-                "version": 281479276527617
+                "version": 562949954732035
             }
         )
     })

@@ -7,14 +7,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 
-type Props = { pixelArt: string[][]; convert_to: "lamp" | "brick" };
+type Props = { pixelArt: string[][]; convert_to: "lamp" | "brick"; canvas: HTMLCanvasElement };
 
-export default function Result({ pixelArt, convert_to }: Props) {
+export default function Result({ pixelArt, convert_to, canvas }: Props) {
   const [bpstring, setBpstring] = useState<string>()
   useEffect(() => {
     setBpstring(blueprintEncoder(
       convert_to === 'lamp'
-        ? imgToLampBlueprintConvertor(calculateColorsForLamps(pixelArt))
+        ? imgToLampBlueprintConvertor(calculateColorsForLamps(canvas))
         : imgToBrickBlueprintConvertor(pixelArt),
     ))
   }, [])

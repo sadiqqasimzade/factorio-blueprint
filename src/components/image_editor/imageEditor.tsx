@@ -1,5 +1,3 @@
-import { calculateEntitiesCount } from "@/src/utils/calculateEntitiesCount";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -15,15 +13,18 @@ type Props = {
   convertTo: 'lamp' | 'brick'
 };
 
-export default function ImageEditor({ image, setImage, setresultCanvas, maxW, maxH, minW, minH, convertTo }: Props) {
+export default function ImageEditor({ image, setImage, setresultCanvas, maxW, maxH, minW, minH }: Props) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [width, setWidth] = useState<number>(image.naturalWidth);
-  const [height, setHeight] = useState<number>(image.naturalHeight);
-  const [aspectRatio, setAspectRatio] = useState<boolean>(true);
-  const entityCount: [number, number, number, number] | undefined = convertTo === 'lamp' ? calculateEntitiesCount(width, height) : undefined
+  const [width, setWidth] = useState<number>(0);
+  const [height, setHeight] = useState<number>(0);
+  const [keepAspectRatio, setKeepAspectRatio] = useState<boolean>(true);
 
 
+  /**
+   * clear and redraw canvas with new size
+   * @returns void
+   */
   const handleResize = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -39,16 +40,14 @@ export default function ImageEditor({ image, setImage, setresultCanvas, maxW, ma
     context.drawImage(image, 0, 0, width, height);
   };
 
-  const handleAspectRatioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAspectRatio(event.target.checked);
-  };
+
 
   const handleWidthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let newWidth = Number(event.target.value);
     if (newWidth > maxW) {
       newWidth = maxW;
     }
-    if (aspectRatio && image) {
+    if (keepAspectRatio && image) {
       let newHeight = (newWidth / image.width) * image.height;
       if (newHeight > maxH) {
         setHeight(Math.floor(maxH));
@@ -68,7 +67,7 @@ export default function ImageEditor({ image, setImage, setresultCanvas, maxW, ma
       newHeight = maxH;
     }
 
-    if (aspectRatio && image) {
+    if (keepAspectRatio && image) {
       let newWidth = (newHeight / image.height) * image.width;
       if (newWidth > maxW) {
         setWidth(Math.floor(maxW));
@@ -86,12 +85,28 @@ export default function ImageEditor({ image, setImage, setresultCanvas, maxW, ma
     handleResize();
   }, [width, height]);
 
+  /**
+   * initial canvas size resized to max available size saving aspect ratio
+   * */
+  useEffect(() => {
+    if (image) {
+      const aspectRatio = image.width / image.height;
+      let newWidth = maxW;
+      let newHeight = newWidth / aspectRatio;
+      if (newHeight > maxH) {
+        newHeight = maxH;
+        newWidth = newHeight * aspectRatio;
+      }
+      setWidth(Math.floor(newWidth));
+      setHeight(Math.floor(newHeight));
+    }
+  }, [])
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-20">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col">
+      <div className="flex flex-col gap-6">
+        <div className="flex md:flex-row flex-col gap-4">
+          <div className="flex flex-col w-full">
             <p className="text-xl font-bold">Width</p>
             <input
               type="number"
@@ -103,7 +118,7 @@ export default function ImageEditor({ image, setImage, setresultCanvas, maxW, ma
             />
             <p>Min:{minW}/Max:{maxW}</p>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <p className="text-xl font-bold">Height</p>
             <input
               type="number"
@@ -116,36 +131,29 @@ export default function ImageEditor({ image, setImage, setresultCanvas, maxW, ma
             <p>Min:{minH}/Max:{maxH}</p>
           </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between">
-            <p className="text-xl font-bold">Maintain aspect ratio</p>
-            <input
-              type="checkbox"
-              checked={aspectRatio}
-              onChange={handleAspectRatioChange}
-            />
-          </div>
-          {entityCount && <div>
-            <p className="flex font-bold gap-2">
-              <Image className="w-8 h-8" alt="" src={require("@/public/imgs/entites/constantCombinator.png")} />
-              {entityCount[0]}</p>
-              
-            <p className="flex font-bold gap-2">
-              <Image className="w-8 h-8" alt="" src={require("@/public/imgs/entites/substation.png")} />
-              {entityCount[1]}</p>
+        <div className="flex md:flex-row md:justify-between flex-col gap-4">
 
-            <p className="flex font-bold gap-2">
-              <Image className="w-8 h-8" alt="" src={require("@/public/imgs/entites/arithmeticCombinator.png")} />
-              {entityCount[2]}</p>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4">
 
-            <p className="flex font-bold gap-2">
-              <Image className="w-8 h-8" alt="" src={require("@/public/imgs/entites/lamp.png")} />
-              {entityCount[3]}</p>
+              <p className="text-xl font-bold">Maintain original aspect ratio</p>
+              <input
+                type="checkbox"
+                checked={keepAspectRatio}
+                onChange={(e) => setKeepAspectRatio(e.target.checked)}
+              />
+            </div>
+            <div className="flex gap-4">
+              <p className="text-xl font-bold">Background</p>
+              <input
+                type="checkbox"
+                checked={keepAspectRatio}
+                onChange={(e) => setKeepAspectRatio(e.target.checked)}
+              />
+            </div>
           </div>
-          }
-        </div>
-        <div className="col-span-2">
-          <div className="flex justify-between">
+
+          <div className="flex gap-4">
             <button
               onClick={() => { setImage(undefined) }}
               className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md"
@@ -169,6 +177,7 @@ export default function ImageEditor({ image, setImage, setresultCanvas, maxW, ma
             </button>
           </div>
         </div>
+
       </div>
       <p className="text-2xl font-bold mt-5">Result size</p>
       <canvas className="mt-2" ref={canvasRef} />

@@ -7,6 +7,18 @@
 
 
 
+fix video
+fix tests
+add bg options
+check for rerenders
+
+better json visualiser
+check lang errors
+conncect font
+
+add more tiles
+make tiles work with decimal
+
 
 # Ideas
 - Convert large video by passing chunks of memory blocks (book with multiple blueprints?)?  //too big.Factorio will freeze

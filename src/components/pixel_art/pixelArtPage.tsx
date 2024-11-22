@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { lampColorsArr, tileColorsArr } from '@/src/consts/colorsEnum'
+import { tileColorsArr } from '@/src/consts/colorsEnum'
 import { calculateColorsInCanvas } from '@/src/utils/image/calculateColors'
 import ColorPicker from './colorPicker'
 import PixelArtGrid from './pixelArtGrid'
@@ -20,12 +20,12 @@ type Props = {
 }
 
 export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Props) {
+    const lampColorsArr = ["555555","666666","777777","888888"]
+    const [cells, setCells] = useState((sizex && sizey) ?
+        Array<string[]>(sizex).fill(Array<string>(sizey).fill(convertTo === 'lamp' ? "555555" : tileColorsArr[0])) :
+        calculateColorsInCanvas(resultCanvas!, convertTo === 'lamp' ? lampColorsArr : tileColorsArr))
 
-    const [cells, setCells] = useState(typeof (sizex) === 'number' ?
-        Array<string[]>(sizex).fill(Array<string>(sizey!).fill(convertTo === 'lamp' ? lampColorsArr[0] : tileColorsArr[0])) :
-        calculateColorsInCanvas(resultCanvas, convertTo === 'lamp' ? lampColorsArr : tileColorsArr))
-
-    const [selectedColor, setSelectedColor] = useState(convertTo === 'lamp' ? lampColorsArr[0] : tileColorsArr[0])
+    const [selectedColor, setSelectedColor] = useState(convertTo === 'lamp' ? "555555" : tileColorsArr[0])
     const colors = convertTo === 'lamp' ? lampColorsArr : tileColorsArr
 
     if (typeof (sizex) != 'number') {

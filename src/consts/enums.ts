@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 export enum Versions {
-  LATEST = 281479276527617,
+  LATEST = 562949954732035,
 }
 
 // export enum SignalTypes {
