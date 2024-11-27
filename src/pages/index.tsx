@@ -38,11 +38,6 @@ export default function Home() {
         imgSrc="img_to_brick.png"
       />
       <Card
-        title="Pixel Art to Lamp Blueprint Converter"
-        link="pixel-art-lamp"
-        imgSrc="pixel_art_lamp.png"
-      />
-      <Card
         title="Pixel Art to Floor Blueprint Converter"
         link="pixel-art-brick"
         imgSrc="pixel_art_brick.png"

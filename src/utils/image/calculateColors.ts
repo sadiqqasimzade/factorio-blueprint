@@ -1,31 +1,22 @@
-import { lampColors } from "@/src/consts/colorsEnum";
-import { color_priority } from "@/src/consts/signalsEnum";
-import findClosestColor from "./findClosestColor";
-import rgbToHex from "./rgbToHex";
+import { hexToDecimal, rgbToDecimal, rgbToHex } from "./colorConvertors";
 
-/**
- * * @param array of colums array which contains string [col1[row1,row2...],col2[row1,row2]....]
- * 
- */
-export function calculateColorsForLamps(imageColors: string[][]): number[][][] {
-  let color_indexes: number[][] = [];
-  const result: number[][][] = [];
-  const length = imageColors[0].length;
-  const step = Math.ceil(length / 20);
 
-  imageColors.forEach(col => {
-    color_indexes = [];
-    for (let count = 0; count < step; count++) {
-      const part20: number[] = [];
-      for (let j = count; j < length; j += step) {
-        part20.push(-(color_priority.indexOf(lampColors[col[j]]) + 1));
-      }
-      color_indexes.push(part20);
+
+export function getDecimalColorsFromCanvas(canvas: HTMLCanvasElement): number[][] {
+  const result: number[][] = []
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+
+  for (let i = 0; i < canvas.width; i++) {
+    const col = []
+    for (let j = 0; j < canvas.height; j++) {
+      const data = context!.getImageData(i, j, 1, 1).data;
+      let colorDecimal = rgbToDecimal(data[0], data[1], data[2]);
+
+      col.push(colorDecimal)
     }
-    result.push(color_indexes);
-  });
-
-  return result;
+    result.push(col)
+  }
+  return result
 }
 
 /**
@@ -34,19 +25,40 @@ export function calculateColorsForLamps(imageColors: string[][]): number[][][] {
  * @param availableColors array of color strings
  * @returns string array of color arrays for cols
  */
-export function calculateColorsInCanvas(canvas: HTMLCanvasElement, availableColors: string[]): string[][] {
+export function calculateClosestColorsInCanvas(canvas: HTMLCanvasElement, availableColors: string[]): string[][] {
   const context = canvas.getContext("2d", { willReadFrequently: true });
   const result = []
   for (let i = 0; i < canvas.width; i++) {
     const col = []
     for (let j = 0; j < canvas.height; j++) {
       const data = context!.getImageData(i, j, 1, 1).data;
-      let hex = rgbToHex(data[0], data[1], data[2]);
-      hex = hex.length < 6 ? hex.replace(/(.)/g, "$1$1") : hex;
-      const match = findClosestColor(availableColors, hex);
+      let colorHex = rgbToHex(data[0], data[1], data[2]);
+      const match = findClosestColor(availableColors, colorHex);
       col.push(match)
     }
     result.push(col)
   }
   return result
+
 }
+
+/**
+  @param colorarr - array of available hex strings
+  @param hexstr - hex string to find closest match from colorarr
+  @returns closest match from colorarr as value
+  @description Converts hex string to decimal 
+*/
+export function findClosestColor(colorarr: string[], hexstr: string): string {
+  var min = 0xffffff;
+  var best = colorarr[0]
+  var current, i;
+  for (i = 0; i < colorarr.length; i++) {
+    current = hexToDecimal(colorarr[i], hexstr);
+    if (current < min) {
+      min = current;
+      best = colorarr[i];
+    }
+  }
+  return best;
+}
+

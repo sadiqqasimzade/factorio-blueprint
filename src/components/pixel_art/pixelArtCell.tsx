@@ -10,7 +10,7 @@ type Props = {
 
 export default memo(function PixelArtCell({ color, updateCell, x, y }: Props) {
     return (
-        <div className="w-5 h-5 outline outline-black" style={{ backgroundColor: '#' + color }} onClick={() => { updateCell(x, y) }} ></div>
+        <div className="w-5 h-5 outline outline-black" style={{ backgroundColor: "#" + color }} onClick={() => { updateCell(x, y) }} ></div>
     )
 })
 

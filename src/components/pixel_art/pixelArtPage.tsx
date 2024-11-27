@@ -1,40 +1,39 @@
+import { allTileColorsArr, basicTileColorsArr } from '@/src/consts/colorsEnum'
+import { calculateClosestColorsInCanvas } from '@/src/utils/image/calculateColors'
 import { useCallback, useState } from 'react'
-import { lampColorsArr, tileColorsArr } from '@/src/consts/colorsEnum'
-import { calculateColorsInCanvas } from '@/src/utils/image/calculateColors'
 import ColorPicker from './colorPicker'
 import PixelArtGrid from './pixelArtGrid'
-
 type Props = {
     sizex: number,
     sizey: number,
     resultCanvas?: undefined,
-    setPixelArt: React.Dispatch<React.SetStateAction<string[][] | undefined>>
-    convertTo: 'lamp' | 'brick'
+    setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>
+    isAllowedRefinedTiles?: boolean
 
 } | {
     sizex?: undefined,
     sizey?: undefined,
     resultCanvas: HTMLCanvasElement,
-    setPixelArt: React.Dispatch<React.SetStateAction<string[][] | undefined>>
-    convertTo: 'lamp' | 'brick'
+    setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>
+    isAllowedRefinedTiles?: boolean
 }
 
-export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, convertTo }: Props) {
+export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, isAllowedRefinedTiles }: Props) {
+    const [cells, setCells] = useState((sizex && sizey) ?
+        Array<string[]>(sizex).fill(Array<string>(sizey).fill(allTileColorsArr[0])) :
+        calculateClosestColorsInCanvas(resultCanvas!, isAllowedRefinedTiles ? allTileColorsArr : basicTileColorsArr))
+    // calculateClosestColorsInCanvas(resultCanvas!, tileColorsArr))
 
-    const [cells, setCells] = useState(typeof (sizex) === 'number' ?
-        Array<string[]>(sizex).fill(Array<string>(sizey!).fill(convertTo === 'lamp' ? lampColorsArr[0] : tileColorsArr[0])) :
-        calculateColorsInCanvas(resultCanvas, convertTo === 'lamp' ? lampColorsArr : tileColorsArr))
-
-    const [selectedColor, setSelectedColor] = useState(convertTo === 'lamp' ? lampColorsArr[0] : tileColorsArr[0])
-    const colors = convertTo === 'lamp' ? lampColorsArr : tileColorsArr
-
+    const [selectedColor, setSelectedColor] = useState<string>(isAllowedRefinedTiles ? allTileColorsArr[0] : basicTileColorsArr[0])
+    const colors = isAllowedRefinedTiles ? allTileColorsArr : basicTileColorsArr
+    // const colors = tileColorsArr
     if (typeof (sizex) != 'number') {
         const canvas = resultCanvas as HTMLCanvasElement
         sizex = canvas.width
         sizey = canvas.height
     }
 
-
+    console.log(colors)
     const updateCell = useCallback((x: number, y: number) => {
         setCells(prev => prev!.map((col, j) => j === y ? col.map((cell, i) => i === x ? selectedColor : cell) : col))
     }, [selectedColor])

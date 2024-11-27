@@ -3,26 +3,28 @@ import BpEntity from "./BpEntity";
 import Blueprint_Icon from "./BpIcon";
 import BpTile from "./BpTile";
 
-export default class Blueprint{
+export default class Blueprint {
   icons: Blueprint_Icon[];
   entities: BpEntity[];
-  tiles?:BpTile[];
+  tiles?: BpTile[];
+  wires?: TBpWire[]
   item: string;
   version: Versions;
 
   constructor(
     icons: Blueprint_Icon[],
     entities: BpEntity[],
-    tiles?:BpTile[],
+    tiles?: BpTile[],
+    wires?: TBpWire[]
   ) {
     this.icons = icons;
     this.entities = entities;
     this.item = "blueprint";
     this.version = Versions.LATEST;
-    this.tiles=tiles
-
-    //without this, the entity numbers will increase infinitly
+    this.tiles = tiles
+    this.wires = wires
     
-    BpEntity.entity_number=0
+    //without this, the entity numbers will increase infinitly
+    BpEntity.entity_number = 0
   }
 }

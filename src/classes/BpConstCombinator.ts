@@ -1,11 +1,10 @@
 import { Directions, EntityNames } from "../consts/enums";
 import BpEntity from "./BpEntity";
-import { BpStaticMethods } from "./BpStaticMethods";
 
 
-export default class BpConstCombinator extends BpEntity implements IBpConnectable, IBpDirectionable {
+export default class BpConstCombinator extends BpEntity implements IBpDirectionable {
     control_behavior: TBpConstCombinatorControlBehavior
-    connections: TBpEntityConnection | undefined;
+
     direction: Directions|undefined;
 
 
@@ -14,9 +13,7 @@ export default class BpConstCombinator extends BpEntity implements IBpConnectabl
         this.control_behavior = control_behavior
         this.direction = direction
     }
-    public makeConnection(entity: BpEntity & IBpConnectable, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: CableColors): void {
-        BpStaticMethods.makeConnection(this, entity, port, destinationPort, cable)
-    }
+
 }
 
 
