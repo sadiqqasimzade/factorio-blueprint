@@ -1,9 +1,9 @@
-import { tileColorsArr } from "../consts/colorsEnum"
+import { allTileColorsArr } from "../consts/colorsEnum"
 import imgToBrickBlueprintConvertor from "../utils/convertors/imgToBrickBlueprintConvertor"
 
 describe('imgToBrick test', () => {
     test('imgToBrick', () => {
-        expect(JSON.parse(JSON.stringify(imgToBrickBlueprintConvertor(Array<string[]>(5).fill(Array<string>(5).fill(tileColorsArr[0])))))).toEqual(
+        expect(JSON.parse(JSON.stringify(imgToBrickBlueprintConvertor(Array<string[]>(5).fill(Array<string>(5).fill(allTileColorsArr[0])))))).toEqual(
             {
                 "icons": [
                     {

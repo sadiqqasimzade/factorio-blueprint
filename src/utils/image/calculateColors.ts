@@ -1,5 +1,5 @@
-import findClosestColor from "./findClosestColor";
-import rgbToDecimal from "./rgbToDecimal";
+import { hexToDecimal, rgbToDecimal, rgbToHex } from "./colorConvertors";
+
 
 
 export function getDecimalColorsFromCanvas(canvas: HTMLCanvasElement): number[][] {
@@ -32,8 +32,8 @@ export function calculateClosestColorsInCanvas(canvas: HTMLCanvasElement, availa
     const col = []
     for (let j = 0; j < canvas.height; j++) {
       const data = context!.getImageData(i, j, 1, 1).data;
-      let colorDecimal = rgbToDecimal(data[0], data[1], data[2]);
-      const match = findClosestColor(availableColors, colorDecimal);
+      let colorHex = rgbToHex(data[0], data[1], data[2]);
+      const match = findClosestColor(availableColors, colorHex);
       col.push(match)
     }
     result.push(col)
@@ -42,19 +42,23 @@ export function calculateClosestColorsInCanvas(canvas: HTMLCanvasElement, availa
 
 }
 
-
-export function getHexColorsInCanvas(canvas: HTMLCanvasElement): string[][] {
-  const context = canvas.getContext("2d", { willReadFrequently: true });
-  const result = []
-  for (let i = 0; i < canvas.width; i++) {
-    const col = []
-    for (let j = 0; j < canvas.height; j++) {
-      const data = context!.getImageData(i, j, 1, 1).data;
-      let colorDecimal = rgbToDecimal(data[0], data[1], data[2]);
-      col.push(colorDecimal.toString(16).padStart(6, '0'))
+/**
+  @param colorarr - array of available hex strings
+  @param hexstr - hex string to find closest match from colorarr
+  @returns closest match from colorarr as value
+  @description Converts hex string to decimal 
+*/
+export function findClosestColor(colorarr: string[], hexstr: string): string {
+  var min = 0xffffff;
+  var best = colorarr[0]
+  var current, i;
+  for (i = 0; i < colorarr.length; i++) {
+    current = hexToDecimal(colorarr[i], hexstr);
+    if (current < min) {
+      min = current;
+      best = colorarr[i];
     }
-    result.push(col)
   }
-  return result
-
+  return best;
 }
+

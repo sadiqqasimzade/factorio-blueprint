@@ -147,7 +147,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
               />
             </div>
             {convertTo === "brick" && <div className="flex gap-4">
-              <p className="text-xl font-bold">Allow refined tiles (darker result)</p>
+              <p className="text-xl font-bold">Allow refined tiles</p>
               <input
                 type="checkbox"
                 checked={isAllowedRefinedTiles}

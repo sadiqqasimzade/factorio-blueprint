@@ -1,4 +1,4 @@
-import { tileColorsArr } from '@/src/consts/colorsEnum'
+import { allTileColorsArr, basicTileColorsArr } from '@/src/consts/colorsEnum'
 import { calculateClosestColorsInCanvas } from '@/src/utils/image/calculateColors'
 import { useCallback, useState } from 'react'
 import ColorPicker from './colorPicker'
@@ -20,13 +20,13 @@ type Props = {
 
 export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, isAllowedRefinedTiles }: Props) {
     const [cells, setCells] = useState((sizex && sizey) ?
-        Array<string[]>(sizex).fill(Array<string>(sizey).fill(tileColorsArr[0])) :
-        // calculateClosestColorsInCanvas(resultCanvas!, isAllowedRefinedTiles ? tileColorsArr : tileColorsArr.slice(0, 3)))
-        calculateClosestColorsInCanvas(resultCanvas!, tileColorsArr))
+        Array<string[]>(sizex).fill(Array<string>(sizey).fill(allTileColorsArr[0])) :
+        calculateClosestColorsInCanvas(resultCanvas!, isAllowedRefinedTiles ? allTileColorsArr : basicTileColorsArr))
+    // calculateClosestColorsInCanvas(resultCanvas!, tileColorsArr))
 
-    const [selectedColor, setSelectedColor] = useState(tileColorsArr[0])
-    // const colors = isAllowedRefinedTiles ? tileColorsArr : tileColorsArr.slice(0, 3)
-    const colors = tileColorsArr
+    const [selectedColor, setSelectedColor] = useState<string>(isAllowedRefinedTiles ? allTileColorsArr[0] : basicTileColorsArr[0])
+    const colors = isAllowedRefinedTiles ? allTileColorsArr : basicTileColorsArr
+    // const colors = tileColorsArr
     if (typeof (sizex) != 'number') {
         const canvas = resultCanvas as HTMLCanvasElement
         sizex = canvas.width

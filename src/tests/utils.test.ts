@@ -1,6 +1,6 @@
 import { lampColorsArr } from "../consts/colorsEnum"
+import rgbToDecimal from "../utils/image/colorConvertors"
 import findClosestColor from "../utils/image/findClosestColor"
-import rgbToDecimal from "../utils/image/rgbToDecimal"
 
 describe('Test rgbToHex', () => {
     test('Test rgbToHex', () => {
