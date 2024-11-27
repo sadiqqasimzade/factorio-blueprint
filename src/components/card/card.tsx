@@ -12,26 +12,6 @@ type Props = {
 
 export default function Card({ title, link, imgSrc }: Props) {
   return (
-    //// OLD
-    // <div className={styles["card"]}>
-    //   <div>
-    //     <Image src={gearIco} className={styles["card--gear"]} alt="" />
-    //     <Image src={gearIco} className={styles["card--gear"]} alt="" />
-    //   </div>
-    //   <div className={styles["card--header"]}>
-
-    //   </div>
-    //   <div>
-    //     <div className={styles["card--gear--rail"]}></div>
-    //     <div className={styles["card--gear--rail"]}></div>
-    //   </div>
-    //   <Link href={link} className={styles["card--video--container"]} style={{ backgroundImage: `url(./imgs/card_covers/${imgSrc})` }} />
-    //   <div className={styles["card--inner"]}>
-    //     <Link className="decoration-transparent text-blue-500 w-full text-center lg:text-xl md:text-md" href={link}>
-    //       {title}
-    //     </Link>
-    //   </div>
-    // </div>
       <div className="w-full h-72 grid items-center relative">
         <Link href={link} className="peer group w-full h-1/3 border-[6px] border-x-amber-700 border-y-white z-[2] flex justify-center items-center relative bg-fuchsia-950 hover:bg-opacity-20 hover:h-full transition-all duration-1000">
           <p className="text-center text-white w-auto p-2 group-hover:bg-white group-hover:text-blue-900 group-hover:text-lg group-hover:translate-y-40 group-hover:rounded-b-3xl transition-all duration-1000" >

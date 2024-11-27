@@ -2,43 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://factorio-blueprint.vercel.app/</loc>
-        <lastmod>2024-02-04</lastmod>
+        <lastmod>2024-11-27</lastmod>
         <priority>1.0</priority>
         <changefreq>yearly</changefreq>
     </url>
     <url>
         <loc>https://factorio-blueprint.vercel.app/decode-encode</loc>
-        <lastmod>2024-02-04</lastmod>
+        <lastmod>2024-11-27</lastmod>
         <priority>0.9</priority>
         <changefreq>yearly</changefreq>
     </url>
     <url>
         <loc>https://factorio-blueprint.vercel.app/image-converter-brick</loc>
-        <lastmod>2024-02-04</lastmod>
+        <lastmod>2024-11-27</lastmod>
         <priority>0.8</priority>
         <changefreq>yearly</changefreq>
     </url>
     <url>
         <loc>https://factorio-blueprint.vercel.app/image-converter-lamp</loc>
-        <lastmod>2024-02-04</lastmod>
+        <lastmod>2024-11-27</lastmod>
         <priority>0.8</priority>
         <changefreq>yearly</changefreq>
     </url>
     <url>
         <loc>https://factorio-blueprint.vercel.app/pixel-art-brick</loc>
-        <lastmod>2024-02-04</lastmod>
+        <lastmod>2024-11-27</lastmod>
         <priority>0.8</priority>
         <changefreq>yearly</changefreq>
     </url>
     <url>
         <loc>https://factorio-blueprint.vercel.app/pixel-art-lamp</loc>
-        <lastmod>2024-02-04</lastmod>
+        <lastmod>2024-11-27</lastmod>
         <priority>0.8</priority>
         <changefreq>yearly</changefreq>
     </url>
     <url>
         <loc>https://factorio-blueprint.vercel.app/video-converter</loc>
-        <lastmod>2024-02-04</lastmod>
+        <lastmod>2024-11-27</lastmod>
         <priority>0.8</priority>
         <changefreq>yearly</changefreq>
     </url>
