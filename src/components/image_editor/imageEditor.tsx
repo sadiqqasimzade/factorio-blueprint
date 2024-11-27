@@ -1,3 +1,4 @@
+import { getDecimalColorsFromCanvas } from "@/src/utils/image/calculateColors";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -5,21 +6,23 @@ import { toast } from "react-toastify";
 type Props = {
   image: HTMLImageElement;
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
-  setresultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | undefined>>;
+  setResultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | undefined>>;
   maxW: number,
   maxH: number,
   minW: number,
   minH: number,
+  isAllowedRefinedTiles: boolean
+  setIsAllowedRefinedTiles: React.Dispatch<React.SetStateAction<boolean>>
+  setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>
   convertTo: 'lamp' | 'brick'
 };
 
-export default function ImageEditor({ image, setImage, setresultCanvas, maxW, maxH, minW, minH }: Props) {
+export default function ImageEditor({ image, setImage, setResultCanvas, maxW, maxH, minW, minH, convertTo, isAllowedRefinedTiles, setIsAllowedRefinedTiles, setPixelArt }: Props) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
   const [keepAspectRatio, setKeepAspectRatio] = useState<boolean>(true);
-
 
   /**
    * clear and redraw canvas with new size
@@ -143,14 +146,14 @@ export default function ImageEditor({ image, setImage, setresultCanvas, maxW, ma
                 onChange={(e) => setKeepAspectRatio(e.target.checked)}
               />
             </div>
-            <div className="flex gap-4">
-              <p className="text-xl font-bold">Background</p>
+            {convertTo === "brick" && <div className="flex gap-4">
+              <p className="text-xl font-bold">Allow refined tiles (darker result)</p>
               <input
                 type="checkbox"
-                checked={keepAspectRatio}
-                onChange={(e) => setKeepAspectRatio(e.target.checked)}
+                checked={isAllowedRefinedTiles}
+                onChange={(e) => setIsAllowedRefinedTiles(e.target.checked)}
               />
-            </div>
+            </div>}
           </div>
 
           <div className="flex gap-4">
@@ -169,12 +172,14 @@ export default function ImageEditor({ image, setImage, setresultCanvas, maxW, ma
                 } else if (canvas!.height > maxH || canvas!.height < minH) {
                   toast.error('Wrong height')
                 } else {
-                  setresultCanvas(canvasRef.current!);
+                  convertTo === 'brick' && setResultCanvas(canvasRef.current!);
+                  convertTo === 'lamp' && setPixelArt(getDecimalColorsFromCanvas(canvas!));
                   setImage(undefined);
                 }
               }}>
               Continue
             </button>
+
           </div>
         </div>
 

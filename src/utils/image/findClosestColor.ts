@@ -5,11 +5,11 @@
   @description Converts hex string to decimal 
 */
 export default function findClosestColor(colorarr: string[], colorDecimal: number): string {
-  var min = 0
+  var min = 0xffffff
   var best = colorarr[0]
   var current, i;
   for (i = 0; i < colorarr.length; i++) {
-    current = colorDecimal - parseInt(colorarr[i], 16);
+    current = Math.abs(parseInt(colorarr[i], 16) - colorDecimal)
     if (current < min) {
       min = current;
       best = colorarr[i];
@@ -17,5 +17,4 @@ export default function findClosestColor(colorarr: string[], colorDecimal: numbe
   }
   return best;
 }
-
 

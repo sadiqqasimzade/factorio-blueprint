@@ -3,14 +3,14 @@ import BpConstCombinator from "@/src/classes/BpConstCombinator";
 import BpEntity from "@/src/classes/BpEntity";
 import BpLamp from "@/src/classes/BpLamp";
 import BpSubstaion from "@/src/classes/BpSubstaion";
-import { Signals, signal_priority, color_priority } from "@/src/consts/signalsEnum";
+import { Signals, signal_priority } from "@/src/consts/signalsEnum";
 import ControlBehavior from "@/src/classes/ControlBehavior";
+import { BpStaticMethods } from "@/src/classes/BpStaticMethods";
 
-export function CreateScreen(width: number, height: number): BpEntity[] {
+export function CreateScreen(width: number, height: number, wires: TBpWire[]): BpEntity[] {
     //#region consts
     const mainEntities: BpEntity[] = []
     const constCombinators: BpConstCombinator[] = []
-    // const combinatorsCount = Math.ceil(height / 20)
     //#endregion
 
     //#region substation array
@@ -34,8 +34,7 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
         for (let j = 0; j < height; j++) {
             if (substation_cordinates_w.includes(i) && substation_cordinates_h.includes(j)) {
                 const substation = new BpSubstaion(i + 0.5, j + 0.5)
-                substation.makeConnection(column.at(-1) as BpLamp, 1, 1, 'green')
-                // column.at(-combinatorsCount) && substation.makeConnection(column.at(-combinatorsCount) as BpArithmeticCombinator | BpSubstaion, 1, 1, 'red')
+                wires.push(BpStaticMethods.connect(column.at(-1) as BpLamp, substation, 2, 2))
                 column.push(substation)
                 j++;
             }
@@ -43,17 +42,17 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
                 j++
             }
             else {
-                
+
                 const lamp = new BpLamp(new ControlBehavior(true, lamp_circuit_condition, true, signal_priority[j], 2), i, j)
 
-                column.at(-1) && lamp.makeConnection(column.at(-1) as BpLamp | BpSubstaion, 1, 1, 'green')
+                column.at(-1) && wires.push(BpStaticMethods.connect(column.at(-1) as BpLamp | BpSubstaion, lamp, 2, 2))
 
                 column.push(lamp)
             }
         }
         mainEntities.push(...column)
     }
-    
+
 
     //#region add offgrid substation and connect all substations
     const substations: BpSubstaion[] = []
@@ -72,7 +71,7 @@ export function CreateScreen(width: number, height: number): BpEntity[] {
     }
     mainEntities.push(...substations)
 
-    //connect all substations with neighbours
+    //connecting all substations with neighbours
     for (let i = 0; i < substation_cordinates_h.length; i++) {
         const row_of_substations = mainEntities.filter(e => e instanceof BpSubstaion && e.position.y === substation_cordinates_h[i] + 0.5) as BpSubstaion[]
         for (let j = 0; j < row_of_substations.length; j++) {

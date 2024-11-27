@@ -1,4 +1,104 @@
 export class Signals {
+  static readonly WOODEN_CHEST: TBpSignal = { name: "wooden-chest" };
+  static readonly IRON_CHEST: TBpSignal = { name: "iron-chest" };
+  static readonly STEEL_CHEST: TBpSignal = { name: "steel-chest" };
+  static readonly STORAGE_TANK: TBpSignal = { name: "storage-tank" };
+  static readonly TRANSPORT_BELT: TBpSignal = { name: "transport-belt" };
+  static readonly FAST_TRANSPORT_BELT: TBpSignal = { name: "fast-transport-belt" };
+  static readonly EXPRESS_TRANSPORT_BELT: TBpSignal = { name: "express-transport-belt" };
+  static readonly UNDERGROUND_BELT: TBpSignal = { name: "underground-belt" };
+  static readonly FAST_UNDERGROUND_BELT: TBpSignal = { name: "fast-underground-belt" };
+  static readonly EXPRESS_UNDERGROUND_BELT: TBpSignal = { name: "express-underground-belt" };
+  static readonly SPLITTER: TBpSignal = { name: "splitter" };
+  static readonly EXPRESS_SPLITTER: TBpSignal = { name: "express-splitter" };
+  static readonly FAST_SPLITTER: TBpSignal = { name: "fast-splitter" };
+  static readonly BURNER_INSERTER: TBpSignal = { name: "burner-inserter" };
+  static readonly INSERTER: TBpSignal = { name: "inserter" };
+  static readonly LONG_HANDED_INSERTER: TBpSignal = { name: "long-handed-inserter" };
+  static readonly FAST_INSERTER: TBpSignal = { name: "fast-inserter" };
+  static readonly BULK_INSERTER: TBpSignal = { name: "bulk-inserter" };
+  static readonly SMALL_ELECTRIC_POLE: TBpSignal = { name: "small-electric-pole" };
+  static readonly MEDIUM_ELECTRIC_POLE: TBpSignal = { name: "medium-electric-pole" };
+  static readonly BIG_ELECTRIC_POLE: TBpSignal = { name: "big-electric-pole" };
+  static readonly SUBSTATION: TBpSignal = { name: "substation" };
+  static readonly PIPE: TBpSignal = { name: "pipe" };
+  static readonly PIPE_TO_GROUND: TBpSignal = { name: "pipe-to-ground" };
+  static readonly PUMP: TBpSignal = { name: "pump" };
+  static readonly RAIL: TBpSignal = { name: "rail" };
+  static readonly TRAIN_STOP: TBpSignal = { name: "train-stop" };
+  static readonly RAIL_SIGNAL: TBpSignal = { name: "rail-signal" };
+  static readonly RAIL_CHAIN_SIGNAL: TBpSignal = { name: "rail-chain-signal" };
+  static readonly LOCOMOTIVE: TBpSignal = { name: "locomotive" };
+  static readonly CARGO_WAGON: TBpSignal = { name: "cargo-wagon" };
+  static readonly FLUID_WAGON: TBpSignal = { name: "fluid-wagon" };
+  static readonly ARTILLERY_WAGON: TBpSignal = { name: "artillery-wagon" };
+  static readonly CAR: TBpSignal = { name: "car" };
+  static readonly TANK: TBpSignal = { name: "tank" };
+  static readonly SPIDERTRON: TBpSignal = { name: "spidertron" };
+  static readonly LOGISTIC_ROBOT: TBpSignal = { name: "logistic-robot" };
+  static readonly CONSTRUCTION_ROBOT: TBpSignal = { name: "construction-robot" };
+  static readonly ACTIVE_PROVIDER_CHEST: TBpSignal = { name: "active-provider-chest" };
+  static readonly PASSIVE_PROVIDER_CHEST: TBpSignal = { name: "passive-provider-chest" };
+  static readonly STORAGE_CHEST: TBpSignal = { name: "storage-chest" };
+  static readonly BUFFER_CHEST: TBpSignal = { name: "buffer-chest" };
+  static readonly REQUESTER_CHEST: TBpSignal = { name: "requester-chest" };
+  static readonly ROBOPORT: TBpSignal = { name: "roboport" };
+  static readonly SMALL_LAMP: TBpSignal = { name: "small-lamp" };
+  static readonly ARITHMETIC_COMBINATOR: TBpSignal = { name: "arithmetic-combinator" };
+  static readonly DECIDER_COMBINATOR: TBpSignal = { name: "decider-combinator" };
+  static readonly SELECTOR_COMBINATOR: TBpSignal = { name: "selector-combinator" };
+  static readonly CONSTANT_COMBINATOR: TBpSignal = { name: "constant-combinator" };
+  static readonly POWER_SWITCH: TBpSignal = { name: "power-switch" };
+  static readonly PROGRAMMABLE_SPEAKER: TBpSignal = { name: "programmable-speaker" };
+  static readonly DISPLAY_PANEL: TBpSignal = { name: "display-panel" };
+  static readonly STONE_BRICK: TBpSignal = { name: "stone-brick" };
+  static readonly CONCRETE: TBpSignal = { name: "concrete" };
+  static readonly HAZARD_CONCRETE: TBpSignal = { name: "hazard-concrete" };
+  static readonly REFINED_CONCRETE: TBpSignal = { name: "refined-concrete" };
+  static readonly REFINED_HAZARD_CONCRETE: TBpSignal = { name: "refined-hazard-concrete" };
+  static readonly LANDFILL: TBpSignal = { name: "landfill" };
+  static readonly CLIFF_EXPLOSIVES: TBpSignal = { name: "cliff-explosives" };
+  static readonly REPAIR_PACK: TBpSignal = { name: "repair-pack" };
+  static readonly BLUEPRINT: TBpSignal = { name: "blueprint" };
+  static readonly DECONSTRUCTION_PLANNER: TBpSignal = { name: "deconstruction-planner" };
+  static readonly UPGRADE_PLANNER: TBpSignal = { name: "upgrade-planner" };
+  static readonly STEAM_ENGINE: TBpSignal = { name: "steam-engine" };
+  static readonly BOILER: TBpSignal = { name: "boiler" };
+  static readonly BLUEPRINT_BOOK: TBpSignal = { name: "blueprint-book" };
+  static readonly SOLAR_PANEL: TBpSignal = { name: "solar-panel" };
+  static readonly ACCUMULATOR: TBpSignal = { name: "accumulator" };
+  static readonly NUCLEAR_REACTOR: TBpSignal = { name: "nuclear-reactor" };
+  static readonly HEAT_PIPE: TBpSignal = { name: "heat-pipe" };
+  static readonly HEAT_EXCHANGER: TBpSignal = { name: "heat-exchanger" };
+  static readonly STEAM_TURBINE: TBpSignal = { name: "steam-turbine" };
+  static readonly BURNER_MINING_DRILL: TBpSignal = { name: "burner-mining-drill" };
+  static readonly ELECTRIC_MINING_DRILL: TBpSignal = { name: "electric-mining-drill" };
+  static readonly OFFSHORE_PUMP: TBpSignal = { name: "offshore-pump" };
+  static readonly PUMPJACK: TBpSignal = { name: "pumpjack" };
+  static readonly STONE_FURNACE: TBpSignal = { name: "stone-furnace" };
+  static readonly STEEL_FURNACE: TBpSignal = { name: "steel-furnace" };
+  static readonly ELECTRIC_FURNACE: TBpSignal = { name: "electric-furnace" };
+  static readonly ASSEMBLING_MACHINE_1: TBpSignal = { name: "assembling-machine-1" };
+  static readonly ASSEMBLING_MACHINE_2: TBpSignal = { name: "assembling-machine-2" };
+  static readonly ASSEMBLING_MACHINE_3: TBpSignal = { name: "assembling-machine-3" };
+  static readonly OIL_REFINERY: TBpSignal = { name: "oil-refinery" };
+  static readonly CHEMICAL_PLANT: TBpSignal = { name: "chemical-plant" };
+  static readonly CENTRIFUGE: TBpSignal = { name: "centrifuge" };
+  static readonly LAB: TBpSignal = { name: "lab" };
+  static readonly BEACON: TBpSignal = { name: "beacon" };
+  static readonly SPEED_MODULE: TBpSignal = { name: "speed-module" };
+  static readonly SPEED_MODULE_2: TBpSignal = { name: "speed-module-2" };
+  static readonly SPEED_MODULE_3: TBpSignal = { name: "speed-module-3" };
+  static readonly EFFICIENCY_MODULE: TBpSignal = { name: "efficiency-module" };
+  static readonly EFFICIENCY_MODULE_2: TBpSignal = { name: "efficiency-module-2" };
+  static readonly EFFICIENCY_MODULE_3: TBpSignal = { name: "efficiency-module-3" };
+  static readonly PRODUCTIVITY_MODULE: TBpSignal = { name: "productivity-module" };
+  static readonly PRODUCTIVITY_MODULE_2: TBpSignal = { name: "productivity-module-2" };
+  static readonly PRODUCTIVITY_MODULE_3: TBpSignal = { name: "productivity-module-3" };
+  static readonly ROCKET_SILO: TBpSignal = { name: "rocket-silo" };
+  static readonly CARGO_LANDING_PAD: TBpSignal = { name: "cargo-landing-pad" };
+  static readonly SATELLITE: TBpSignal = { name: "satellite" };
+
   static readonly RED: TBpSignal = { type: "virtual", name: "signal-red" };
   static readonly GREEN: TBpSignal = { type: "virtual", name: "signal-green" };
   static readonly BLUE: TBpSignal = { type: "virtual", name: "signal-blue" };
@@ -122,91 +222,97 @@ export const color_priority = [
   Signals.RED,
 ];
 
-export const signal_priority = [
-  Signals.SIGNAL_0,
-  Signals.SIGNAL_1,
-  Signals.SIGNAL_2,
-  Signals.SIGNAL_3,
-  Signals.SIGNAL_4,
-  Signals.SIGNAL_5,
-  Signals.SIGNAL_6,
-  Signals.SIGNAL_7,
-  Signals.SIGNAL_8,
-  Signals.SIGNAL_9,
-  Signals.A,
-  Signals.B,
-  Signals.C,
-  Signals.D,
-  Signals.E,
-  Signals.F,
-  Signals.G,
-  Signals.H,
-  Signals.I,
-  Signals.J,
-  Signals.K,
-  Signals.L,
-  Signals.M,
-  Signals.N,
-  Signals.O,
-  Signals.P,
-  Signals.Q,
-  Signals.R,
-  Signals.S,
-  Signals.T,
-  Signals.U,
-  Signals.V,
-  Signals.W,
-  Signals.X,
-  Signals.Y,
-  Signals.Z,
-  Signals.RED,
-  Signals.GREEN,
-  Signals.BLUE,
-  Signals.YELLOW,
-  Signals.PINK,
-  Signals.CYAN,
-  Signals.WHITE,
-  Signals.GREY,
-  Signals.BLACK,
-  Signals.AUTOMATION_SCIENCE_PACK,
-  Signals.LOGISTIC_SCIENCE_PACK,
-  Signals.MILITARY_SCIENCE_PACK,
-  Signals.CHEMICAL_SCIENCE_PACK,
-  Signals.PRODUCTION_SCIENCE_PACK,
-  Signals.UTILITY_SCIENCE_PACK,
-  Signals.SPACE_SCIENCE_PACK,
-  Signals.WATER_BARREL,
-  Signals.CRUDE_OIL_BARREL,
-  Signals.HEAVY_OIL_BARREL,
-  Signals.LIGHT_OIL_BARREL,
-  Signals.PETROLEUM_BARREL,
-  Signals.LUBRICANT_BARREL,
-  Signals.SULFURIC_ACID_BARREL,
-  Signals.EMPTY_WATER_BARREL,
-  Signals.EMPTY_CRUDE_OIL_BARREL,
-  Signals.EMPTY_HEAVY_OIL_BARREL,
-  Signals.EMPTY_LIGHT_OIL_BARREL,
-  Signals.EMPTY_PETROLEUM_BARREL,
-  Signals.EMPTY_LUBRICANT_BARREL,
-  Signals.EMPTY_SULFURIC_ACID_BARREL,
-  Signals.FILL_WATER_BARREL,
-  Signals.FILL_CRUDE_OIL_BARREL,
-  Signals.FILL_HEAVY_OIL_BARREL,
-  Signals.FILL_LIGHT_OIL_BARREL,
-  Signals.FILL_PETROLEUM_BARREL,
-  Signals.FILL_LUBRICANT_BARREL,
-  Signals.FILL_SULFURIC_ACID_BARREL,
-  Signals.WATER,
-  Signals.CRUDE_OIL,
-  Signals.HEAVY_OIL,
-  Signals.LIGHT_OIL,
-  Signals.PETROLEUM,
-  Signals.LUBRICANT,
-  Signals.SULFURIC_ACID,
-  Signals.STEAM,
-  Signals.CHECK,
-  Signals.INFO,
-  Signals.DENY,
-  Signals.FISH
-];
+
+//remove each,everyhing,any
+export const signal_priority = Object.values(Signals).filter((signal) => signal.name !== 'signal-each' && signal.name !== 'signal-everything' && signal.name !== 'signal-anything')
+
+
+
+// export const signal_priority = [
+//   Signals.SIGNAL_0,
+//   Signals.SIGNAL_1,
+//   Signals.SIGNAL_2,
+//   Signals.SIGNAL_3,
+//   Signals.SIGNAL_4,
+//   Signals.SIGNAL_5,
+//   Signals.SIGNAL_6,
+//   Signals.SIGNAL_7,
+//   Signals.SIGNAL_8,
+//   Signals.SIGNAL_9,
+//   Signals.A,
+//   Signals.B,
+//   Signals.C,
+//   Signals.D,
+//   Signals.E,
+//   Signals.F,
+//   Signals.G,
+//   Signals.H,
+//   Signals.I,
+//   Signals.J,
+//   Signals.K,
+//   Signals.L,
+//   Signals.M,
+//   Signals.N,
+//   Signals.O,
+//   Signals.P,
+//   Signals.Q,
+//   Signals.R,
+//   Signals.S,
+//   Signals.T,
+//   Signals.U,
+//   Signals.V,
+//   Signals.W,
+//   Signals.X,
+//   Signals.Y,
+//   Signals.Z,
+//   Signals.RED,
+//   Signals.GREEN,
+//   Signals.BLUE,
+//   Signals.YELLOW,
+//   Signals.PINK,
+//   Signals.CYAN,
+//   Signals.WHITE,
+//   Signals.GREY,
+//   Signals.BLACK,
+//   Signals.AUTOMATION_SCIENCE_PACK,
+//   Signals.LOGISTIC_SCIENCE_PACK,
+//   Signals.MILITARY_SCIENCE_PACK,
+//   Signals.CHEMICAL_SCIENCE_PACK,
+//   Signals.PRODUCTION_SCIENCE_PACK,
+//   Signals.UTILITY_SCIENCE_PACK,
+//   Signals.SPACE_SCIENCE_PACK,
+//   Signals.WATER_BARREL,
+//   Signals.CRUDE_OIL_BARREL,
+//   Signals.HEAVY_OIL_BARREL,
+//   Signals.LIGHT_OIL_BARREL,
+//   Signals.PETROLEUM_BARREL,
+//   Signals.LUBRICANT_BARREL,
+//   Signals.SULFURIC_ACID_BARREL,
+//   Signals.EMPTY_WATER_BARREL,
+//   Signals.EMPTY_CRUDE_OIL_BARREL,
+//   Signals.EMPTY_HEAVY_OIL_BARREL,
+//   Signals.EMPTY_LIGHT_OIL_BARREL,
+//   Signals.EMPTY_PETROLEUM_BARREL,
+//   Signals.EMPTY_LUBRICANT_BARREL,
+//   Signals.EMPTY_SULFURIC_ACID_BARREL,
+//   Signals.FILL_WATER_BARREL,
+//   Signals.FILL_CRUDE_OIL_BARREL,
+//   Signals.FILL_HEAVY_OIL_BARREL,
+//   Signals.FILL_LIGHT_OIL_BARREL,
+//   Signals.FILL_PETROLEUM_BARREL,
+//   Signals.FILL_LUBRICANT_BARREL,
+//   Signals.FILL_SULFURIC_ACID_BARREL,
+//   Signals.WATER,
+//   Signals.CRUDE_OIL,
+//   Signals.HEAVY_OIL,
+//   Signals.LIGHT_OIL,
+//   Signals.PETROLEUM,
+//   Signals.LUBRICANT,
+//   Signals.SULFURIC_ACID,
+//   Signals.STEAM,
+//   Signals.CHECK,
+//   Signals.INFO,
+//   Signals.DENY,
+//   Signals.FISH
+// ];
 

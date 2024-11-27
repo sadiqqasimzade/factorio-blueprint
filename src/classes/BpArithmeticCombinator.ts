@@ -1,11 +1,9 @@
 import { Directions, EntityNames} from "../consts/enums";
 import ArithmeticCondition from "./BpArithmeticCondition";
 import BpEntity from "./BpEntity";
-import { BpStaticMethods } from "./BpStaticMethods";
 
-export default class BpArithmeticCombinator extends BpEntity implements IBpConnectable, IBpDirectionable {
+export default class BpArithmeticCombinator extends BpEntity implements IBpDirectionable {
     control_behavior: {arithmetic_conditions:ArithmeticCondition}
-    connections: TBpEntityConnection | undefined;
     direction: Directions|undefined;
     
 
@@ -15,10 +13,6 @@ export default class BpArithmeticCombinator extends BpEntity implements IBpConne
         this.direction = direction
     }
 
-
-    public makeConnection(entity: BpEntity & IBpConnectable, port: TBpEntityConnectionPort, destinationPort: TBpEntityConnectionPort, cable: CableColors): void {
-        BpStaticMethods.makeConnection(this, entity, port, destinationPort, cable)
-    }
 }
 
 

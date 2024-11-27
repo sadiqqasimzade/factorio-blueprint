@@ -12,14 +12,15 @@ fix tests
 add bg options
 check for rerenders
 
-better json visualiser
 check lang errors
-conncect font
-
-add more tiles
-make tiles work with decimal
+conncect/change font/design
+huge lag during pixel art conversion
 
 
+convert nextjs to new version
+continue without editing
+add option to choice for refined bg (darker)
 # Ideas
 - Convert large video by passing chunks of memory blocks (book with multiple blueprints?)?  //too big.Factorio will freeze
 - Batter Json visualizer for blueprint decoder pege?
+- Create seperate library api for handling blueprints https://wiki.factorio.com/Blueprint_string_format#Inventory_object
