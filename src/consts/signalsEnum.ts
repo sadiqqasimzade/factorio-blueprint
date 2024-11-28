@@ -97,7 +97,7 @@ export class Signals {
   static readonly PRODUCTIVITY_MODULE_3: TBpSignal = { name: "productivity-module-3" };
   static readonly ROCKET_SILO: TBpSignal = { name: "rocket-silo" };
   static readonly CARGO_LANDING_PAD: TBpSignal = { name: "cargo-landing-pad" };
-  static readonly SATELLITE: TBpSignal = { name: "satellite" };
+  // static readonly SATELLITE: TBpSignal = { name: "satellite" };
 
   static readonly RED: TBpSignal = { type: "virtual", name: "signal-red" };
   static readonly GREEN: TBpSignal = { type: "virtual", name: "signal-green" };
