@@ -12,5 +12,4 @@ export default class BpLamp extends BpEntity {
         super(EntityNames.LAMP, x, y);
         this.control_behavior = controlBehavior
     }
-
 }

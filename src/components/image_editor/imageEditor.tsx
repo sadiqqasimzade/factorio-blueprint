@@ -4,20 +4,31 @@ import { toast } from "react-toastify";
 
 
 type Props = {
+  // Image related props
   image: HTMLImageElement;
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
   setResultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | undefined>>;
-  maxW: number,
-  maxH: number,
-  minW: number,
-  minH: number,
-  isAllowedRefinedTiles: boolean
-  setIsAllowedRefinedTiles: React.Dispatch<React.SetStateAction<boolean>>
-  setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>
-  convertTo: 'lamp' | 'brick'
+
+  // Size constraints
+  maxW: number;
+  maxH: number;
+  minW: number;
+  minH: number;
+
+  // Conversion settings
+  convertTo: 'lamp' | 'brick';
+  quality: number;
+  setQuality: React.Dispatch<React.SetStateAction<number>>;
+
+  // Tile options
+  isAllowedRefinedTiles: boolean;
+  setIsAllowedRefinedTiles: React.Dispatch<React.SetStateAction<boolean>>;
+
+  // Output
+  setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>;
 };
 
-export default function ImageEditor({ image, setImage, setResultCanvas, maxW, maxH, minW, minH, convertTo, isAllowedRefinedTiles, setIsAllowedRefinedTiles, setPixelArt }: Props) {
+export default function ImageEditor({ image, setImage, setResultCanvas, maxW, maxH, minW, minH, convertTo, quality, setQuality, isAllowedRefinedTiles, setIsAllowedRefinedTiles, setPixelArt }: Props) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState<number>(0);
@@ -46,42 +57,43 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
 
 
   const handleWidthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let newWidth = Number(event.target.value);
-    if (newWidth > maxW) {
-      newWidth = maxW;
-    }
-    if (keepAspectRatio && image) {
-      let newHeight = (newWidth / image.width) * image.height;
+    if (!image) return;
+
+    let newWidth = Math.min(Number(event.target.value), maxW);
+
+    if (keepAspectRatio) {
+      const aspectRatio = image.height / image.width;
+      let newHeight = newWidth * aspectRatio;
+
       if (newHeight > maxH) {
-        setHeight(Math.floor(maxH));
-        setWidth(Math.floor((maxH / image.height) * image.width));
-      } else {
-        setHeight(Math.floor(newHeight));
-        setWidth(Math.floor(newWidth));
+        newHeight = maxH;
+        newWidth = newHeight / aspectRatio;
       }
-    } else {
-      setWidth(Math.floor(newWidth));
+
+      setHeight(Math.floor(newHeight));
     }
+
+    setWidth(Math.floor(newWidth));
   };
 
   const handleHeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let newHeight = Number(event.target.value);
-    if (newHeight > maxH) {
-      newHeight = maxH;
+    if (!image) return;
+
+    let newHeight = Math.min(Number(event.target.value), maxH);
+
+    if (keepAspectRatio) {
+      const aspectRatio = image.width / image.height;
+      let newWidth = newHeight * aspectRatio;
+
+      if (newWidth > maxW) {
+        newWidth = maxW;
+        newHeight = newWidth / aspectRatio;
+      }
+
+      setWidth(Math.floor(newWidth));
     }
 
-    if (keepAspectRatio && image) {
-      let newWidth = (newHeight / image.height) * image.width;
-      if (newWidth > maxW) {
-        setWidth(Math.floor(maxW));
-        setWidth(Math.floor((newHeight / image.height) * maxW));
-      } else {
-        setWidth(Math.floor(newWidth));
-        setHeight(Math.floor(newHeight));
-      }
-    } else {
-      setHeight(Math.floor(newHeight));
-    }
+    setHeight(Math.floor(newHeight));
   };
 
   useEffect(() => {
@@ -89,21 +101,23 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
   }, [width, height]);
 
   /**
-   * initial canvas size resized to max available size saving aspect ratio
-   * */
+   * initial canvas size set to image size or max available size if image is larger
+   */
   useEffect(() => {
-    if (image) {
-      const aspectRatio = image.width / image.height;
-      let newWidth = maxW;
-      let newHeight = newWidth / aspectRatio;
-      if (newHeight > maxH) {
-        newHeight = maxH;
-        newWidth = newHeight * aspectRatio;
-      }
-      setWidth(Math.floor(newWidth));
-      setHeight(Math.floor(newHeight));
+    if (!image) return;
+
+    const aspectRatio = image.width / image.height;
+    let newWidth = Math.min(image.width, maxW);
+    let newHeight = newWidth / aspectRatio;
+
+    if (newHeight > maxH) {
+      newHeight = maxH;
+      newWidth = newHeight * aspectRatio;
     }
-  }, [])
+
+    setWidth(Math.floor(newWidth));
+    setHeight(Math.floor(newHeight));
+  }, []);
 
   return (
     <>
@@ -133,6 +147,23 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
             />
             <p>Min:{minH}/Max:{maxH}</p>
           </div>
+          {convertTo === "lamp" && <div className="flex flex-col w-full">
+            <p className="text-xl font-bold">Substation quality</p>
+            <div className="flex gap-4 py-2">
+              {[1, 2, 3, 4, 5].map((value) => (
+                <label key={value} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    value={value - 1}
+                    checked={quality === value - 1}
+                    onChange={(e) => setQuality(Number(e.target.value))}
+                  />
+                  {value}
+                </label>
+              ))}
+            </div>
+            <p>Leave 0 for base game</p>
+          </div>}
         </div>
         <div className="flex md:flex-row md:justify-between flex-col gap-4">
 

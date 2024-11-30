@@ -6,14 +6,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 
-type Props = { pixelArt: string[][] | number[][]; convert_to: "lamp" | "brick" };
+type Props = { pixelArt: string[][] | number[][]; convert_to: "lamp" | "brick"; quality: number };
 
-export default function Result({ pixelArt, convert_to }: Props) {
+export default function Result({ pixelArt, convert_to, quality }: Props) {
   const [bpstring, setBpstring] = useState<string>()
   useEffect(() => {
     setBpstring(blueprintEncoder(
       convert_to === 'lamp'
-        ? imgToLampBlueprintConvertor(pixelArt as number[][])
+        ? imgToLampBlueprintConvertor(pixelArt as number[][], quality)
         : imgToBrickBlueprintConvertor(pixelArt as string[][]),
     ))
   }, [])
@@ -22,7 +22,7 @@ export default function Result({ pixelArt, convert_to }: Props) {
     <div>
       <p className="text-xl">Click on blueprint string to copy</p>
       <p className="break-all overflow-y-auto overflow-x-hidden max-h-64 outline mt-4"
-        onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Succesfully copied') : toast.error('Unable to copy')) }}>
+        onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Successfully copied') : toast.error('Unable to copy')) }}>
         {bpstring}
       </p>
     </div>

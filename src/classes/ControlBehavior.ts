@@ -14,7 +14,5 @@ export default class ControlBehavior {
         this.use_colors = use_colors
         this.rgb_signal = rgb_signal
         this.color_mode = color_mode
-
-
     }
 }

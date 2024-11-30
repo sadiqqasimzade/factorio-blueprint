@@ -5,16 +5,18 @@ export default abstract class BpEntity {
   entity_number: number;
   name: EntityNames;
   position: TBpPosition;
-
+  quality?: string;
 
   constructor(
     name: EntityNames,
     x: number,
     y: number,
+    quality?: string
   ) {
     this.entity_number = BpEntity.entity_number;
     this.name = name;
     this.position = { x, y };
+    this.quality = quality;
     BpEntity.entity_number++;
   }
 }
