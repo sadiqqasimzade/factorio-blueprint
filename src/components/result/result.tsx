@@ -1,20 +1,22 @@
+import SettingsContext from "@/src/contexts/settings/settingsContext";
 import blueprintEncoder from "@/src/utils/convertors/blueprintEncoder";
-import imgToBrickBlueprintConvertor from "@/src/utils/convertors/imgToBrickBlueprintConvertor";
+import imgToTileBlueprintConvertor from "@/src/utils/convertors/imgToTileBlueprintConvertor";
 import imgToLampBlueprintConvertor from "@/src/utils/convertors/imgToLampBlueprintConvertor";
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 
-type Props = { pixelArt: string[][] | number[][]; convert_to: "lamp" | "brick" };
+type Props = { pixelArt: string[][] | number[][]};
 
-export default function Result({ pixelArt, convert_to }: Props) {
+export default function Result({ pixelArt }: Props) {
   const [bpstring, setBpstring] = useState<string>()
+  const { convertTo, quality, blackLampsAllowed } = useContext(SettingsContext);
   useEffect(() => {
     setBpstring(blueprintEncoder(
-      convert_to === 'lamp'
-        ? imgToLampBlueprintConvertor(pixelArt as number[][])
-        : imgToBrickBlueprintConvertor(pixelArt as string[][]),
+      convertTo === 'lamp'
+        ? imgToLampBlueprintConvertor(pixelArt as number[][], quality, blackLampsAllowed)
+        : imgToTileBlueprintConvertor(pixelArt as string[][]),
     ))
   }, [])
 
@@ -22,7 +24,7 @@ export default function Result({ pixelArt, convert_to }: Props) {
     <div>
       <p className="text-xl">Click on blueprint string to copy</p>
       <p className="break-all overflow-y-auto overflow-x-hidden max-h-64 outline mt-4"
-        onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Succesfully copied') : toast.error('Unable to copy')) }}>
+        onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Successfully copied') : toast.error('Unable to copy')) }}>
         {bpstring}
       </p>
     </div>

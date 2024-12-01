@@ -24,7 +24,7 @@ export default class Blueprint {
     this.tiles = tiles
     this.wires = wires
     
-    //without this, the entity numbers will increase infinitly
+    //without this, the entity numbers will increase infinitely 
     BpEntity.entity_number = 0
   }
 }

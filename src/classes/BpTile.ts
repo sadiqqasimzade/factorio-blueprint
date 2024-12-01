@@ -1,7 +1,7 @@
 import { TileNames } from "../consts/enums";
 
 
-export default class BpTile{
+export default class BpTile {
   position: TBpPosition;
   name: TileNames;
 

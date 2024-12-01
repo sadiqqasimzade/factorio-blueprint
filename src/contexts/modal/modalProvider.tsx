@@ -17,15 +17,15 @@ const ModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
 
     useEffect(() => {
-        function handekeydown(e: KeyboardEvent) {
+        function handleKeydown(e: KeyboardEvent) {
             if (e.key === "Escape") {
                 setModalContent(null);
-                window.removeEventListener("keydown", handekeydown);
+                window.removeEventListener("keydown", handleKeydown);
             }
         }
-        window.addEventListener("keydown", handekeydown);
+        window.addEventListener("keydown", handleKeydown);
 
-        return () => window.removeEventListener("keydown", handekeydown);
+        return () => window.removeEventListener("keydown", handleKeydown);
     }, []);
 
 

@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Card from '../components/card/card'
 import { useContext, useEffect } from 'react'
-import ModalContext from '../contexts/modalContext'
+import Card from '../components/card/card'
+import ModalContext from '../contexts/modal/modalContext'
 
 
 export default function Home() {
@@ -34,13 +34,13 @@ export default function Home() {
       />
       <Card
         title="Image to Floor Blueprint Converter"
-        link="image-converter-brick"
-        imgSrc="img_to_brick.png"
+        link="image-converter-tile"
+        imgSrc="img_to_tile.png"
       />
       <Card
         title="Pixel Art to Floor Blueprint Converter"
-        link="pixel-art-brick"
-        imgSrc="pixel_art_brick.png"
+        link="pixel-art-tile"
+        imgSrc="pixel_art_tile.png"
       />
       <Card
         title="Video to Blueprint Converter"

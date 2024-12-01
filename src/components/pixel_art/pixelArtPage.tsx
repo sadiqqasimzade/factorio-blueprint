@@ -33,7 +33,6 @@ export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, 
         sizey = canvas.height
     }
 
-    console.log(colors)
     const updateCell = useCallback((x: number, y: number) => {
         setCells(prev => prev!.map((col, j) => j === y ? col.map((cell, i) => i === x ? selectedColor : cell) : col))
     }, [selectedColor])

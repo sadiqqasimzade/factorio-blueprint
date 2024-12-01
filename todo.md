@@ -11,13 +11,11 @@
 
 
 
-
-
-
-
+bring back pixel art editor 
+png background opacity
+limit pixel art render height
 
 
 # Ideas
 - Convert large video by passing chunks of memory blocks (book with multiple blueprints?)?
-- Batter Json visualizer for blueprint decoder pege
-- Create seperate library api for handling blueprints https://wiki.factorio.com/Blueprint_string_format#Inventory_object
+- Batter Json visualizer for blueprint decoder page

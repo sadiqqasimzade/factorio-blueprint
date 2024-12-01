@@ -8,13 +8,9 @@
 // import { useRef, useEffect, useState } from "react";
 // import { toast } from "react-toastify";
 
-export default function VideoConverter(){
-    return <p>Work In Progress</p>
-}
 
-
+// const minW = 5, maxW = 200, minH = 5, maxH = 80
 // export default function VideoConverter() {
-//     const minW = 5, maxW = 200, minH = 5, maxH = 80
 
 
 //     const videoRef = useRef<HTMLVideoElement>(null);
@@ -146,9 +142,13 @@ export default function VideoConverter(){
 //                 </div>
 //                 <div>
 //                     <p>Result</p>
-//                     <p ref={resultRef} onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Succesfully copied') : toast.error('Unable to copy')) }} className="max-h-80 overflow-y-auto mt-5 break-all transition-all" />
+//                     <p ref={resultRef} onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Successfully copied') : toast.error('Unable to copy')) }} className="max-h-80 overflow-y-auto mt-5 break-all transition-all" />
 //                 </div>
 //             </div>
 //         </Container>
 //     );
 // }
+
+export default function VideoConverterPage() {
+    return <>WIP</>
+}

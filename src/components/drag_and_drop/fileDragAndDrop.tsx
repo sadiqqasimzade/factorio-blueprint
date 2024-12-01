@@ -1,11 +1,11 @@
+import SettingsContext from "@/src/contexts/settings/settingsContext";
 import validateFiles from "@/src/utils/handlers/validateFiles";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { toast } from "react-toastify";
 
 
 type Props = {
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
-  setSkipInput: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 const cssDragDropAreaError = "!bg-red-600"
@@ -13,12 +13,13 @@ const cssDragDropAreaSuccess = "!bg-purple-600"
 const cssDragDropAreaNormal = "bg-purple-900"
 const fileType = "image"
 
-export default function FileDragAndDrop({ setImage, setSkipInput }: Props) {
+export default function FileDragAndDrop({ setImage }: Props) {
   //Refs
   const inputRef = useRef<HTMLInputElement>(null);
   const dragDropAreaRef = useRef<HTMLDivElement>(null);
   const dragDropTitleRef = useRef<HTMLParagraphElement>(null);
 
+  const { setSkipInput } = useContext(SettingsContext);
   function resetDragDropArea() {
     dragDropAreaRef.current!.classList.remove(cssDragDropAreaError, cssDragDropAreaSuccess);
     dragDropTitleRef.current!.innerText = `Drop ${fileType} file here,or click`;

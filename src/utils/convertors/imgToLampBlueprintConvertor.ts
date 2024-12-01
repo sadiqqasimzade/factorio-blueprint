@@ -8,11 +8,11 @@ import { Directions } from "@/src/consts/enums";
 import BpLamp from "@/src/classes/BpLamp";
 import { BpStaticMethods } from "@/src/classes/BpStaticMethods";
 
-export default function ImgToLampBlueprintConvertor(color_indexes: number[][]): Blueprint {
+export default function ImgToLampBlueprintConvertor(color_indexes: number[][], quality: number, blackLampsAllowed: boolean): Blueprint {
   const width = color_indexes.length
   const height = color_indexes[0].length
   const wires: TBpWire[] = []
-  const mainEntities: BpEntity[] = CreateScreen(width, height, wires)
+  const mainEntities: BpEntity[] = CreateScreen(width, height, wires, quality, blackLampsAllowed)
   const constCombinators: BpConstCombinator[] = []
 
   color_indexes.forEach((signal_strengths, i) => {

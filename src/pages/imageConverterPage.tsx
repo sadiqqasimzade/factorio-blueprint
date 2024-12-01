@@ -1,40 +1,50 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import FileDragAndDrop from "../components/drag_and_drop/fileDragAndDrop";
 import ImageEditor from "../components/image_editor/imageEditor";
 import PixelArtPage from "../components/pixel_art/pixelArtPage";
 import Result from "../components/result/result";
 import SizeInput from "../components/size_input/sizeInput";
-import { signal_priority } from "../consts/signalsEnum";
+import SettingsContext from "../contexts/settings/settingsContext";
 
 
 type Props = {
-    convertTo: "lamp" | "brick"
-    skipInput: boolean
+    convertToProp: "lamp" | "tile"
+    skipInputProp: boolean
 };
 
-export default function ImageConverterPage({ convertTo, skipInput }: Props) {
+export default function ImageConverterPage({ convertToProp, skipInputProp }: Props) {
     const [validatedImage, setValidatedImage] = useState<HTMLImageElement>();
     const [resultCanvas, setResultCanvas] = useState<HTMLCanvasElement>();
     const [pixelArt, setPixelArt] = useState<string[][] | number[][] | undefined>()
     const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number }>();
-    const [isAllowedRefinedTiles, setIsAllowedRefinedTiles] = useState<boolean>(true)
 
-    const [skipInputState, setSkipInput] = useState<boolean>(skipInput)
-    const maxW = 500
-    const maxH = convertTo === 'lamp' ? signal_priority.length : 500
+    const { setConvertTo, setSkipInput, convertTo, skipInput } = useContext(SettingsContext);
+    useEffect(() => {
+        setConvertTo(convertToProp);
+        setSkipInput(skipInputProp);
+    }, []);
+
+
     return (
         <>
             <p className="text-white font-bold text-2xl mb-4">Convert image to {convertTo} Blueprint</p>
 
             {
-                pixelArt ? <Result pixelArt={pixelArt} convert_to={convertTo} /> :
-                    resultCanvas ? <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} isAllowedRefinedTiles={isAllowedRefinedTiles} /> :
-                        pixelArtSize ? <PixelArtPage sizex={pixelArtSize.width} sizey={pixelArtSize.height} setPixelArt={setPixelArt} isAllowedRefinedTiles={isAllowedRefinedTiles} /> :
-                            validatedImage ? <ImageEditor image={validatedImage} setImage={setValidatedImage} setResultCanvas={setResultCanvas} setPixelArt={setPixelArt} maxW={maxW} maxH={maxH} convertTo={convertTo} minW={5} minH={5} isAllowedRefinedTiles={isAllowedRefinedTiles} setIsAllowedRefinedTiles={setIsAllowedRefinedTiles} /> :
-                                <FileDragAndDrop setImage={setValidatedImage} setSkipInput={setSkipInput} />
+                pixelArt ? <Result pixelArt={pixelArt} /> :
+                    resultCanvas ? <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} /> :
+                        pixelArtSize ? <PixelArtPage
+                            sizex={pixelArtSize.width} sizey={pixelArtSize.height}
+                            setPixelArt={setPixelArt} /> :
+
+                            validatedImage ? <ImageEditor
+                                image={validatedImage} setImage={setValidatedImage}
+                                setResultCanvas={setResultCanvas} setPixelArt={setPixelArt}
+                            /> :
+
+                                <FileDragAndDrop setImage={setValidatedImage} />
             }
             {
-                skipInputState && <SizeInput setSkipInput={setSkipInput} setPixelArtSize={setPixelArtSize} maxW={maxW} maxH={maxH} minW={5} minH={5} />
+                skipInput && <SizeInput setPixelArtSize={setPixelArtSize} />
             }
         </>
     );
