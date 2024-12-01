@@ -15,7 +15,7 @@ export default function BrickPixelConverterPage() {
                 <meta property="og:description" content="Craft personalized art with this editor, then effortlessly transform it into a brick/concrete floor blueprint" />
                 <meta name="twitter:description" content="Craft personalized art with this editor, then effortlessly transform it into a brick/concrete floor blueprint" />
             </Head>
-            <ImageConverterPage convertTo="brick" skipInput={true} />
+            <ImageConverterPage convertToProp="brick" skipInputProp={true} />
         </Container>
     );
 }

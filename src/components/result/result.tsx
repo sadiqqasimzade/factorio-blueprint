@@ -1,19 +1,21 @@
+import SettingsContext from "@/src/contexts/settings/settingsContext";
 import blueprintEncoder from "@/src/utils/convertors/blueprintEncoder";
 import imgToBrickBlueprintConvertor from "@/src/utils/convertors/imgToBrickBlueprintConvertor";
 import imgToLampBlueprintConvertor from "@/src/utils/convertors/imgToLampBlueprintConvertor";
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 
-type Props = { pixelArt: string[][] | number[][]; convert_to: "lamp" | "brick"; quality: number };
+type Props = { pixelArt: string[][] | number[][]};
 
-export default function Result({ pixelArt, convert_to, quality }: Props) {
+export default function Result({ pixelArt }: Props) {
   const [bpstring, setBpstring] = useState<string>()
+  const { convertTo, quality, blackLampsAllowed } = useContext(SettingsContext);
   useEffect(() => {
     setBpstring(blueprintEncoder(
-      convert_to === 'lamp'
-        ? imgToLampBlueprintConvertor(pixelArt as number[][], quality)
+      convertTo === 'lamp'
+        ? imgToLampBlueprintConvertor(pixelArt as number[][], quality, blackLampsAllowed)
         : imgToBrickBlueprintConvertor(pixelArt as string[][]),
     ))
   }, [])

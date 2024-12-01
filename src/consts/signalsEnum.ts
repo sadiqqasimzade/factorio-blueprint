@@ -223,7 +223,7 @@ export const color_priority = [
 ];
 
 
-//remove each,everyhing,any
+//remove each,everything,any
 export const signal_priority = Object.values(Signals).filter((signal) => signal.name !== 'signal-each' && signal.name !== 'signal-everything' && signal.name !== 'signal-anything')
 
 

@@ -15,7 +15,7 @@ export default function BrickConverterPage() {
                 <meta property="og:description" content="Transform images into stunning brick/concrete floors blueprints with ease." />
                 <meta name="twitter:description" content="Transform images into stunning brick/concrete floors blueprints with ease." />
             </Head>
-            <ImageConverterPage convertTo="brick" skipInput={false} />
+            <ImageConverterPage convertToProp="brick" skipInputProp={false} />
         </Container>
     );
 }

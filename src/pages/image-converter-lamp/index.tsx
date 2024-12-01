@@ -15,7 +15,7 @@ export default function LampConverterPage() {
         <meta property="og:description" content="Transform images into stunning lamp-based art for your base in the game. Generate unique designs with ease and enhance your gaming experience." />
         <meta name="twitter:description" content="Transform images into stunning lamp-based art for your base in the game. Generate unique designs with ease and enhance your gaming experience." />
       </Head>
-      <ImageConverterPage convertTo="lamp" skipInput={false} />
+      <ImageConverterPage convertToProp="lamp" skipInputProp={false} />
     </Container>
   );
 }

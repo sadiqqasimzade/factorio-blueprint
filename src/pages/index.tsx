@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Card from '../components/card/card'
 import { useContext, useEffect } from 'react'
-import ModalContext from '../contexts/modalContext'
+import Card from '../components/card/card'
+import ModalContext from '../contexts/modal/modalContext'
 
 
 export default function Home() {

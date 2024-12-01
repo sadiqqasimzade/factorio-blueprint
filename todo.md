@@ -12,9 +12,8 @@
 
 
 bring back pixel art editor 
-add quality option
 png background opacity
-
+limit pixel art render height
 
 
 # Ideas

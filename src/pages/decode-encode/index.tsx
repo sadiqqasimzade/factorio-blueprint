@@ -51,7 +51,7 @@ export default function DecodeEncodePage() {
                     <p
                         className="h-96 overflow-y-auto mt-5 break-all transition-all"
                         ref={resultRef}
-                        onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Succesfully copied') : toast.error('Unable to copy')) }}>
+                        onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Successfully copied') : toast.error('Unable to copy')) }}>
                     </p>
                 </div>
             </div>

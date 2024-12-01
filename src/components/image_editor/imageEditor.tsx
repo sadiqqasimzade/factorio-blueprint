@@ -1,5 +1,6 @@
+import SettingsContext from "@/src/contexts/settings/settingsContext";
 import { getDecimalColorsFromCanvas } from "@/src/utils/image/calculateColors";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 
@@ -9,32 +10,18 @@ type Props = {
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
   setResultCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | undefined>>;
 
-  // Size constraints
-  maxW: number;
-  maxH: number;
-  minW: number;
-  minH: number;
-
-  // Conversion settings
-  convertTo: 'lamp' | 'brick';
-  quality: number;
-  setQuality: React.Dispatch<React.SetStateAction<number>>;
-
-  // Tile options
-  isAllowedRefinedTiles: boolean;
-  setIsAllowedRefinedTiles: React.Dispatch<React.SetStateAction<boolean>>;
-
   // Output
   setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>;
 };
 
-export default function ImageEditor({ image, setImage, setResultCanvas, maxW, maxH, minW, minH, convertTo, quality, setQuality, isAllowedRefinedTiles, setIsAllowedRefinedTiles, setPixelArt }: Props) {
+export default function ImageEditor({ image, setImage, setResultCanvas, setPixelArt }: Props) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
   const [keepAspectRatio, setKeepAspectRatio] = useState<boolean>(true);
-
+  const { maxWidth, maxHeight, maxHeightForLamps, minWidth, minHeight, convertTo, quality, isAllowedRefinedTiles, blackLampsAllowed, setQuality, setIsAllowedRefinedTiles, setBlackLampsAllowed  } = useContext(SettingsContext);
+  const maxH = convertTo === 'lamp' ? maxHeightForLamps : maxHeight;
   /**
    * clear and redraw canvas with new size
    * @returns void
@@ -59,7 +46,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
   const handleWidthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!image) return;
 
-    let newWidth = Math.min(Number(event.target.value), maxW);
+    let newWidth = Math.min(Number(event.target.value), maxWidth);
 
     if (keepAspectRatio) {
       const aspectRatio = image.height / image.width;
@@ -85,8 +72,8 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
       const aspectRatio = image.width / image.height;
       let newWidth = newHeight * aspectRatio;
 
-      if (newWidth > maxW) {
-        newWidth = maxW;
+      if (newWidth > maxWidth) {
+        newWidth = maxWidth;
         newHeight = newWidth / aspectRatio;
       }
 
@@ -107,7 +94,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
     if (!image) return;
 
     const aspectRatio = image.width / image.height;
-    let newWidth = Math.min(image.width, maxW);
+    let newWidth = Math.min(image.width, maxWidth);
     let newHeight = newWidth / aspectRatio;
 
     if (newHeight > maxH) {
@@ -129,11 +116,11 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
               type="number"
               value={width}
               className="border-b outline-none bg-transparent py-2"
-              min={minW}
-              max={maxW}
+              min={minWidth}
+              max={maxWidth}
               onChange={handleWidthChange}
             />
-            <p>Min:{minW}/Max:{maxW}</p>
+            <p>Min:{minWidth}/Max:{maxWidth}</p>
           </div>
           <div className="flex flex-col w-full">
             <p className="text-xl font-bold">Height</p>
@@ -141,11 +128,11 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
               type="number"
               value={height}
               className="border-b outline-none bg-transparent py-2"
-              min={minH}
+              min={minHeight}
               max={maxH}
               onChange={handleHeightChange}
             />
-            <p>Min:{minH}/Max:{maxH}</p>
+            <p>Min:{minHeight}/Max:{maxH}</p>
           </div>
           {convertTo === "lamp" && <div className="flex flex-col w-full">
             <p className="text-xl font-bold">Substation quality</p>
@@ -162,14 +149,12 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
                 </label>
               ))}
             </div>
-            <p>Leave 0 for base game</p>
+            <p>Leave 1 for base game</p>
           </div>}
         </div>
         <div className="flex md:flex-row md:justify-between flex-col gap-4">
-
           <div className="flex flex-col gap-2">
             <div className="flex gap-4">
-
               <p className="text-xl font-bold">Maintain original aspect ratio</p>
               <input
                 type="checkbox"
@@ -177,6 +162,14 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
                 onChange={(e) => setKeepAspectRatio(e.target.checked)}
               />
             </div>
+            {convertTo === "lamp" && <div className="flex gap-4">
+              <p className="text-xl font-bold">Black lamps allowed. Turn off to optimize png images</p>
+              <input
+                type="checkbox"
+                checked={blackLampsAllowed}
+                onChange={(e) => setBlackLampsAllowed(e.target.checked)}
+              />
+            </div>}
             {convertTo === "brick" && <div className="flex gap-4">
               <p className="text-xl font-bold">Allow refined tiles</p>
               <input
@@ -198,9 +191,9 @@ export default function ImageEditor({ image, setImage, setResultCanvas, maxW, ma
               className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md"
               onClick={() => {
                 const canvas = canvasRef.current;
-                if (canvas!.width > maxW || canvas!.width < minW) {
+                if (canvas!.width > maxWidth || canvas!.width < minWidth) {
                   toast.error('Wrong width')
-                } else if (canvas!.height > maxH || canvas!.height < minH) {
+                } else if (canvas!.height > maxH || canvas!.height < minHeight) {
                   toast.error('Wrong height')
                 } else {
                   convertTo === 'brick' && setResultCanvas(canvasRef.current!);
