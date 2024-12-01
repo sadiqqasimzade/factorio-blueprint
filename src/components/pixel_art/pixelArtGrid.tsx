@@ -8,7 +8,8 @@ type Props = {
 
 export default memo(function PixelArtGrid({ cells, updateCell }: Props) {
     return (
-        <>
+        <div className='h-screen relative overflow-auto'>
+
             <div className="flex overflow-auto">
                 {cells.map((cellrow, rindex) => (
                     <div className="flex flex-col justify-center" key={cellrow.length * rindex}>
@@ -18,7 +19,8 @@ export default memo(function PixelArtGrid({ cells, updateCell }: Props) {
                     </div>
                 ))}
             </div>
-        </>
+
+        </div>
 
     )
 })

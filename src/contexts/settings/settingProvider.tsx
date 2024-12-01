@@ -7,7 +7,7 @@ const SettingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [quality, setQuality] = useState<number>(0);
     const [blackLampsAllowed, setBlackLampsAllowed] = useState<boolean>(true);
     const [skipInput, setSkipInput] = useState<boolean>(false);
-    const [convertTo, setConvertTo] = useState<string>('lamp');
+    const [convertTo, setConvertTo] = useState<'lamp' | 'tile'>('lamp');
     const maxWidth = 500;
     const maxHeight = 500;
     const minWidth = 5;

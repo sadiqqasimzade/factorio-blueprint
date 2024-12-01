@@ -170,7 +170,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
                 onChange={(e) => setBlackLampsAllowed(e.target.checked)}
               />
             </div>}
-            {convertTo === "brick" && <div className="flex gap-4">
+            {convertTo === "tile" && <div className="flex gap-4">
               <p className="text-xl font-bold">Allow refined tiles</p>
               <input
                 type="checkbox"
@@ -196,7 +196,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
                 } else if (canvas!.height > maxH || canvas!.height < minHeight) {
                   toast.error('Wrong height')
                 } else {
-                  convertTo === 'brick' && setResultCanvas(canvasRef.current!);
+                  convertTo === 'tile' && setResultCanvas(canvasRef.current!);
                   convertTo === 'lamp' && setPixelArt(getDecimalColorsFromCanvas(canvas!));
                   setImage(undefined);
                 }

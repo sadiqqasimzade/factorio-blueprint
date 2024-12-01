@@ -1,6 +1,6 @@
 import SettingsContext from "@/src/contexts/settings/settingsContext";
 import blueprintEncoder from "@/src/utils/convertors/blueprintEncoder";
-import imgToBrickBlueprintConvertor from "@/src/utils/convertors/imgToBrickBlueprintConvertor";
+import imgToTileBlueprintConvertor from "@/src/utils/convertors/imgToTileBlueprintConvertor";
 import imgToLampBlueprintConvertor from "@/src/utils/convertors/imgToLampBlueprintConvertor";
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
 import { useContext, useEffect, useState } from "react";
@@ -16,7 +16,7 @@ export default function Result({ pixelArt }: Props) {
     setBpstring(blueprintEncoder(
       convertTo === 'lamp'
         ? imgToLampBlueprintConvertor(pixelArt as number[][], quality, blackLampsAllowed)
-        : imgToBrickBlueprintConvertor(pixelArt as string[][]),
+        : imgToTileBlueprintConvertor(pixelArt as string[][]),
     ))
   }, [])
 
