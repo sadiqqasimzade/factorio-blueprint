@@ -12,8 +12,8 @@
 
 
 bring back pixel art editor 
-png background opacity
-limit pixel art render height
+option to not generate substations
+make lamps connect to previous lamps instead of substations
 
 
 # Ideas

@@ -11,7 +11,7 @@ interface SubstationQuality {
     value: number;
 }
 
-const SUBSTATION_QUALITIES: SubstationQuality[] = [
+export const SUBSTATION_QUALITIES: SubstationQuality[] = [
     { name: "common", value: 18 },
     { name: "uncommon", value: 20 },
     { name: "rare", value: 22 },
@@ -19,14 +19,14 @@ const SUBSTATION_QUALITIES: SubstationQuality[] = [
     { name: "legendary", value: 28 }
 ];
 
-export function CreateScreen(width: number, height: number, wires: TBpWire[], quality: number = 1, blackLampsAllowed: boolean = false): BpEntity[] {
+export function CreateScreen(width: number, height: number, wires: TBpWire[], substation_height_offset: number, quality: number = 0, blackLampsAllowed: boolean = false): BpEntity[] {
     const mainEntities: BpEntity[] = [];
     const substationQuality = SUBSTATION_QUALITIES[quality];
     const substationName = quality !== 0 ? substationQuality.name : undefined;
 
     // Calculate substation coordinates
     const substationCoordinatesW = generateSubstationCoordinates(width, substationQuality.value, -1);
-    const substationCoordinatesH = generateSubstationCoordinates(height, substationQuality.value, -2);
+    const substationCoordinatesH = generateSubstationCoordinates(height, substationQuality.value, -1 - substation_height_offset);
 
 
 
@@ -126,8 +126,10 @@ function addOffGridSubstations(mainEntities: BpEntity[],
 
 function connectSubstations(mainEntities: BpEntity[], wires: TBpWire[], substationCoordinatesW: number[], substationCoordinatesH: number[]): void {
     // Connect horizontal rows
+    const substations = mainEntities.filter(e => e instanceof BpSubstation) as BpSubstation[];
+
     for (const y of substationCoordinatesH) {
-        const rowSubstations = mainEntities.filter(e => e instanceof BpSubstation && e.position.y === y + 0.5) as BpSubstation[];
+        const rowSubstations = substations.filter(e => e.position.y === y + 0.5);
 
         for (let j = 0; j < rowSubstations.length - 1; j++) {
             wires.push(BpStaticMethods.connect(rowSubstations[j], rowSubstations[j + 1], 5, 5));
@@ -136,7 +138,7 @@ function connectSubstations(mainEntities: BpEntity[], wires: TBpWire[], substati
 
     // Connect vertical columns
     for (const x of substationCoordinatesW) {
-        const colSubstations = mainEntities.filter(e => e instanceof BpSubstation && e.position.x === x + 0.5) as BpSubstation[];
+        const colSubstations = substations.filter(e => e.position.x === x + 0.5) as BpSubstation[];
 
         for (let j = 0; j < colSubstations.length - 1; j++) {
             wires.push(BpStaticMethods.connect(colSubstations[j], colSubstations[j + 1], 5, 5));
