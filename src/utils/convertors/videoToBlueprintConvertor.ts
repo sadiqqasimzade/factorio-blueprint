@@ -11,8 +11,7 @@ import BpSubstation from "@/src/classes/BpSubstation";
 import { Directions } from "@/src/consts/enums";
 import { signal_priority, Signals } from "@/src/consts/signalsEnum";
 import { CreateScreen, SUBSTATION_QUALITIES } from "./createScreen";
-import { useContext } from "react";
-import SettingsContext from "@/src/contexts/settings/settingsContext";
+
 
 
 function generateSubstationCoordinatesW(size: number, substationValue: number, offset: number): number[] {
@@ -26,7 +25,7 @@ function generateSubstationCoordinatesW(size: number, substationValue: number, o
     return coordinates;
 }
 
-function generateSubstationCoordinatesH(size: number, substationValue: number, offset: number): number[] {
+function generateSubstationCoordinatesH(size: number, substationValue: number): number[] {
     const coordinates = [4];
     const maxValue = Math.ceil(size / substationValue) * substationValue;
 
@@ -50,7 +49,7 @@ export function CreateMemoryBlock(frames: number[][][], quality: number): Bluepr
     const substationName = quality === 1 ? undefined : substationQuality.name
 
     const substationCoordinatesW = quality === 0 ? [] : generateSubstationCoordinatesW(width, substationQuality.value, 0)
-    const substationCoordinatesH = quality === 0 ? [] : generateSubstationCoordinatesH(frames.length + (frames.length / 5), Math.ceil(substationQuality.value / 3), 0)
+    const substationCoordinatesH = quality === 0 ? [] : generateSubstationCoordinatesH(frames.length + (frames.length / 5), Math.ceil(substationQuality.value / 3))
 
     const screenEntities = CreateScreen(width, height, wires, 0, quality, true)
 
