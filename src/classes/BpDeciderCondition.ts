@@ -1,8 +1,17 @@
-
 type OutputNetwork = {
     red: boolean
     green: boolean
 }
+
+
+export type InputSignal = {
+    first_signal: TBpSignal
+    comparator?: CompareOperations
+    constant?: number
+    first_signal_networks?: OutputNetwork
+}[] | TBpSignal
+
+
 
 export type OutputSignal = {
     signal: TBpSignal
@@ -10,18 +19,22 @@ export type OutputSignal = {
 }[] | TBpSignal
 
 export default class DeciderCondition {
-    first_signal: TBpSignal;
-    constant: number;
-    comparator: CompareOperations;
-    outputs?: OutputSignal
-    copy_count_from_input?: boolean
 
-    constructor(first_signal: TBpSignal, comparator: CompareOperations, constant: number, outputs?: OutputSignal, copy_count_from_input?: boolean) {
-        this.first_signal = first_signal
-        this.comparator = comparator
-        this.constant = constant
-        this.outputs = outputs
-        this.copy_count_from_input = copy_count_from_input
+    conditions: InputSignal
+    outputs: OutputSignal
+
+
+    constructor(
+        conditions: InputSignal,
+        outputs: OutputSignal
+
+
+    ) {
+
+        this.conditions = conditions;
+        this.outputs = outputs;
+        
     }
+
 
 }

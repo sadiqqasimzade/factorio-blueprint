@@ -1,18 +1,18 @@
 import Blueprint from "@/src/classes/Blueprint";
 import BpArithmeticCombinator from "@/src/classes/BpArithmeticCombinator";
+import ArithmeticCondition from "@/src/classes/BpArithmeticCondition";
 import BpConstCombinator from "@/src/classes/BpConstCombinator";
 import BpDeciderCombinator from "@/src/classes/BpDeciderCombinator";
-import { BpMediumPole } from "@/src/classes/BpMediumPole";
+import DeciderCondition from "@/src/classes/BpDeciderCondition";
+import BpIcon from "@/src/classes/BpIcon";
+import BpLamp from "@/src/classes/BpLamp";
+import { BpStaticMethods } from "@/src/classes/BpStaticMethods";
+import BpSubstation from "@/src/classes/BpSubstation";
 import { Directions } from "@/src/consts/enums";
 import { signal_priority, Signals } from "@/src/consts/signalsEnum";
-import { CreateScreen } from "./createScreen";
-import BpIcon from "@/src/classes/BpIcon";
-import ArithmeticCondition from "@/src/classes/BpArithmeticCondition";
-import DeciderCondition from "@/src/classes/BpDeciderCondition";
-import { BpStaticMethods } from "@/src/classes/BpStaticMethods";
-import { SUBSTATION_QUALITIES } from "./createScreen";
-import BpSubstation from "@/src/classes/BpSubstation";
-import BpLamp from "@/src/classes/BpLamp";
+import { CreateScreen, SUBSTATION_QUALITIES } from "./createScreen";
+import { useContext } from "react";
+import SettingsContext from "@/src/contexts/settings/settingsContext";
 
 
 function generateSubstationCoordinatesW(size: number, substationValue: number, offset: number): number[] {
@@ -37,7 +37,7 @@ function generateSubstationCoordinatesH(size: number, substationValue: number, o
     return coordinates;
 }
 
-export function CreateMemoryBlock(frames: number[][][], quality: number = 0): Blueprint {
+export function CreateMemoryBlock(frames: number[][][], quality: number): Blueprint {
     const deciderCombinators: BpDeciderCombinator[] = []
     const substations: BpSubstation[] = []
     const constCombinators: BpConstCombinator[] = []
@@ -47,22 +47,23 @@ export function CreateMemoryBlock(frames: number[][][], quality: number = 0): Bl
     const height = frames[0][0].length
 
     const substationQuality = SUBSTATION_QUALITIES[quality]
-    const substationCoordinatesW = generateSubstationCoordinatesW(width, substationQuality.value, 0)
-    const substationCoordinatesH = generateSubstationCoordinatesH(frames.length * 3, Math.ceil(substationQuality.value / 3), 0)
+    const substationName = quality === 1 ? undefined : substationQuality.name
 
-    const screenEntities = CreateScreen(width, height, wires, 0, 0, false)
+    const substationCoordinatesW = quality === 0 ? [] : generateSubstationCoordinatesW(width, substationQuality.value, 0)
+    const substationCoordinatesH = quality === 0 ? [] : generateSubstationCoordinatesH(frames.length + (frames.length / 5), Math.ceil(substationQuality.value / 3), 0)
+
+    const screenEntities = CreateScreen(width, height, wires, 0, quality, true)
 
 
     let heightOffset = 0
     let coordinateIndex = 0;
     let frameIndex = 0
 
-
-    while (coordinateIndex < frames.length) {
+    while (frameIndex < frames.length) {
         let skipLoop = true
         if (substationCoordinatesH.includes(coordinateIndex + 1)) {
             substationCoordinatesW.forEach((w, i) => {
-                substations.push(new BpSubstation(w, -1 - coordinateIndex * 3, quality != 0 ? substationQuality.name : undefined))
+                substations.push(new BpSubstation(w, -1 - coordinateIndex * 3, substationName))
                 //connect previous substation to current substation
                 if (i !== 0) {
                     wires.push(BpStaticMethods.connect(substations.at(-2)!, substations.at(-1)!, 5, 5))
@@ -96,7 +97,9 @@ export function CreateMemoryBlock(frames: number[][][], quality: number = 0): Bl
                 }, rindex, -3 - ((frameIndex + heightOffset) * 3), Directions.EAST_NORTH_EAST)
 
                 const deciderCombinator = new BpDeciderCombinator(
-                    new DeciderCondition(Signals.FISH, '=', frameIndex + 1, [{ signal: Signals.EVERYTHING, networks: { red: false, green: true } }]),
+                    new DeciderCondition(
+                        [{ first_signal: Signals.FISH, comparator: '=', constant: frameIndex + 1, first_signal_networks: { red: true, green: false } }],
+                        [{ signal: Signals.EVERYTHING, networks: { red: false, green: true } }]),
                     rindex,
                     -1 - ((frameIndex + heightOffset) * 3),
                     Directions.EAST_NORTH_EAST
@@ -138,7 +141,7 @@ export function CreateMemoryBlock(frames: number[][][], quality: number = 0): Bl
     //#region Timer
     const timerConstCombinator = new BpConstCombinator({ filters: [{ signal: Signals.FISH, count: 1, index: 2 }] }, -8, -2)
     const timerDeciderCombinator = new BpDeciderCombinator(
-        new DeciderCondition(Signals.FISH, '<', (frames.length + 1) * 30, [{ signal: Signals.FISH }]),
+        new DeciderCondition([{ first_signal: Signals.FISH, comparator: '<', constant: (frames.length + 1) * 30 }], [{ signal: Signals.FISH }]),
         -6,
         -2,
         2
@@ -166,6 +169,21 @@ export function CreateMemoryBlock(frames: number[][][], quality: number = 0): Bl
     for (let i = 0; i < frames[0].length; i++) {
         const lamp = screenEntities.find(e => e instanceof BpLamp && e.position.x === i && e.position.y === 0)
         wires.push(BpStaticMethods.connect(lamp!, deciderCombinators[i]!, 2, 4))
+    }
+    //#endregion
+
+    //#region Add horizontal row of substations if needed
+    if (substationCoordinatesH.at(-1) && coordinateIndex < substationCoordinatesH.at(-1)!) {
+        substationCoordinatesW.forEach((w, i) => {
+            substations.push(new BpSubstation(w, -1 - (substationCoordinatesH.at(-1)! * 3), substationName))
+            //connect previous substation to current substation
+            if (i !== 0) {
+                wires.push(BpStaticMethods.connect(substations.at(-2)!, substations.at(-1)!, 5, 5))
+            }
+        })
+        if (substations.at(-1) && substations.at(-1 - substationCoordinatesW.length)) {
+            wires.push(BpStaticMethods.connect(substations.at(-1)!, substations.at(-1 - substationCoordinatesW.length)!, 5, 5))
+        }
     }
     //#endregion
 

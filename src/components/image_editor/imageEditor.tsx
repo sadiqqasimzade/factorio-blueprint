@@ -20,7 +20,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
   const [keepAspectRatio, setKeepAspectRatio] = useState<boolean>(true);
-  const { maxWidth, maxHeight, maxHeightForLamps, minWidth, minHeight, convertTo, quality, isAllowedRefinedTiles, blackLampsAllowed, setQuality, setIsAllowedRefinedTiles, setBlackLampsAllowed  } = useContext(SettingsContext);
+  const { maxWidth, maxHeight, maxHeightForLamps, minWidth, minHeight, convertTo, quality, isAllowedRefinedTiles, blackLampsAllowed, setQuality, setIsAllowedRefinedTiles, setBlackLampsAllowed } = useContext(SettingsContext);
   const maxH = convertTo === 'lamp' ? maxHeightForLamps : maxHeight;
   /**
    * clear and redraw canvas with new size
@@ -137,19 +137,19 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
           {convertTo === "lamp" && <div className="flex flex-col w-full">
             <p className="text-xl font-bold">Substation quality</p>
             <div className="flex gap-4 py-2">
-              {[1, 2, 3, 4, 5].map((value) => (
+              {[0, 1, 2, 3, 4, 5].map((value) => (
                 <label key={value} className="flex items-center gap-2">
                   <input
                     type="radio"
-                    value={value - 1}
-                    checked={quality === value - 1}
+                    value={value}
+                    checked={quality === value}
                     onChange={(e) => setQuality(Number(e.target.value))}
                   />
                   {value}
-                </label>
+                </label>  
               ))}
             </div>
-            <p>Leave 1 for base game</p>
+            <p>0 for no substation, 1 for base game</p>
           </div>}
         </div>
         <div className="flex md:flex-row md:justify-between flex-col gap-4">
