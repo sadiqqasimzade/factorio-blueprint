@@ -1,117 +1,201 @@
-// import Blueprint from "@/src/classes/Blueprint";
-// import BpArithmeticCombinator from "@/src/classes/BpArithmeticCombinator";
-// import BpConstCombinator from "@/src/classes/BpConstCombinator";
-// import BpDeciderCombinator from "@/src/classes/BpDeciderCombinator";
-// import { BpMediumPole } from "@/src/classes/BpMediumPole";
-// import { Directions } from "@/src/consts/enums";
-// import { signal_priority, Signals } from "@/src/consts/signalsEnum";
-// import { CreateScreen } from "./createScreen";
-// import BpIcon from "@/src/classes/BpIcon";
-// import ArithmeticCondition from "@/src/classes/BpArithmeticCondition";
-// import DeciderCondition from "@/src/classes/BpDeciderCondition";
-
-//WIP
-
-// export function CreateMemoryBlock(images: number[][][][]): Blueprint {
-
-//     const deciderCombinators: BpDeciderCombinator[] = []
-//     const mediumPoles: BpMediumPole[] = []
-//     const constCombinators: BpConstCombinator[] = []
+import Blueprint from "@/src/classes/Blueprint";
+import BpArithmeticCombinator from "@/src/classes/BpArithmeticCombinator";
+import ArithmeticCondition from "@/src/classes/BpArithmeticCondition";
+import BpConstCombinator from "@/src/classes/BpConstCombinator";
+import BpDeciderCombinator from "@/src/classes/BpDeciderCombinator";
+import DeciderCondition from "@/src/classes/BpDeciderCondition";
+import BpIcon from "@/src/classes/BpIcon";
+import BpLamp from "@/src/classes/BpLamp";
+import { BpStaticMethods } from "@/src/classes/BpStaticMethods";
+import BpSubstation from "@/src/classes/BpSubstation";
+import { Directions } from "@/src/consts/enums";
+import { signal_priority, Signals } from "@/src/consts/signalsEnum";
+import { CreateScreen, SUBSTATION_QUALITIES } from "./createScreen";
+import { useContext } from "react";
+import SettingsContext from "@/src/contexts/settings/settingsContext";
 
 
-//     const width = images[0].length
-//     const height = images[0][0].length * (images[0][0][0].length && images[0][0][0].length)
-//     const screenEntities = CreateScreen(width, height)
+function generateSubstationCoordinatesW(size: number, substationValue: number, offset: number): number[] {
+    const coordinates = [(substationValue / 2) + offset];
+    const maxValue = Math.ceil(size / substationValue) * substationValue;
 
-//     images.forEach((colorIndexes, imageIndex) => {
+    while (coordinates.at(-1)! + substationValue < maxValue) {
+        coordinates.push(coordinates.at(-1)! + substationValue);
+    }
 
-//         for (let i = 0; i < colorIndexes.length; i++) {
-//             for (let j = 0; j < colorIndexes[0].length; j++) {
-//                 const constCombinator = new BpConstCombinator({
-//                     filters: ((): TBpConstCombinatorControlBehaviorFilter[] => {
-//                         let filters: TBpConstCombinatorControlBehaviorFilter[] = []
-//                         for (let k = 0; k < colorIndexes[i][j].length; k++) {
-//                             filters.push({
-//                                 signal: signal_priority[k],
-//                                 index: k + 1,
-//                                 count: colorIndexes[i][j][k]
-//                             })
-//                         }
-//                         return filters
-//                     })()
-//                 }, i * 2, -1 - j - (imageIndex * colorIndexes[0].length * 2))
+    return coordinates;
+}
 
-//                 const deciderCombinator = new BpDeciderCombinator(
-//                     new DeciderCondition(signals['signal_fish'], '=', imageIndex + 1, signals['signal_everything'], true),
-//                     i * 2 + 1,
-//                     -1 - j - colorIndexes[0].length - (imageIndex * colorIndexes[0].length * 2),
-//                     Directions.EAST
-//                 )
+function generateSubstationCoordinatesH(size: number, substationValue: number, offset: number): number[] {
+    const coordinates = [4];
+    const maxValue = Math.ceil(size / substationValue) * substationValue;
 
-//                 const mediumPole: BpMediumPole = new BpMediumPole(i * 2 + 1, -1 - j - (imageIndex * colorIndexes[0].length * 2))
-//                 deciderCombinator.makeConnection(constCombinator, 1, 1, 'green')
-//                 deciderCombinator.makeConnection(mediumPole, 2, 1, 'red')
+    while (coordinates.at(-1)! + substationValue < maxValue) {
+        coordinates.push(coordinates.at(-1)! + substationValue);
+    }
 
-//                 deciderCombinators.at(-1) && deciderCombinator.makeConnection(deciderCombinators.at(-1)!, 1, 1, 'red')
-//                 if (i === 0 && j === 0) {
-//                 const mediumPole2 = mediumPoles.at((-width * height / 20) + (height / 20)-1)
-//                     mediumPole2 && mediumPole.addNeighbour(mediumPole2)
-//                 }
-//                 mediumPoles.at(-1) && mediumPole.addNeighbour(mediumPoles.at(-1)!)
-//                 if (mediumPoles.at(-colorIndexes.length * colorIndexes[0].length)) {
-//                     mediumPole.makeConnection(mediumPoles.at(-colorIndexes.length * colorIndexes[0].length)!, 1, 1, 'red')
-//                     mediumPole.addNeighbour(mediumPoles.at(-colorIndexes.length * colorIndexes[0].length)!)
-//                 }
-//                 if (imageIndex === 0) {
-//                     const reverseHeight = colorIndexes[0].length - 1 - j
-//                     const arithmeticCombinator = screenEntities.find(entity => entity.position.x === i * 2 + 1 && entity.position.y === 2 * reverseHeight + 1 && entity instanceof BpArithmeticCombinator)
-//                     arithmeticCombinator && mediumPole.makeConnection(arithmeticCombinator as BpArithmeticCombinator, 1, 1, 'red')
-//                 }
+    return coordinates;
+}
 
-//                 mediumPoles.push(mediumPole)
-//                 deciderCombinators.push(deciderCombinator)
-//                 constCombinators.push(constCombinator)
-//             }
-//         }
-//         if (deciderCombinators.at(-1) && deciderCombinators.at(-colorIndexes.length * colorIndexes[0].length - 1)) {
-//             deciderCombinators.at(-1)!.makeConnection(deciderCombinators.at(-colorIndexes.length * colorIndexes[0].length - 1)!, 1, 1, 'red')
-//         }
-//     });
+export function CreateMemoryBlock(frames: number[][][], quality: number): Blueprint {
+    const deciderCombinators: BpDeciderCombinator[] = []
+    const substations: BpSubstation[] = []
+    const constCombinators: BpConstCombinator[] = []
+    const wires: TBpWire[] = []
 
-//     //#region Timer
-//     const timerConstCombinator = new BpConstCombinator({ filters: [{ signal: signals.signal_fish, count: 1, index: 2 }] }, -8, -2)
-//     const timerDeciderCombinator = new BpDeciderCombinator(
-//         new DeciderCondition(signals.signal_fish, '<', (images.length + 1) * 30, signals.signal_fish, true),
-//         -6,
-//         -2,
-//         2
-//     )
-//     const timerArithmeticCombinator = new BpArithmeticCombinator(
-//         new ArithmeticCondition(signals.signal_fish, '/', 30, signals.signal_fish),
-//         -4,
-//         -2,
-//         2
-//     )
+    const width = frames[0].length
+    const height = frames[0][0].length
 
-//     const timerMediumPole = new BpMediumPole(-4, -1)
-//     timerMediumPole.addNeighbour(mediumPoles[0])
+    const substationQuality = SUBSTATION_QUALITIES[quality]
+    const substationName = quality === 1 ? undefined : substationQuality.name
 
-//     timerConstCombinator.makeConnection(timerDeciderCombinator, 1, 1, 'green')
-//     timerDeciderCombinator.makeConnection(timerDeciderCombinator, 1, 2, 'green')
-//     timerDeciderCombinator.makeConnection(timerArithmeticCombinator, 2, 1, 'red')
-//     timerArithmeticCombinator.makeConnection(deciderCombinators[0], 2, 1, 'red')
+    const substationCoordinatesW = quality === 0 ? [] : generateSubstationCoordinatesW(width, substationQuality.value, 0)
+    const substationCoordinatesH = quality === 0 ? [] : generateSubstationCoordinatesH(frames.length + (frames.length / 5), Math.ceil(substationQuality.value / 3), 0)
 
-//     mediumPoles.push(timerMediumPole)
-//     constCombinators.push(timerConstCombinator)
-//     deciderCombinators.push(timerDeciderCombinator)
-//     //#endregion
+    const screenEntities = CreateScreen(width, height, wires, 0, quality, true)
 
-//     const result1: Blueprint = new Blueprint(
-//         [new BpIcon(signals.signal_white, 1)],
-//         [...mediumPoles, ...deciderCombinators, ...constCombinators, ...screenEntities, timerArithmeticCombinator],
-//     );
 
-//     // return new BlueprintBook([result1])
-//     return result1
-// }
+    let heightOffset = 0
+    let coordinateIndex = 0;
+    let frameIndex = 0
+
+    while (frameIndex < frames.length) {
+        let skipLoop = true
+        if (substationCoordinatesH.includes(coordinateIndex + 1)) {
+            substationCoordinatesW.forEach((w, i) => {
+                substations.push(new BpSubstation(w, -1 - coordinateIndex * 3, substationName))
+                //connect previous substation to current substation
+                if (i !== 0) {
+                    wires.push(BpStaticMethods.connect(substations.at(-2)!, substations.at(-1)!, 5, 5))
+                }
+            })
+            if (substations.at(-1) && substations.at(-1 - substationCoordinatesW.length)) {
+                wires.push(BpStaticMethods.connect(substations.at(-1)!, substations.at(-1 - substationCoordinatesW.length)!, 5, 5))
+            }
+
+            heightOffset += 1;
+            skipLoop = false
+        }
+        else {
+
+            const frame = frames[frameIndex];
+            let rindex = 0;
+            while (rindex < frame.length) {
+                const row = frame[rindex];
+                const constCombinator = new BpConstCombinator({
+                    filters: ((): TBpConstCombinatorControlBehaviorFilter[] => {
+                        let filters: TBpConstCombinatorControlBehaviorFilter[] = []
+                        for (let k = 0; k < row.length; k++) {
+                            filters.push({
+                                signal: signal_priority[k],
+                                index: k + 1,
+                                count: row[k]
+                            })
+                        }
+                        return filters
+                    })()
+                }, rindex, -3 - ((frameIndex + heightOffset) * 3), Directions.EAST_NORTH_EAST)
+
+                const deciderCombinator = new BpDeciderCombinator(
+                    new DeciderCondition(
+                        [{ first_signal: Signals.FISH, comparator: '=', constant: frameIndex + 1, first_signal_networks: { red: true, green: false } }],
+                        [{ signal: Signals.EVERYTHING, networks: { red: false, green: true } }]),
+                    rindex,
+                    -1 - ((frameIndex + heightOffset) * 3),
+                    Directions.EAST_NORTH_EAST
+                )
+
+                //Connect Const Combinator to Decider Combinator Green wire
+                wires.push(BpStaticMethods.connect(constCombinator, deciderCombinator, 2, 2))
+
+                let previousDeciderCombinator = deciderCombinators.at(-1)
+
+                //Connect previous Decider Combinator in this row to current Decider Combinator Red wire
+                if (previousDeciderCombinator && previousDeciderCombinator.position.y === deciderCombinator.position.y) {
+                    wires.push(BpStaticMethods.connect(previousDeciderCombinator, deciderCombinator, 1, 1))
+                }
+
+                //Connect previous Decider Combinator in this col to current Decider Combinator Green wire
+                if (deciderCombinators.at(-frames[0].length)) {
+                    wires.push(BpStaticMethods.connect(deciderCombinators.at(- frames[0].length)!, deciderCombinator, 4, 4))
+                }
+
+                deciderCombinators.push(deciderCombinator)
+                constCombinators.push(constCombinator)
+
+                rindex++;
+            }
+
+            if (deciderCombinators.at(-1 - frames[0].length)) {
+                wires.push(BpStaticMethods.connect(deciderCombinators.at(-1 - frames[0].length)!, deciderCombinators.at(-1)!, 1, 1))
+            }
+        }
+
+        if (skipLoop) {
+            frameIndex++;
+        }
+
+        coordinateIndex++;
+    }
+
+    //#region Timer
+    const timerConstCombinator = new BpConstCombinator({ filters: [{ signal: Signals.FISH, count: 1, index: 2 }] }, -8, -2)
+    const timerDeciderCombinator = new BpDeciderCombinator(
+        new DeciderCondition([{ first_signal: Signals.FISH, comparator: '<', constant: (frames.length + 1) * 30 }], [{ signal: Signals.FISH }]),
+        -6,
+        -2,
+        2
+    )
+    const timerArithmeticCombinator = new BpArithmeticCombinator(
+        new ArithmeticCondition(Signals.FISH, '/', 30, Signals.FISH),
+        -4,
+        -2,
+        2
+    )
+
+    //connect timer
+    wires.push(BpStaticMethods.connect(timerConstCombinator, timerDeciderCombinator, 2, 2))
+    wires.push(BpStaticMethods.connect(timerDeciderCombinator, timerDeciderCombinator, 2, 4))
+    wires.push(BpStaticMethods.connect(timerArithmeticCombinator, timerDeciderCombinator, 1, 3))
+    wires.push(BpStaticMethods.connect(timerArithmeticCombinator, deciderCombinators[0]!, 3, 1))
+
+
+
+    constCombinators.push(timerConstCombinator)
+    deciderCombinators.push(timerDeciderCombinator)
+    //#endregion
+
+    //#region connect 1st row of lamps to decider combinators
+    for (let i = 0; i < frames[0].length; i++) {
+        const lamp = screenEntities.find(e => e instanceof BpLamp && e.position.x === i && e.position.y === 0)
+        wires.push(BpStaticMethods.connect(lamp!, deciderCombinators[i]!, 2, 4))
+    }
+    //#endregion
+
+    //#region Add horizontal row of substations if needed
+    if (substationCoordinatesH.at(-1) && coordinateIndex < substationCoordinatesH.at(-1)!) {
+        substationCoordinatesW.forEach((w, i) => {
+            substations.push(new BpSubstation(w, -1 - (substationCoordinatesH.at(-1)! * 3), substationName))
+            //connect previous substation to current substation
+            if (i !== 0) {
+                wires.push(BpStaticMethods.connect(substations.at(-2)!, substations.at(-1)!, 5, 5))
+            }
+        })
+        if (substations.at(-1) && substations.at(-1 - substationCoordinatesW.length)) {
+            wires.push(BpStaticMethods.connect(substations.at(-1)!, substations.at(-1 - substationCoordinatesW.length)!, 5, 5))
+        }
+    }
+    //#endregion
+
+
+    const result1: Blueprint = new Blueprint(
+        [new BpIcon(Signals.WHITE, 1)],
+        [...substations, ...deciderCombinators, ...constCombinators, ...screenEntities, timerArithmeticCombinator],
+        [],
+        wires
+    );
+
+    // return new BlueprintBook([result1])
+    return result1
+}
 

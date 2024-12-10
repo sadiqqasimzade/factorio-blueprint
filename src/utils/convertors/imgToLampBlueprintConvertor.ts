@@ -12,7 +12,7 @@ export default function ImgToLampBlueprintConvertor(color_indexes: number[][], q
   const width = color_indexes.length
   const height = color_indexes[0].length
   const wires: TBpWire[] = []
-  const mainEntities: BpEntity[] = CreateScreen(width, height, wires, quality, blackLampsAllowed)
+  const mainEntities: BpEntity[] = CreateScreen(width, height, wires, 0, quality, blackLampsAllowed)
   const constCombinators: BpConstCombinator[] = []
 
   color_indexes.forEach((signal_strengths, i) => {

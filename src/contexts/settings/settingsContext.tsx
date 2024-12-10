@@ -13,6 +13,7 @@ type SettingsContextProps = {
     convertTo: 'lamp' | 'tile';
     setConvertTo: (value: 'lamp' | 'tile') => void;
     maxWidth: number;
+    maxWidthForVideo: number;
     maxHeight: number;
     maxHeightForLamps: number;
     minWidth: number;
@@ -22,7 +23,7 @@ type SettingsContextProps = {
 const SettingsContext = createContext<SettingsContextProps>({
     isAllowedRefinedTiles: true,
     setIsAllowedRefinedTiles: () => { },
-    quality: 0,
+    quality: 1,
     setQuality: () => { },
     blackLampsAllowed: true,
     setBlackLampsAllowed: () => { },
@@ -31,6 +32,7 @@ const SettingsContext = createContext<SettingsContextProps>({
     convertTo: 'lamp',
     setConvertTo: () => { },
     maxWidth: 500,
+    maxWidthForVideo: 200,
     maxHeight: 500,
     maxHeightForLamps: 100,
     minWidth: 5,
