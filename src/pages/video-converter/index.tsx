@@ -123,7 +123,7 @@ export default function VideoConverter() {
                     }} />
                     <p className="flex">Progress: <span ref={progressRef}>Not started</span></p>
                 </div>
-                <div className="flex gap-2 justify-between md:flex-row flex-col">
+                <div className="flex gap-6 justify-between md:flex-row flex-col">
                     <div className="flex flex-col gap-2 w-full">
                         <label>Width</label>
                         <input type="number" className="text-black px-2 py-1 rounded-md" value={width} onChange={(e) => {
@@ -160,7 +160,7 @@ export default function VideoConverter() {
                         <p>0 for no substations, 1 for base game</p>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
-                        <label>.</label>
+                        <label className="text-transparent">.</label>
                         <button className="px-2 py-1 w-full rounded-md bg-blue-400 hover:bg-blue-800 transition-colors text-gray-800 hover:text-white" onClick={() => {
                             if (width < minWidth || width > maxWidthForVideo || isNaN(width)) {
                                 toast.error("Please enter a valid width")
