@@ -17,7 +17,6 @@ export default function VideoConverter() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const progressRef = useRef<HTMLSpanElement>(null);
-    const canvasContainerRef = useRef<HTMLDivElement>(null)
     const resultRef = useRef<HTMLParagraphElement>(null)
 
 
@@ -47,12 +46,12 @@ export default function VideoConverter() {
             images.push(frameColors);
 
             // Create a visual preview of the frame
-            const framePreview = document.createElement('canvas');
-            framePreview.width = width;
-            framePreview.height = height;
-            const frameCtx = framePreview.getContext('2d')!;
-            frameCtx.drawImage(canvas, 0, 0);
-            canvasContainerRef.current?.appendChild(framePreview);
+            // const framePreview = document.createElement('canvas');
+            // framePreview.width = width;
+            // framePreview.height = height;
+            // const frameCtx = framePreview.getContext('2d')!;
+            // frameCtx.drawImage(canvas, 0, 0);
+            // canvasContainerRef.current?.appendChild(framePreview);
 
             // Update progress
             const currentTime = Math.floor(video.currentTime);
@@ -184,10 +183,6 @@ export default function VideoConverter() {
                 <div>
                     <p>Current Frame</p>
                     <canvas ref={canvasRef} />
-                </div>
-                <div>
-                    <p>All Frames</p>
-                    <div className="flex gap-2 flex-wrap" ref={canvasContainerRef}></div>
                 </div>
                 <div>
                     <p>Result</p>

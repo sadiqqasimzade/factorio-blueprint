@@ -50,7 +50,7 @@ export function CreateMemoryBlock(frames: number[][][], quality: number): Bluepr
 
     const substationCoordinatesW = quality === 0 ? [] : generateSubstationCoordinatesW(width, substationQuality.value, 0)
     const substationCoordinatesH = quality === 0 ? [] : generateSubstationCoordinatesH(frames.length + (frames.length / 5), Math.ceil(substationQuality.value / 3))
-
+    console.log(substationCoordinatesH)
     const screenEntities = CreateScreen(width, height, wires, 0, quality, true)
 
 

@@ -33,12 +33,12 @@ export default function Home() {
         imgSrc="img_to_lamp.png"
       />
       <Card
-        title="Image to Floor Blueprint Converter"
+        title="Image to Tile Blueprint Converter"
         link="image-converter-tile"
         imgSrc="img_to_tile.png"
       />
       <Card
-        title="Pixel Art to Floor Blueprint Converter"
+        title="Pixel Art to Tile Blueprint Converter"
         link="pixel-art-tile"
         imgSrc="pixel_art_tile.png"
       />

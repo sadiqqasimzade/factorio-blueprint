@@ -19,7 +19,7 @@ export default function FileDragAndDrop({ setImage }: Props) {
   const dragDropAreaRef = useRef<HTMLDivElement>(null);
   const dragDropTitleRef = useRef<HTMLParagraphElement>(null);
 
-  const { setSkipInput } = useContext(SettingsContext);
+  const { setSkipInput, convertTo } = useContext(SettingsContext);
   function resetDragDropArea() {
     dragDropAreaRef.current!.classList.remove(cssDragDropAreaError, cssDragDropAreaSuccess);
     dragDropTitleRef.current!.innerText = `Drop ${fileType} file here,or click`;
@@ -102,9 +102,10 @@ export default function FileDragAndDrop({ setImage }: Props) {
           Drop Image file here,or click
         </p>
       </div>
-      <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
+      {convertTo === 'tile' && <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
         setSkipInput(true);
-      }}>Create pixel art without image</button>
+      }}>Create pixel art without image</button>}
+
     </div>
   );
 }

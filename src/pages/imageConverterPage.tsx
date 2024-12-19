@@ -17,7 +17,7 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
     const [resultCanvas, setResultCanvas] = useState<HTMLCanvasElement>();
     const [pixelArt, setPixelArt] = useState<string[][] | number[][] | undefined>()
     const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number }>();
-
+    
     const { setConvertTo, setSkipInput, convertTo, skipInput } = useContext(SettingsContext);
     useEffect(() => {
         setConvertTo(convertToProp);
@@ -38,9 +38,8 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
 
                             validatedImage ? <ImageEditor
                                 image={validatedImage} setImage={setValidatedImage}
-                                setResultCanvas={setResultCanvas} setPixelArt={setPixelArt}
-                            /> :
-
+                                setResultCanvas={setResultCanvas} setPixelArt={setPixelArt} />
+                                :
                                 <FileDragAndDrop setImage={setValidatedImage} />
             }
             {

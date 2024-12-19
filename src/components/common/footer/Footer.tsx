@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="flex flex-col items-center text-center bg-blue-950">
+    <footer className="flex flex-col items-center text-center bg-blue-950 h-fit self-end">
       <div className="p-6">
           <a href='https://github.com/sadiqqasimzade/factorio-blueprint' title='Github' className='flex justify-center items-center hover:text-blue-300 transition-colors'>
             <span className="mr-4">You can contribute or open issue on github</span>

@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <ModalProvider>
-        <div className={roboto.className}>
+        <div className={roboto.className + " grid min-h-screen h-full"}>
           <ToastContainer
             position="top-center"
             autoClose={5000}
@@ -29,11 +29,12 @@ export default function App({ Component, pageProps }: AppProps) {
             draggable
             pauseOnHover
             theme="dark"
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
+            
           />
           <SettingProvider>
             <Navbar />
-            <main className='min-h-screen'>
+            <main className=''>
               <PageTransition>
                 <Component {...pageProps} />
               </PageTransition>

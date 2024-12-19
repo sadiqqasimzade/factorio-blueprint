@@ -18,7 +18,6 @@
 
 
 
-
 # Ideas
 - Convert large video by passing chunks of memory blocks (book with multiple blueprints?)?
 - Batter Json visualizer for blueprint decoder page

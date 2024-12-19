@@ -7,13 +7,12 @@ type Props = {
     setPixelArtSize: React.Dispatch<React.SetStateAction<{ width: number, height: number } | undefined>>
 }
 
-export default function SizeInput({ setPixelArtSize}: Props) {
+export default function SizeInput({ setPixelArtSize }: Props) {
     const { showModal, hideModal, modalIsActive } = useContext(ModalContext)
     const { maxWidth, maxHeight, minWidth, minHeight, setSkipInput } = useContext(SettingsContext);
 
     const widthRef = useRef<HTMLInputElement>(null)
     const heightRef = useRef<HTMLInputElement>(null)
-    
     useEffect(() => {
         showModal(
             <div className='flex flex-col place-content-center text-black w-56'>
@@ -46,7 +45,7 @@ export default function SizeInput({ setPixelArtSize}: Props) {
                         }
                     }>Submit</button>
                 </div>
-            </div>
+            </div >
         )
     }, [])
 

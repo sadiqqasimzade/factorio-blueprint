@@ -1,24 +1,25 @@
 import { allTileColorsArr, basicTileColorsArr } from '@/src/consts/colorsEnum'
 import { calculateClosestColorsInCanvas } from '@/src/utils/image/calculateColors'
-import { useCallback, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import ColorPicker from './colorPicker'
 import PixelArtGrid from './pixelArtGrid'
+import SettingsContext from '@/src/contexts/settings/settingsContext'
 type Props = {
     sizex: number,
     sizey: number,
     resultCanvas?: undefined,
     setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>
-    isAllowedRefinedTiles?: boolean
-
 } | {
     sizex?: undefined,
     sizey?: undefined,
     resultCanvas: HTMLCanvasElement,
     setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>
-    isAllowedRefinedTiles?: boolean
 }
 
-export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, isAllowedRefinedTiles }: Props) {
+export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt }: Props) {
+
+    const { isAllowedRefinedTiles } = useContext(SettingsContext)
+
     const [cells, setCells] = useState((sizex && sizey) ?
         Array<string[]>(sizex).fill(Array<string>(sizey).fill(allTileColorsArr[0])) :
         calculateClosestColorsInCanvas(resultCanvas!, isAllowedRefinedTiles ? allTileColorsArr : basicTileColorsArr))
@@ -36,6 +37,8 @@ export default function PixelArtPage({ sizex, sizey, resultCanvas, setPixelArt, 
     const updateCell = useCallback((x: number, y: number) => {
         setCells(prev => prev!.map((col, j) => j === y ? col.map((cell, i) => i === x ? selectedColor : cell) : col))
     }, [selectedColor])
+
+
 
     return (
         <>

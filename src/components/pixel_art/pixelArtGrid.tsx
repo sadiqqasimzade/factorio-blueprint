@@ -8,7 +8,7 @@ type Props = {
 
 export default memo(function PixelArtGrid({ cells, updateCell }: Props) {
     return (
-        <div className='h-screen relative overflow-auto'>
+        <div className='max-h-[70vh] max-w-[90vw] relative overflow-auto'>
 
             <div className="flex overflow-auto">
                 {cells.map((cellrow, rindex) => (
