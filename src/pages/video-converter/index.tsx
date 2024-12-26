@@ -144,7 +144,8 @@ export default function VideoConverter() {
                     <div className="flex flex-col w-full">
                         <p className="text-xl font-bold">Substation quality</p>
                         <div className="flex gap-4 py-2">
-                            {[0, 1, 2, 3, 4, 5].map((value) => (
+                        {/* 2, 3, 4, 5 */}
+                            {[0, 1, ].map((value) => (
                                 <label key={value} className="flex items-center gap-2">
                                     <input
                                         type="radio"
@@ -157,6 +158,7 @@ export default function VideoConverter() {
                             ))}
                         </div>
                         <p>0 for no substations, 1 for base game</p>
+                        <p>Better quality will be available someday....</p>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <label className="text-transparent">.</label>
