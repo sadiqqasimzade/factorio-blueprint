@@ -12,7 +12,6 @@
 
 #Bugs
 - get review on video convertor tests
-- video convertor should be able to handle different frame rates
 - video convertor doenst work properly on more quality than 1
 - video convertor wrong displacement of substations on additional row
 

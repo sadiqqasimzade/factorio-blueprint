@@ -18,65 +18,142 @@ export default function VideoConverter() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const progressRef = useRef<HTMLSpanElement>(null);
     const resultRef = useRef<HTMLParagraphElement>(null)
+    const convertButtonRef = useRef<HTMLButtonElement>(null)
+
 
 
     const [width, setWidth] = useState<number>(50);
     const [height, setHeight] = useState<number>(50);
     const [aspectRatio, setAspectRatio] = useState<number>(1);
+    const [frameRate, setFrameRate] = useState<number>(30)
+    const [skipFrames, setSkipFrames] = useState<number>(2)
+    const [inGameUpdateSpeed, setInGameUpdateSpeed] = useState(10)
+    const [loopWithoutBlankFrame, setLoopWithoutBlankFrame] = useState(true)
+    const [readyToStart, setReadyToStart] = useState(false)
 
 
-
-
-    useEffect(() => {
+    const extractFrames = async () => {
+        const currentCanvas = canvasRef.current as HTMLCanvasElement;
+        const currentCanvasCtx = currentCanvas.getContext('2d') as CanvasRenderingContext2D;
         const images: number[][][] = []
-        const canvas = canvasRef.current as HTMLCanvasElement;
-        const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-        const progress = progressRef.current as HTMLSpanElement;
         const video = videoRef.current as HTMLVideoElement;
+        const progress = progressRef.current as HTMLSpanElement;
 
-        canvasRef.current!.width = width;
-        canvasRef.current!.height = height;
 
-        const drawFrame = () => {
-            // Draw the current frame to canvas
-            ctx.drawImage(video, 0, 0, width, height);
+        currentCanvas.width = width
+        currentCanvas.height = height
 
-            // Get decimal colors from the canvas
-            const frameColors = getDecimalColorsFromCanvas(canvas);
-            images.push(frameColors);
+        const captureFrame = (currentTime: number): Promise<void> => {
+            return new Promise((resolve) => {
+                video.currentTime = currentTime;
 
-            // Create a visual preview of the frame
-            // const framePreview = document.createElement('canvas');
-            // framePreview.width = width;
-            // framePreview.height = height;
-            // const frameCtx = framePreview.getContext('2d')!;
-            // frameCtx.drawImage(canvas, 0, 0);
-            // canvasContainerRef.current?.appendChild(framePreview);
+                video.onseeked = () => {
+                    // Wait for the video frame to be fully decoded before drawing
+                    if (video.readyState >= 2) { // Video has enough data to play
+                        currentCanvasCtx.drawImage(video, 0, 0, width, height);
 
-            // Update progress
-            const currentTime = Math.floor(video.currentTime);
-            const duration = Math.floor(video.duration);
-            progress.textContent = `${currentTime}/${duration} seconds (${Math.floor((currentTime / duration) * 100)}%)`;
+                        // Clone the canvas to store the current frame
+                        const newCanvas = document.createElement("canvas");
+                        newCanvas.width = currentCanvas.width;
+                        newCanvas.height = currentCanvas.height;
+                        const newCtx = newCanvas.getContext("2d");
+                        if (newCtx) {
+                            newCtx.drawImage(currentCanvas, 0, 0);
+                            const frameColors = getDecimalColorsFromCanvas(currentCanvas);
+                            images.push(frameColors);
+                        }
+                    }
+                    resolve();
+                };
+            });
+        };
 
-            // When video ends, create the blueprint
-            if (video.ended) {
-                video.pause();
-                const blueprint = CreateMemoryBlock(images, quality);
-                const encoded = blueprintEncoder(blueprint);
-                if (resultRef.current) {
-                    resultRef.current.textContent = encoded;
-                }
-                progress.textContent = 'Done!';
+        const extract = async () => {
+
+            const duration = video.duration;
+            const totalFrames = Math.floor(duration * frameRate);
+            const frameInterval = 1 / frameRate;
+
+            for (let i = 0; i < totalFrames; i += 1 + skipFrames) {
+                const currentTime = i * frameInterval;
+                progress.textContent = `${Math.floor((currentTime / duration) * 100)}%`;
+                await captureFrame(currentTime);
             }
+
+        };
+
+        const generateResult = () => {
+            console.log(loopWithoutBlankFrame)
+            const blueprint = CreateMemoryBlock(images, quality, 60 / inGameUpdateSpeed, loopWithoutBlankFrame);
+            const encoded = blueprintEncoder(blueprint);
+            if (resultRef.current) {
+                resultRef.current.textContent = encoded;
+            }
+            progress.textContent = 'Done!';
         }
 
+        extract().then(() => {
+            generateResult()
+        });
+    }
 
-        video.addEventListener('timeupdate', drawFrame, false);
 
-        return () => {
-            video.removeEventListener('timeupdate', drawFrame, false);
-        };
-    }, [width, height, quality]);
+    const getFrameRate = async () => {
+        // Part 1:
+        const vid = videoRef.current as HTMLVideoElement;
+        var last_media_time: number, last_frame_num: number, fps: number;
+        var fps_rounder: number[] = [];
+        var frame_not_seeked = true;
+        progressRef.current!.textContent = "Getting framerate..."
+
+        // Part 2 (with some modifications):
+        function ticker(useless: any, metadata: any) {
+            var media_time_diff = Math.abs(metadata.mediaTime - last_media_time);
+            var frame_num_diff = Math.abs(metadata.presentedFrames - last_frame_num);
+            var diff = media_time_diff / frame_num_diff;
+            if (
+                diff &&
+                diff < 1 &&
+                frame_not_seeked &&
+                fps_rounder.length < 50 &&
+                vid.playbackRate === 1 &&
+                document.hasFocus()
+            ) {
+                fps_rounder.push(diff);
+                fps = Math.round(1 / get_fps_average());
+            }
+            frame_not_seeked = true;
+            last_media_time = metadata.mediaTime;
+            last_frame_num = metadata.presentedFrames;
+            vid.requestVideoFrameCallback(ticker);
+        }
+        vid.requestVideoFrameCallback(ticker);
+        // Part 3:
+        const callback = () => {
+            fps_rounder.pop();
+            frame_not_seeked = false;
+        }
+        vid.addEventListener("seeked", callback);
+        // Part 4:
+        function get_fps_average() {
+            return fps_rounder.reduce((a, b) => a + b) / fps_rounder.length;
+        }
+        vid.play()
+
+        await new Promise((resolve) => {
+            setTimeout(() => {
+                vid.pause()
+                vid.removeEventListener("seeked", callback);
+                resolve(fps)
+            }, 3000);
+        }).then((fps) => {
+            setFrameRate(fps as number)
+        })
+
+
+
+    }
+
 
 
     return (
@@ -92,35 +169,43 @@ export default function VideoConverter() {
             <div className="flex flex-col gap-4">
                 <video muted ref={videoRef} className="hidden" />
                 <p className="text-red-500 text-2xl font-bold">Still in development, please report any issues</p>
+                <p className="flex text-2xl font-bold">Progress: <span ref={progressRef}>Waiting input</span></p>
+
                 <div className="flex gap-4 items-center md:flex-row flex-col">
                     <input type="file" accept="video/*" onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
                             const videoFile = e.target.files[0];
                             const videoURL = URL.createObjectURL(videoFile);
-                            videoRef.current!.src = videoURL;
+                            const currentVideo = videoRef.current as HTMLVideoElement
+                            currentVideo.src = videoURL;
 
-                            videoRef.current!.onloadedmetadata = () => {
-                                const videoWidth = videoRef.current!.videoWidth;
-                                const videoHeight = videoRef.current!.videoHeight;
+                            currentVideo.onloadedmetadata = () => {
+                                const videoWidth = currentVideo.videoWidth;
+                                const videoHeight = currentVideo.videoHeight;
+
                                 const ratio = videoWidth / videoHeight;
-                                setAspectRatio(ratio);
-                                const aspectRatio = ratio;
 
                                 let newWidth = maxWidthForVideo;
                                 let newHeight = maxHeightForLamps;
 
                                 if (videoWidth > videoHeight) {
-                                    newHeight = Math.min(maxHeightForLamps, Math.floor(maxWidthForVideo / aspectRatio));
+                                    newHeight = Math.min(maxHeightForLamps, Math.floor(maxWidthForVideo / ratio));
                                 } else {
-                                    newWidth = Math.min(maxWidthForVideo, Math.floor(maxHeightForLamps * aspectRatio));
+                                    newWidth = Math.min(maxWidthForVideo, Math.floor(maxHeightForLamps * ratio));
                                 }
 
                                 setWidth(newWidth);
                                 setHeight(newHeight);
+                                setAspectRatio(ratio);
+                                // const quality = currentVideo.getVideoPlaybackQuality()
+                                // console.log(currentVideo.duration , quality)
+                                getFrameRate().then(() => {
+                                    progressRef.current!.textContent = "Ready to start"
+                                    setReadyToStart(true)
+                                })
                             };
                         }
                     }} />
-                    <p className="flex">Progress: <span ref={progressRef}>Not started</span></p>
                 </div>
                 <div className="flex gap-6 justify-between md:flex-row flex-col">
                     <div className="flex flex-col gap-2 w-full">
@@ -141,11 +226,30 @@ export default function VideoConverter() {
                         }} min={minHeight} max={maxHeightForLamps} />
                         <label>min:{minHeight} max:{maxHeightForLamps} </label>
                     </div>
+                    <div className="flex flex-col gap-2 w-full">
+                        <label>Skip Frames</label>
+                        <input type="number" className="text-black px-2 py-1 rounded-md" value={skipFrames} min={0} onChange={(e) => {
+                            setSkipFrames(Number(e.target.value))
+                        }} />
+                        <label>Skip some frames to achive smaller result</label>
+                    </div>
+                    <div className="flex flex-col gap-2 w-full">
+                        <label>In game frame counter speed</label>
+                        <input type="number" className="text-black px-2 py-1 rounded-md" value={inGameUpdateSpeed} min={1} max={60} onChange={(e) => {
+                            setInGameUpdateSpeed(Number(e.target.value))
+                        }} />
+                        <label>Max value 60</label>
+                    </div>
+                    <div className="flex flex-row gap-2 items-start w-full">
+                        <label>Loop without blank frame <input type="checkbox" className="text-black px-2 py-1 rounded-md" checked={loopWithoutBlankFrame} onChange={(e) => {
+                            setLoopWithoutBlankFrame(e.target.checked)
+                        }} /></label>
+                    </div>
                     <div className="flex flex-col w-full">
                         <p className="text-xl font-bold">Substation quality</p>
                         <div className="flex gap-4 py-2">
-                        {/* 2, 3, 4, 5 */}
-                            {[0, 1, ].map((value) => (
+                            {/* 2, 3, 4, 5 */}
+                            {[0, 1,].map((value) => (
                                 <label key={value} className="flex items-center gap-2">
                                     <input
                                         type="radio"
@@ -162,7 +266,7 @@ export default function VideoConverter() {
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <label className="text-transparent">.</label>
-                        <button className="px-2 py-1 w-full rounded-md bg-blue-400 hover:bg-blue-800 transition-colors text-gray-800 hover:text-white" onClick={() => {
+                        <button ref={convertButtonRef} disabled={!readyToStart} className="px-2 py-1 w-full rounded-md bg-gray-400 enabled:bg-blue-400 enabled:hover:bg-blue-800 transition-colors text-gray-800 enabled:hover:text-white" onClick={() => {
                             if (width < minWidth || width > maxWidthForVideo || isNaN(width)) {
                                 toast.error("Please enter a valid width")
                             }
@@ -176,11 +280,10 @@ export default function VideoConverter() {
                                 toast.error("Video is not loaded yet")
                             }
                             else {
-                                videoRef.current.play()
+                                extractFrames()
                             }
                         }}>Convert</button>
                     </div>
-
                 </div>
                 <div>
                     <p>Current Frame</p>
@@ -191,10 +294,7 @@ export default function VideoConverter() {
                     <p ref={resultRef} onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Successfully copied') : toast.error('Unable to copy')) }} className="max-h-80 overflow-y-auto mt-5 break-all transition-all" />
                 </div>
             </div>
-        </Container>
+        </Container >
     );
 }
 
-// export default function VideoConverterPage() {
-//     return <>WIP</>
-// }
