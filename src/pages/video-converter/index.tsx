@@ -5,7 +5,7 @@ import { CreateMemoryBlock } from "@/src/utils/convertors/videoToBlueprintConver
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
 import { getDecimalColorsFromCanvas } from "@/src/utils/image/calculateColors";
 import Head from "next/head";
-import { useRef, useEffect, useState, useContext } from "react";
+import { useRef, useState, useContext } from "react";
 import { toast } from "react-toastify";
 
 
@@ -83,7 +83,7 @@ export default function VideoConverter() {
         };
 
         const generateResult = () => {
-            console.log(loopWithoutBlankFrame)
+            // console.log(loopWithoutBlankFrame)
             const blueprint = CreateMemoryBlock(images, quality, 60 / inGameUpdateSpeed, loopWithoutBlankFrame);
             const encoded = blueprintEncoder(blueprint);
             if (resultRef.current) {
@@ -108,6 +108,7 @@ export default function VideoConverter() {
 
         // Part 2 (with some modifications):
         function ticker(useless: any, metadata: any) {
+            useless;
             var media_time_diff = Math.abs(metadata.mediaTime - last_media_time);
             var frame_num_diff = Math.abs(metadata.presentedFrames - last_frame_num);
             var diff = media_time_diff / frame_num_diff;
