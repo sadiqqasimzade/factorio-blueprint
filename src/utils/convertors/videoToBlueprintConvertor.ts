@@ -36,7 +36,7 @@ function generateSubstationCoordinatesH(size: number, substationValue: number): 
     return coordinates;
 }
 
-export function CreateMemoryBlock(frames: number[][][], quality: number): Blueprint {
+export function CreateMemoryBlock(frames: number[][][], quality: number, frameRate: number, loopWithoutBlankFrame: boolean): Blueprint {
     const deciderCombinators: BpDeciderCombinator[] = []
     const substations: BpSubstation[] = []
     const constCombinators: BpConstCombinator[] = []
@@ -50,7 +50,6 @@ export function CreateMemoryBlock(frames: number[][][], quality: number): Bluepr
 
     const substationCoordinatesW = quality === 0 ? [] : generateSubstationCoordinatesW(width, substationQuality.value, 0)
     const substationCoordinatesH = quality === 0 ? [] : generateSubstationCoordinatesH(frames.length + (frames.length / 5), Math.ceil(substationQuality.value / 3))
-    console.log(substationCoordinatesH)
     const screenEntities = CreateScreen(width, height, wires, 0, quality, true)
 
 
@@ -138,25 +137,31 @@ export function CreateMemoryBlock(frames: number[][][], quality: number): Bluepr
     }
 
     //#region Timer
-    const timerConstCombinator = new BpConstCombinator({ filters: [{ signal: Signals.FISH, count: 1, index: 2 }] }, -8, -2)
+    const timerConstCombinator = new BpConstCombinator({ filters: [{ signal: Signals.FISH, count: 1, index: 2 }] }, -6, -2)
     const timerDeciderCombinator = new BpDeciderCombinator(
-        new DeciderCondition([{ first_signal: Signals.FISH, comparator: '<', constant: (frames.length + 1) * 30 }], [{ signal: Signals.FISH }]),
-        -6,
+        new DeciderCondition([{ first_signal: Signals.FISH, comparator: '<', constant: (frames.length + (loopWithoutBlankFrame ? 0 : 1)) * frameRate }], [{ signal: Signals.FISH }]),
+        -5,
         -2,
         2
     )
     const timerArithmeticCombinator = new BpArithmeticCombinator(
-        new ArithmeticCondition(Signals.FISH, '/', 30, Signals.FISH),
+        new ArithmeticCondition(Signals.FISH, '/', frameRate, Signals.FISH),
         -4,
         -2,
         2
     )
-
+    const addingArithmeticCombinator = new BpArithmeticCombinator(
+        new ArithmeticCondition(Signals.FISH, '+', 1, Signals.FISH),
+        -3,
+        -2,
+        2
+    )
     //connect timer
     wires.push(BpStaticMethods.connect(timerConstCombinator, timerDeciderCombinator, 2, 2))
     wires.push(BpStaticMethods.connect(timerDeciderCombinator, timerDeciderCombinator, 2, 4))
     wires.push(BpStaticMethods.connect(timerArithmeticCombinator, timerDeciderCombinator, 1, 3))
-    wires.push(BpStaticMethods.connect(timerArithmeticCombinator, deciderCombinators[0]!, 3, 1))
+    wires.push(BpStaticMethods.connect(timerArithmeticCombinator, addingArithmeticCombinator, 3, 1))
+    wires.push(BpStaticMethods.connect(addingArithmeticCombinator, deciderCombinators[0]!, 3, 1))
 
 
 
@@ -189,7 +194,7 @@ export function CreateMemoryBlock(frames: number[][][], quality: number): Bluepr
 
     const result1: Blueprint = new Blueprint(
         [new BpIcon(Signals.WHITE, 1)],
-        [...substations, ...deciderCombinators, ...constCombinators, ...screenEntities, timerArithmeticCombinator],
+        [...substations, ...deciderCombinators, ...constCombinators, ...screenEntities, timerArithmeticCombinator, addingArithmeticCombinator],
         [],
         wires
     );
