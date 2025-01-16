@@ -8,7 +8,8 @@ import Navbar from '../components/common/header/header'
 import PageTransition from '../components/shared/pageTransition'
 import ModalProvider from '../contexts/modal/modalProvider'
 import SettingProvider from '../contexts/settings/settingProvider'
-
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const roboto = Roboto({
   weight: ['400', "100", '300', '500', "700"],
   subsets: ['latin']
@@ -43,6 +44,8 @@ export default function App({ Component, pageProps }: AppProps) {
           </SettingProvider>
         </div>
       </ModalProvider>
+      <Analytics />
+      <SpeedInsights />
     </>
   )
 }
