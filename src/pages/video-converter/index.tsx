@@ -5,9 +5,9 @@ import { CreateMemoryBlock } from "@/src/utils/convertors/videoToBlueprintConver
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
 import { getDecimalColorsFromCanvas } from "@/src/utils/image/calculateColors";
 import Head from "next/head";
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
-
+import { parseGIF, decompressFrames, ParsedFrame } from "gifuct-js";
 
 export default function VideoConverter() {
     const { minHeight, minWidth, maxHeightForLamps, maxWidthForVideo, quality, setQuality } = useContext(SettingsContext);
@@ -26,13 +26,18 @@ export default function VideoConverter() {
     const [height, setHeight] = useState<number>(50);
     const [aspectRatio, setAspectRatio] = useState<number>(1);
     const [frameRate, setFrameRate] = useState<number>(30)
-    const [skipFrames, setSkipFrames] = useState<number>(2)
-    const [inGameUpdateSpeed, setInGameUpdateSpeed] = useState(10)
+    const [skipedFrames, setSkipedFrames] = useState<number>(2)
+    const [screenUps, setScreenUps] = useState(10)
     const [loopWithoutBlankFrame, setLoopWithoutBlankFrame] = useState(true)
     const [readyToStart, setReadyToStart] = useState(false)
+    const [gifFrames, setGifFrames] = useState<ParsedFrame[]>()
 
 
-    const extractFrames = async () => {
+    useEffect(() => {
+        setScreenUps(Math.min(60, Math.max(1, Math.round(frameRate / (1 + skipedFrames)))))
+    }, [skipedFrames])
+
+    const extractVideoFrames = async () => {
         const currentCanvas = canvasRef.current as HTMLCanvasElement;
         const currentCanvasCtx = currentCanvas.getContext('2d') as CanvasRenderingContext2D;
         const images: number[][][] = []
@@ -74,7 +79,7 @@ export default function VideoConverter() {
             const totalFrames = Math.floor(duration * frameRate);
             const frameInterval = 1 / frameRate;
 
-            for (let i = 0; i < totalFrames; i += 1 + skipFrames) {
+            for (let i = 0; i <= totalFrames; i += 1 + skipedFrames) {
                 const currentTime = i * frameInterval;
                 progress.textContent = `${Math.floor((currentTime / duration) * 100)}%`;
                 await captureFrame(currentTime);
@@ -82,20 +87,47 @@ export default function VideoConverter() {
 
         };
 
-        const generateResult = () => {
-            // console.log(loopWithoutBlankFrame)
-            const blueprint = CreateMemoryBlock(images, quality, 60 / inGameUpdateSpeed, loopWithoutBlankFrame);
-            const encoded = blueprintEncoder(blueprint);
-            if (resultRef.current) {
-                resultRef.current.textContent = encoded;
-            }
-            progress.textContent = 'Done!';
-        }
-
         extract().then(() => {
-            generateResult()
+            generateResult(images)
         });
     }
+
+    const extractGifFrames = async () => {
+        const currentCanvas = canvasRef.current as HTMLCanvasElement;
+        const currentCanvasCtx = currentCanvas.getContext('2d') as CanvasRenderingContext2D;
+
+        // Set the canvas dimensions to match the desired output dimensions
+        currentCanvas.width = width;
+        currentCanvas.height = height;
+
+        const images: number[][][] = []; // Store resized frames
+
+        for (let i = 0; i < gifFrames!.length; i += 1 + skipedFrames) {
+            const frame = gifFrames![i];
+            // Create a temporary canvas for the original GIF frame
+            const tempCanvas = document.createElement("canvas");
+            tempCanvas.width = frame.dims.width;
+            tempCanvas.height = frame.dims.height;
+
+            const tempCtx = tempCanvas.getContext("2d")!;
+            const imageData = tempCtx.createImageData(frame.dims.width, frame.dims.height);
+            imageData.data.set(frame.patch); // Set the pixel data for the frame
+            tempCtx.putImageData(imageData, 0, 0);
+
+            // Draw the resized frame onto the current canvas
+            currentCanvasCtx.clearRect(0, 0, width, height); // Clear previous frame
+            currentCanvasCtx.drawImage(
+                tempCanvas,
+                0, 0, frame.dims.width, frame.dims.height, // Source dimensions
+                0, 0, width, height // Destination dimensions (resized)
+            );
+
+            // Extract colors from the resized canvas
+            const frameColors = getDecimalColorsFromCanvas(currentCanvas);
+            images.push(frameColors);
+        }
+        generateResult(images);
+    };
 
 
     const getFrameRate = async () => {
@@ -149,13 +181,86 @@ export default function VideoConverter() {
             }, 3000);
         }).then((fps) => {
             setFrameRate(fps as number)
-        })
-
-
-
+            setScreenUps(Math.min(60, Math.max(1, Math.round(fps as number / (1 + skipedFrames)))))
+        }
+        )
     }
 
+    const generateResult = (images: number[][][]) => {
+        const progress = progressRef.current as HTMLSpanElement;
+        const blueprint = CreateMemoryBlock(images, quality, 60 / screenUps, loopWithoutBlankFrame);
+        const encoded = blueprintEncoder(blueprint);
+        if (resultRef.current) {
+            resultRef.current.textContent = encoded;
+        }
+        progress.textContent = 'Done!';
+    }
 
+    const handleVideoInput = (file: File) => {
+        const videoURL = URL.createObjectURL(file);
+        const currentVideo = videoRef.current as HTMLVideoElement
+        currentVideo.src = videoURL;
+
+        currentVideo.onloadedmetadata = () => {
+            const videoWidth = currentVideo.videoWidth;
+            const videoHeight = currentVideo.videoHeight;
+
+            const ratio = videoWidth / videoHeight;
+
+            let newWidth = maxWidthForVideo;
+            let newHeight = maxHeightForLamps;
+
+            if (videoWidth > videoHeight) {
+                newHeight = Math.min(maxHeightForLamps, Math.floor(maxWidthForVideo / ratio));
+            } else {
+                newWidth = Math.min(maxWidthForVideo, Math.floor(maxHeightForLamps * ratio));
+            }
+
+            setWidth(newWidth);
+            setHeight(newHeight);
+            setAspectRatio(ratio);
+            setGifFrames(undefined);
+
+            getFrameRate().then(() => {
+                progressRef.current!.textContent = "Ready to start"
+                setReadyToStart(true)
+            })
+        };
+    }
+
+    const handleGifInput = async (file: File) => {
+        const arrayBuffer = await file.arrayBuffer();
+
+        const gif = parseGIF(arrayBuffer);
+        const decompressedFrames = decompressFrames(gif, true);
+
+        const gifWidth = gif.lsd.width;
+        const gifHeight = gif.lsd.height;
+
+        const ratio = gifWidth / gifHeight;
+
+        let newWidth = maxWidthForVideo;
+        let newHeight = maxHeightForLamps;
+
+        if (gifWidth > gifHeight) {
+            newHeight = Math.min(maxHeightForLamps, Math.floor(maxWidthForVideo / ratio));
+        } else {
+            newWidth = Math.min(maxWidthForVideo, Math.floor(maxHeightForLamps * ratio));
+        }
+
+        setWidth(newWidth);
+        setHeight(newHeight);
+        setAspectRatio(ratio);
+        setGifFrames(decompressedFrames)
+
+        // Calculate frame rate for GIF and set in-game update speed
+        const gifFrameRate = 1000 / decompressedFrames[0].delay; // Delay is in ms
+        setFrameRate(gifFrameRate)
+        setScreenUps(Math.min(60, Math.max(1, Math.round(gifFrameRate / (1 + skipedFrames)))))
+
+        progressRef.current!.textContent = "Ready to start"
+        setReadyToStart(true)
+    }
 
     return (
         <Container>
@@ -169,42 +274,19 @@ export default function VideoConverter() {
             </Head>
             <div className="flex flex-col gap-4">
                 <video muted ref={videoRef} className="hidden" />
-                <p className="text-red-500 text-2xl font-bold">Still in development, please report any issues</p>
-                <p className="flex text-2xl font-bold">Progress: <span ref={progressRef}>Waiting input</span></p>
-
+                <p className="text-red-500 text-2xl font-bold">Still in development, please report any issues.Design will change</p>
+                <p className="flex text-2xl font-bold w-full justify-center">Progress: <span ref={progressRef}>Waiting input</span></p>
                 <div className="flex gap-4 items-center md:flex-row flex-col">
-                    <input type="file" accept="video/*" onChange={(e) => {
+                    <input type="file" accept="video/*,.gif" onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
-                            const videoFile = e.target.files[0];
-                            const videoURL = URL.createObjectURL(videoFile);
-                            const currentVideo = videoRef.current as HTMLVideoElement
-                            currentVideo.src = videoURL;
+                            const file = e.target.files[0];
 
-                            currentVideo.onloadedmetadata = () => {
-                                const videoWidth = currentVideo.videoWidth;
-                                const videoHeight = currentVideo.videoHeight;
-
-                                const ratio = videoWidth / videoHeight;
-
-                                let newWidth = maxWidthForVideo;
-                                let newHeight = maxHeightForLamps;
-
-                                if (videoWidth > videoHeight) {
-                                    newHeight = Math.min(maxHeightForLamps, Math.floor(maxWidthForVideo / ratio));
-                                } else {
-                                    newWidth = Math.min(maxWidthForVideo, Math.floor(maxHeightForLamps * ratio));
-                                }
-
-                                setWidth(newWidth);
-                                setHeight(newHeight);
-                                setAspectRatio(ratio);
-                                // const quality = currentVideo.getVideoPlaybackQuality()
-                                // console.log(currentVideo.duration , quality)
-                                getFrameRate().then(() => {
-                                    progressRef.current!.textContent = "Ready to start"
-                                    setReadyToStart(true)
-                                })
-                            };
+                            if (file.type === 'image/gif') {
+                                handleGifInput(file)
+                            }
+                            else {
+                                handleVideoInput(file)
+                            }
                         }
                     }} />
                 </div>
@@ -229,15 +311,15 @@ export default function VideoConverter() {
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <label>Skip Frames</label>
-                        <input type="number" className="text-black px-2 py-1 rounded-md" value={skipFrames} min={0} onChange={(e) => {
-                            setSkipFrames(Number(e.target.value))
+                        <input type="number" className="text-black px-2 py-1 rounded-md" value={skipedFrames} min={0} onChange={(e) => {
+                            setSkipedFrames(Number(e.target.value))
                         }} />
-                        <label>Skip some frames to achive smaller result</label>
+                        <label>Skip some frames to achive smaller result.Screen UPS will change to maintain original speed</label>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
-                        <label>In game frame counter speed</label>
-                        <input type="number" className="text-black px-2 py-1 rounded-md" value={inGameUpdateSpeed} min={1} max={60} onChange={(e) => {
-                            setInGameUpdateSpeed(Number(e.target.value))
+                        <label>Screen UPS</label>
+                        <input type="number" className="text-black px-2 py-1 rounded-md" value={screenUps} min={1} max={60} onChange={(e) => {
+                            setScreenUps(Number(e.target.value))
                         }} />
                         <label>Max value 60</label>
                     </div>
@@ -265,26 +347,35 @@ export default function VideoConverter() {
                         <p>0 for no substations, 1 for base game</p>
                         <p>Better quality will be available someday....</p>
                     </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <label className="text-transparent">.</label>
-                        <button ref={convertButtonRef} disabled={!readyToStart} className="px-2 py-1 w-full rounded-md bg-gray-400 enabled:bg-blue-400 enabled:hover:bg-blue-800 transition-colors text-gray-800 enabled:hover:text-white" onClick={() => {
-                            if (width < minWidth || width > maxWidthForVideo || isNaN(width)) {
-                                toast.error("Please enter a valid width")
-                            }
-                            else if (height < minHeight || height > maxHeightForLamps || isNaN(height)) {
-                                toast.error("Please enter a valid height")
-                            }
-                            else if (videoRef.current?.readyState === 0) {
-                                toast.error("Load video first")
-                            }
-                            else if (videoRef.current?.readyState !== 4) {
-                                toast.error("Video is not loaded yet")
-                            }
-                            else {
-                                extractFrames()
-                            }
-                        }}>Convert</button>
-                    </div>
+                </div>
+                <div className="flex flex-col gap-2 w-full">
+                    <label className="text-transparent">.</label>
+                    <button ref={convertButtonRef} disabled={!readyToStart} className="px-2 py-1 w-40 rounded-md bg-gray-400 enabled:bg-blue-400 enabled:hover:bg-blue-800 transition-colors text-gray-800 enabled:hover:text-white" onClick={() => {
+                        if (width < minWidth || width > maxWidthForVideo || isNaN(width)) {
+                            toast.error("Please enter a valid width")
+                        }
+                        else if (height < minHeight || height > maxHeightForLamps || isNaN(height)) {
+                            toast.error("Please enter a valid height")
+                        }
+                        else if (skipedFrames < 0 || isNaN(skipedFrames)) {
+                            toast.error("Please enter a valid skip frames")
+                        }
+                        else if (screenUps < 1 || screenUps > 60 || isNaN(screenUps)) {
+                            toast.error("Please enter a valid in game update speed")
+                        }
+                        else if (gifFrames) {
+                            extractGifFrames()
+                        }
+                        else if (videoRef.current?.readyState === 0) {
+                            toast.error("Load video first")
+                        }
+                        else if (videoRef.current?.readyState !== 4) {
+                            toast.error("Video is not loaded yet")
+                        }
+                        else {
+                            extractVideoFrames()
+                        }
+                    }}>Convert</button>
                 </div>
                 <div>
                     <p>Current Frame</p>
@@ -298,4 +389,3 @@ export default function VideoConverter() {
         </Container >
     );
 }
-
