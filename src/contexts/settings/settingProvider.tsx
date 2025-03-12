@@ -7,7 +7,7 @@ const SettingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [quality, setQuality] = useState<number>(1);
     const [blackLampsAllowed, setBlackLampsAllowed] = useState<boolean>(true);
     const [skipInput, setSkipInput] = useState<boolean>(false);
-    const [convertTo, setConvertTo] = useState<'lamp' | 'tile'>('lamp');
+    const [convertTo, setConvertTo] = useState<'lamp' | 'tile' | 'platform'>('lamp');
     const maxWidth = 500;
     const maxWidthForVideo = 200;
     const maxHeight = 500;

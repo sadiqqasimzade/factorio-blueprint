@@ -99,12 +99,13 @@ export default function FileDragAndDrop({ setImage }: Props) {
           }}
         ></div>
         <p ref={dragDropTitleRef} className="font-bold text-center text-xl">
-          Drop Image file here,or click
+          Drop Image file here, or click
         </p>
       </div>
       {convertTo === 'tile' && <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
         setSkipInput(true);
       }}>Create pixel art without image</button>}
+      {convertTo === 'platform' && <p className="p-2">Any pixel that's not black or transparent will become a space platform</p>}
 
     </div>
   );
