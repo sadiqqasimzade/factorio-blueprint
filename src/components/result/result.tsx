@@ -2,6 +2,7 @@ import SettingsContext from "@/src/contexts/settings/settingsContext";
 import blueprintEncoder from "@/src/utils/convertors/blueprintEncoder";
 import imgToTileBlueprintConvertor from "@/src/utils/convertors/imgToTileBlueprintConvertor";
 import imgToLampBlueprintConvertor from "@/src/utils/convertors/imgToLampBlueprintConvertor";
+import imgToPlatformBlueprintConvertor from "@/src/utils/convertors/imgToPlatformBlueprintConvertor";
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -13,11 +14,20 @@ export default function Result({ pixelArt }: Props) {
   const [bpstring, setBpstring] = useState<string>()
   const { convertTo, quality, blackLampsAllowed } = useContext(SettingsContext);
   useEffect(() => {
-    setBpstring(blueprintEncoder(
-      convertTo === 'lamp'
-        ? imgToLampBlueprintConvertor(pixelArt as number[][], quality, blackLampsAllowed)
-        : imgToTileBlueprintConvertor(pixelArt as string[][]),
-    ))
+    let blueprint;
+    switch (convertTo) {
+      case 'lamp':
+        blueprint = imgToLampBlueprintConvertor(pixelArt as number[][], quality, blackLampsAllowed);
+        break;
+      case 'tile':
+        blueprint = imgToTileBlueprintConvertor(pixelArt as string[][]);
+        break;
+      case 'platform':
+        blueprint = imgToPlatformBlueprintConvertor(pixelArt as number[][]);
+        break;
+    }
+
+    setBpstring(blueprintEncoder(blueprint));
   }, [])
 
   return (

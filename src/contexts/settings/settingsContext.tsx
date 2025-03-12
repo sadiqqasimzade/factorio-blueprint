@@ -10,8 +10,8 @@ type SettingsContextProps = {
     setBlackLampsAllowed: (value: boolean) => void;
     skipInput: boolean;
     setSkipInput: (value: boolean) => void;
-    convertTo: 'lamp' | 'tile';
-    setConvertTo: (value: 'lamp' | 'tile') => void;
+    convertTo: 'lamp' | 'tile' | 'platform';
+    setConvertTo: (value: 'lamp' | 'tile' | 'platform') => void;
     maxWidth: number;
     maxWidthForVideo: number;
     maxHeight: number;

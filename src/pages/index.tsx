@@ -47,6 +47,11 @@ export default function Home() {
         link="video-converter"
         imgSrc="video_to_lamp.gif"
       />
+      <Card
+        title="Image to Space Platform Blueprint Converter"
+        link="image-converter-platform"
+        imgSrc="img_to_platform.png"
+      />
     </div>
   )
 }

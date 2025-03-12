@@ -198,6 +198,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
                 } else {
                   convertTo === 'tile' && setResultCanvas(canvasRef.current!);
                   convertTo === 'lamp' && setPixelArt(getDecimalColorsFromCanvas(canvas!));
+                  convertTo === 'platform' && setPixelArt(getDecimalColorsFromCanvas(canvas!));
                   setImage(undefined);
                 }
               }}>
