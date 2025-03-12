@@ -7,13 +7,24 @@ import BpIcon from "@/src/classes/BpIcon";
 import { Directions } from "@/src/consts/enums";
 import BpLamp from "@/src/classes/BpLamp";
 import { BpStaticMethods } from "@/src/classes/BpStaticMethods";
+import { TileNames } from "@/src/consts/enums";
+import BpTile from "@/src/classes/BpTile";
 
-export default function ImgToLampBlueprintConvertor(color_indexes: number[][], quality: number, blackLampsAllowed: boolean): Blueprint {
+
+type Props = {  
+  color_indexes: number[][];
+  quality: number;
+  blackLampsAllowed: boolean;
+  lampBgTile: TileNames | null;
+}
+
+export default function ImgToLampBlueprintConvertor({ color_indexes, quality, blackLampsAllowed, lampBgTile }: Props): Blueprint {
   const width = color_indexes.length
   const height = color_indexes[0].length
   const wires: TBpWire[] = []
   const mainEntities: BpEntity[] = CreateScreen(width, height, wires, 0, quality, blackLampsAllowed)
   const constCombinators: BpConstCombinator[] = []
+  const tiles: BpTile[] = []
 
   color_indexes.forEach((signal_strengths, i) => {
     const constCombinator = new BpConstCombinator({
@@ -38,10 +49,21 @@ export default function ImgToLampBlueprintConvertor(color_indexes: number[][], q
 
 
   mainEntities.push(...constCombinators)
+
+
+  if (lampBgTile) {
+    for (let i = 0; i < width; i++) {
+      for (let j = 0; j < height; j++) {
+        tiles.push(new BpTile(i, j, lampBgTile))
+      }
+    }
+  }
+
+
   var result: Blueprint = new Blueprint(
     [new BpIcon(Signals.WHITE, 1)],
     mainEntities,
-    [],
+    tiles,
     wires
   );
   return result;

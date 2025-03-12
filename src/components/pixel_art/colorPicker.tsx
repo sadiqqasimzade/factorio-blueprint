@@ -12,6 +12,6 @@ export default function ColorPicker({ selectedColor, setColor, colors }: Props) 
                     onClick={() => { color !== selectedColor && setColor(color) }}>
                 </div>
             )}
-        </div >
+        </div>
     )
 }

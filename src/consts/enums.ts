@@ -10,7 +10,7 @@ export enum EntityNames {
   ARITHMETIC_COMBINATOR = "arithmetic-combinator",
   LAMP = "small-lamp",
   MEDIUM_ELECTRIC_POLE = "medium-electric-pole",
-  DECIDER_COMBINATOR = "decider-combinator"
+  DECIDER_COMBINATOR = "decider-combinator",
 }
 
 export enum TileNames {
@@ -18,7 +18,8 @@ export enum TileNames {
   STONE_PATH = "stone-path",
   HAZARD_CONCRETE_LEFT = "hazard-concrete-left",
   REFINED_CONCRETE = "refined-concrete",
-  REFINED_HAZARD_CONCRETE_LEFT = "refined-hazard-concrete-left"
+  REFINED_HAZARD_CONCRETE_LEFT = "refined-hazard-concrete-left",
+  SPACE_PLATFORM_FOUNDATION = "space-platform-foundation",
 }
 
 export enum Directions {

@@ -8,7 +8,7 @@ import SettingsContext from "../contexts/settings/settingsContext";
 
 
 type Props = {
-    convertToProp: "lamp" | "tile"
+    convertToProp: "lamp" | "tile" | "platform"
     skipInputProp: boolean
 };
 
