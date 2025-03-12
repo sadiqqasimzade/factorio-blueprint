@@ -1,10 +1,10 @@
 type Props = {
     selectedColor: string,
-    setColor: React.Dispatch<React.SetStateAction<string>>,
+    setColor: (color: string) => void,
     colors: string[]
 }
 
-export default function ColorPicker({ selectedColor, setColor, colors }: Props) {
+export default function CustomColorPicker({ selectedColor, setColor, colors }: Props) {
     return (
         <div className="flex place-content-center flex-wrap gap-5 mt-5 bg-gray-600 bg-opacity-60 p-5 rounded-2xl">
             {colors.map((color, index) =>

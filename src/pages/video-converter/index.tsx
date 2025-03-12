@@ -1,13 +1,11 @@
 import Container from "@/src/components/shared/container";
 import SettingsContext from "@/src/contexts/settings/settingsContext";
-import blueprintEncoder from "@/src/utils/convertors/blueprintEncoder";
-import { CreateMemoryBlock } from "@/src/utils/convertors/videoToBlueprintConvertor";
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
 import { getDecimalColorsFromCanvas } from "@/src/utils/image/calculateColors";
+import { decompressFrames, ParsedFrame, parseGIF } from "gifuct-js";
 import Head from "next/head";
-import { useRef, useState, useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { parseGIF, decompressFrames, ParsedFrame } from "gifuct-js";
 
 export default function VideoConverter() {
     const { minHeight, minWidth, maxHeightForLamps, maxWidthForVideo, quality, setQuality } = useContext(SettingsContext);
@@ -31,6 +29,7 @@ export default function VideoConverter() {
     const [loopWithoutBlankFrame, setLoopWithoutBlankFrame] = useState(true)
     const [readyToStart, setReadyToStart] = useState(false)
     const [gifFrames, setGifFrames] = useState<ParsedFrame[]>()
+    const [isGenerating, setIsGenerating] = useState(false);
 
 
     useEffect(() => {
@@ -188,12 +187,38 @@ export default function VideoConverter() {
 
     const generateResult = (images: number[][][]) => {
         const progress = progressRef.current as HTMLSpanElement;
-        const blueprint = CreateMemoryBlock(images, quality, 60 / screenUps, loopWithoutBlankFrame);
-        const encoded = blueprintEncoder(blueprint);
-        if (resultRef.current) {
-            resultRef.current.textContent = encoded;
-        }
-        progress.textContent = 'Done!';
+        setIsGenerating(true);
+        progress.textContent = 'Generating blueprint...';
+
+        // Create a new worker
+        const worker = new Worker(new URL('../../workers/blueprintWorker.ts', import.meta.url));
+
+        // Listen for the result
+        worker.onmessage = (e) => {
+            const encoded = e.data;
+            if (resultRef.current) {
+                resultRef.current.textContent = encoded;
+            }
+            progress.textContent = 'Done!';
+            setIsGenerating(false);
+            worker.terminate();
+        };
+
+        // Handle any errors
+        worker.onerror = (error) => {
+            console.error('Worker error:', error);
+            progress.textContent = 'Error generating blueprint!';
+            setIsGenerating(false);
+            worker.terminate();
+        };
+
+        // Send data to worker
+        worker.postMessage({
+            images,
+            quality,
+            screenUps,
+            loopWithoutBlankFrame
+        });
     }
 
     const handleVideoInput = (file: File) => {
@@ -350,7 +375,11 @@ export default function VideoConverter() {
                 </div>
                 <div className="flex flex-col gap-2 w-full">
                     <label className="text-transparent">.</label>
-                    <button ref={convertButtonRef} disabled={!readyToStart} className="px-2 py-1 w-40 rounded-md bg-gray-400 enabled:bg-blue-400 enabled:hover:bg-blue-800 transition-colors text-gray-800 enabled:hover:text-white" onClick={() => {
+                    <button 
+                        ref={convertButtonRef} 
+                        disabled={!readyToStart || isGenerating} 
+                        className="px-2 py-1 w-40 rounded-md bg-gray-400 enabled:bg-blue-400 enabled:hover:bg-blue-800 transition-colors text-gray-800 enabled:hover:text-white" 
+                        onClick={() => {
                         if (width < minWidth || width > maxWidthForVideo || isNaN(width)) {
                             toast.error("Please enter a valid width")
                         }
