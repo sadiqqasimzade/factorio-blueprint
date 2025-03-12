@@ -1,3 +1,5 @@
+import QualitySelector from '@/src/components/shared/QualitySelector';
+import TileSelector from '@/src/components/shared/TileSelector';
 import SettingsContext from "@/src/contexts/settings/settingsContext";
 import { getDecimalColorsFromCanvas } from "@/src/utils/image/calculateColors";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -20,7 +22,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
   const [keepAspectRatio, setKeepAspectRatio] = useState<boolean>(true);
-  const { maxWidth, maxHeight, maxHeightForLamps, minWidth, minHeight, convertTo, quality, isAllowedRefinedTiles, blackLampsAllowed, setQuality, setIsAllowedRefinedTiles, setBlackLampsAllowed } = useContext(SettingsContext);
+  const { maxWidth, maxHeight, maxHeightForLamps, minWidth, minHeight, convertTo, quality, isAllowedRefinedTiles, blackLampsAllowed, setQuality, setIsAllowedRefinedTiles, setBlackLampsAllowed, lampBgTile, setLampBgTile } = useContext(SettingsContext);
   const maxH = convertTo === 'lamp' ? maxHeightForLamps : maxHeight;
   /**
    * clear and redraw canvas with new size
@@ -134,23 +136,24 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
             />
             <p>Min:{minHeight}/Max:{maxH}</p>
           </div>
-          {convertTo === "lamp" && <div className="flex flex-col w-full">
-            <p className="text-xl font-bold">Substation quality</p>
-            <div className="flex gap-4 py-2">
-              {[0, 1, 2, 3, 4, 5].map((value) => (
-                <label key={value} className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    value={value}
-                    checked={quality === value}
-                    onChange={(e) => setQuality(Number(e.target.value))}
-                  />
-                  {value}
-                </label>  
-              ))}
-            </div>
-            <p>0 for no substation, 1 for base game</p>
-          </div>}
+          {
+            convertTo === "lamp" && (
+              <div className="flex gap-4">
+                <QualitySelector
+                  value={quality}
+                  onChange={setQuality}
+                  disabled={false}
+                  className="w-48"
+                />
+                <TileSelector
+                  value={lampBgTile}
+                  onChange={setLampBgTile}
+                  disabled={false}
+                  className="w-48"
+                />
+              </div>
+            )
+          }
         </div>
         <div className="flex md:flex-row md:justify-between flex-col gap-4">
           <div className="flex flex-col gap-2">

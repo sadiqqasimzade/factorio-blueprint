@@ -1,4 +1,4 @@
-
+import { TileNames } from '@/src/consts/enums';
 import { createContext } from 'react';
 
 type SettingsContextProps = {
@@ -12,6 +12,8 @@ type SettingsContextProps = {
     setSkipInput: (value: boolean) => void;
     convertTo: 'lamp' | 'tile' | 'platform';
     setConvertTo: (value: 'lamp' | 'tile' | 'platform') => void;
+    lampBgTile: TileNames | null;
+    setLampBgTile: (value: TileNames | null) => void;
     maxWidth: number;
     maxWidthForVideo: number;
     maxHeight: number;
@@ -31,6 +33,8 @@ const SettingsContext = createContext<SettingsContextProps>({
     setSkipInput: () => { },
     convertTo: 'lamp',
     setConvertTo: () => { },
+    lampBgTile: null,
+    setLampBgTile: () => { },
     maxWidth: 500,
     maxWidthForVideo: 200,
     maxHeight: 500,

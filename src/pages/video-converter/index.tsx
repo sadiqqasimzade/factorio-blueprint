@@ -26,7 +26,7 @@ export default function VideoConverter() {
     const [height, setHeight] = useState<number>(50);
     const [aspectRatio, setAspectRatio] = useState<number>(1);
     const [frameRate, setFrameRate] = useState<number>(30)
-    const [skipedFrames, setSkipedFrames] = useState<number>(2)
+    const [skippedFrames, setSkippedFrames] = useState<number>(2)
     const [screenUps, setScreenUps] = useState(10)
     const [loopWithoutBlankFrame, setLoopWithoutBlankFrame] = useState(true)
     const [readyToStart, setReadyToStart] = useState(false)
@@ -34,8 +34,8 @@ export default function VideoConverter() {
 
 
     useEffect(() => {
-        setScreenUps(Math.min(60, Math.max(1, Math.round(frameRate / (1 + skipedFrames)))))
-    }, [skipedFrames])
+        setScreenUps(Math.min(60, Math.max(1, Math.round(frameRate / (1 + skippedFrames)))))
+    }, [skippedFrames])
 
     const extractVideoFrames = async () => {
         const currentCanvas = canvasRef.current as HTMLCanvasElement;
@@ -79,7 +79,7 @@ export default function VideoConverter() {
             const totalFrames = Math.floor(duration * frameRate);
             const frameInterval = 1 / frameRate;
 
-            for (let i = 0; i <= totalFrames; i += 1 + skipedFrames) {
+            for (let i = 0; i <= totalFrames; i += 1 + skippedFrames) {
                 const currentTime = i * frameInterval;
                 progress.textContent = `${Math.floor((currentTime / duration) * 100)}%`;
                 await captureFrame(currentTime);
@@ -102,7 +102,7 @@ export default function VideoConverter() {
 
         const images: number[][][] = []; // Store resized frames
 
-        for (let i = 0; i < gifFrames!.length; i += 1 + skipedFrames) {
+        for (let i = 0; i < gifFrames!.length; i += 1 + skippedFrames) {
             const frame = gifFrames![i];
             // Create a temporary canvas for the original GIF frame
             const tempCanvas = document.createElement("canvas");
@@ -181,7 +181,7 @@ export default function VideoConverter() {
             }, 3000);
         }).then((fps) => {
             setFrameRate(fps as number)
-            setScreenUps(Math.min(60, Math.max(1, Math.round(fps as number / (1 + skipedFrames)))))
+            setScreenUps(Math.min(60, Math.max(1, Math.round(fps as number / (1 + skippedFrames)))))
         }
         )
     }
@@ -256,7 +256,7 @@ export default function VideoConverter() {
         // Calculate frame rate for GIF and set in-game update speed
         const gifFrameRate = 1000 / decompressedFrames[0].delay; // Delay is in ms
         setFrameRate(gifFrameRate)
-        setScreenUps(Math.min(60, Math.max(1, Math.round(gifFrameRate / (1 + skipedFrames)))))
+        setScreenUps(Math.min(60, Math.max(1, Math.round(gifFrameRate / (1 + skippedFrames)))))
 
         progressRef.current!.textContent = "Ready to start"
         setReadyToStart(true)
@@ -311,8 +311,8 @@ export default function VideoConverter() {
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <label>Skip Frames</label>
-                        <input type="number" className="text-black px-2 py-1 rounded-md" value={skipedFrames} min={0} onChange={(e) => {
-                            setSkipedFrames(Number(e.target.value))
+                        <input type="number" className="text-black px-2 py-1 rounded-md" value={skippedFrames} min={0} onChange={(e) => {
+                            setSkippedFrames(Number(e.target.value))
                         }} />
                         <label>Skip some frames to achive smaller result.Screen UPS will change to maintain original speed</label>
                     </div>
@@ -357,7 +357,7 @@ export default function VideoConverter() {
                         else if (height < minHeight || height > maxHeightForLamps || isNaN(height)) {
                             toast.error("Please enter a valid height")
                         }
-                        else if (skipedFrames < 0 || isNaN(skipedFrames)) {
+                        else if (skippedFrames < 0 || isNaN(skippedFrames)) {
                             toast.error("Please enter a valid skip frames")
                         }
                         else if (screenUps < 1 || screenUps > 60 || isNaN(screenUps)) {

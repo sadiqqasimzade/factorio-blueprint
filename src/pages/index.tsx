@@ -25,22 +25,22 @@ export default function Home() {
       <Card
         title="Blueprint Decoder and Encoder"
         link="decode-encode"
-        imgSrc="decoder.png"
+        imgSrc="decoder.webp"
       />
       <Card
         title="Image to Lamp Blueprint Converter"
         link="image-converter-lamp"
-        imgSrc="img_to_lamp.png"
+        imgSrc="img_to_lamp.webp"
       />
       <Card
         title="Image to Tile Blueprint Converter"
         link="image-converter-tile"
-        imgSrc="img_to_tile.png"
+        imgSrc="img_to_tile.webp"
       />
       <Card
         title="Pixel Art to Tile Blueprint Converter"
         link="pixel-art-tile"
-        imgSrc="pixel_art_tile.png"
+        imgSrc="pixel_art_tile.webp"
       />
       <Card
         title="Video to Blueprint Converter"
@@ -50,7 +50,7 @@ export default function Home() {
       <Card
         title="Image to Space Platform Blueprint Converter"
         link="image-converter-platform"
-        imgSrc="img_to_platform.png"
+        imgSrc="img_to_platform.webp"
       />
     </div>
   )

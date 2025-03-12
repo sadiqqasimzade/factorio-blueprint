@@ -12,12 +12,12 @@ type Props = { pixelArt: string[][] | number[][]};
 
 export default function Result({ pixelArt }: Props) {
   const [bpstring, setBpstring] = useState<string>()
-  const { convertTo, quality, blackLampsAllowed } = useContext(SettingsContext);
+  const { convertTo, quality, blackLampsAllowed, lampBgTile } = useContext(SettingsContext);
   useEffect(() => {
     let blueprint;
     switch (convertTo) {
       case 'lamp':
-        blueprint = imgToLampBlueprintConvertor(pixelArt as number[][], quality, blackLampsAllowed);
+        blueprint = imgToLampBlueprintConvertor({ color_indexes: pixelArt as number[][], quality, blackLampsAllowed, lampBgTile });
         break;
       case 'tile':
         blueprint = imgToTileBlueprintConvertor(pixelArt as string[][]);

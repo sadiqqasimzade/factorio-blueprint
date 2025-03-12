@@ -1,6 +1,7 @@
+import { TileNames } from "@/src/consts/enums";
+import { signal_priority } from "@/src/consts/signalsEnum";
 import { PropsWithChildren, useState } from "react";
 import SettingsContext from "./settingsContext";
-import { signal_priority } from "@/src/consts/signalsEnum";
 
 const SettingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [isAllowedRefinedTiles, setIsAllowedRefinedTiles] = useState<boolean>(true);
@@ -8,6 +9,7 @@ const SettingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [blackLampsAllowed, setBlackLampsAllowed] = useState<boolean>(true);
     const [skipInput, setSkipInput] = useState<boolean>(false);
     const [convertTo, setConvertTo] = useState<'lamp' | 'tile' | 'platform'>('lamp');
+    const [lampBgTile, setLampBgTile] = useState<TileNames | null>(null);
     const maxWidth = 500;
     const maxWidthForVideo = 200;
     const maxHeight = 500;
@@ -21,6 +23,7 @@ const SettingProvider: React.FC<PropsWithChildren> = ({ children }) => {
             blackLampsAllowed, setBlackLampsAllowed,
             skipInput, setSkipInput,
             convertTo, setConvertTo,
+            lampBgTile, setLampBgTile,
             maxWidth, maxWidthForVideo, maxHeight, maxHeightForLamps, minWidth, minHeight
         }}>
             {children}
