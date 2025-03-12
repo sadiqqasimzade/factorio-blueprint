@@ -21,9 +21,10 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
     const { setConvertTo, setSkipInput, convertTo, skipInput } = useContext(SettingsContext);
     useEffect(() => {
         setConvertTo(convertToProp);
+    }, [convertToProp]);
+    useEffect(() => {
         setSkipInput(skipInputProp);
-    }, []);
-
+    }, [skipInputProp]);
 
     return (
         <>
@@ -31,11 +32,8 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
 
             {
                 pixelArt ? <Result pixelArt={pixelArt} /> :
-                    resultCanvas ? <PixelArtPage resultCanvas={resultCanvas} setPixelArt={setPixelArt} /> :
-                        pixelArtSize ? <PixelArtPage
-                            sizex={pixelArtSize.width} sizey={pixelArtSize.height}
-                            setPixelArt={setPixelArt} /> :
-
+                    resultCanvas ? <PixelArtPage type="canvas" resultCanvas={resultCanvas} setPixelArt={setPixelArt} /> :
+                        pixelArtSize ? <PixelArtPage type="size" sizex={pixelArtSize.width} sizey={pixelArtSize.height} setPixelArt={setPixelArt} /> :
                             validatedImage ? <ImageEditor
                                 image={validatedImage} setImage={setValidatedImage}
                                 setResultCanvas={setResultCanvas} setPixelArt={setPixelArt} />

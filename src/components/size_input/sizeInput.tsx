@@ -9,8 +9,9 @@ type Props = {
 
 export default function SizeInput({ setPixelArtSize }: Props) {
     const { showModal, hideModal, modalIsActive } = useContext(ModalContext)
-    const { maxWidth, maxHeight, minWidth, minHeight, setSkipInput } = useContext(SettingsContext);
-
+    const { maxWidth, maxHeight, minWidth, minHeight, convertTo,maxHeightForLamps, setSkipInput } = useContext(SettingsContext);
+    const finalMaxHeight = convertTo === 'lamp' ? maxHeightForLamps : maxHeight;
+    
     const widthRef = useRef<HTMLInputElement>(null)
     const heightRef = useRef<HTMLInputElement>(null)
     useEffect(() => {
@@ -21,8 +22,8 @@ export default function SizeInput({ setPixelArtSize }: Props) {
                     <p>max:{maxWidth} min:{minWidth}</p>
                 </div>
                 <div>
-                    <input type="number" placeholder="height" min={minHeight} max={maxHeight} ref={heightRef} className="bg-transparent w-full p-2 outline-none border-b-2" />
-                    <p>max:{maxHeight} min:{minHeight}</p>
+                    <input type="number" placeholder="height" min={minHeight} max={finalMaxHeight} ref={heightRef} className="bg-transparent w-full p-2 outline-none border-b-2" />
+                    <p>max:{finalMaxHeight} min:{minHeight}</p>
                 </div>
                 <div>
                     <button type="button" className='p-2 w-full bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md' onClick={
@@ -32,7 +33,7 @@ export default function SizeInput({ setPixelArtSize }: Props) {
                             if (w < minWidth || w > maxWidth || isNaN(w)) {
                                 toast.error("Please enter a valid width")
                             }
-                            else if (h < minHeight || h > maxHeight || isNaN(h)) {
+                            else if (h < minHeight || h > finalMaxHeight || isNaN(h)) {
                                 toast.error("Please enter a valid height")
                             }
                             else {
