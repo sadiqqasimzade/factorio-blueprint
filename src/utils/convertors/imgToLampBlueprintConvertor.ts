@@ -19,6 +19,7 @@ type Props = {
 }
 
 export default function ImgToLampBlueprintConvertor({ color_indexes, quality, blackLampsAllowed, lampBgTile }: Props): Blueprint {
+  console.log(color_indexes)
   const width = color_indexes.length
   const height = color_indexes[0].length
   const wires: TBpWire[] = []

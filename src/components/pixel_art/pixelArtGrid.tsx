@@ -41,7 +41,7 @@ Row.displayName = 'Row'
 function PixelArtGrid({ cells, updateCell }: Props) {
     return (
         <div
-            className="inline-block border border-gray-400"
+            className="inline-block"
             onDragStart={(e) => e.preventDefault()}
             style={{ touchAction: 'none' }}
         >

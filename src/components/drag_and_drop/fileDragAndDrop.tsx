@@ -102,11 +102,22 @@ export default function FileDragAndDrop({ setImage }: Props) {
           Drop Image file here, or click
         </p>
       </div>
-      {convertTo === 'tile' && <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
-        setSkipInput(true);
-      }}>Create pixel art without image</button>}
-      {convertTo === 'platform' && <p className="p-2">Any pixel that's not black or transparent will become a space platform</p>}
-
+      {(() => {
+        switch (convertTo) {
+          case 'tile':
+            return <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
+              setSkipInput(true);
+            }}>Create pixel art without image</button>
+          case 'lamp':
+            return <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
+              setSkipInput(true);
+            }}>Create pixel art without image</button>
+          case 'platform':
+            return <p className="p-2">Any pixel that's not black or transparent will become a space platform</p>
+          default:
+            return null
+        }
+      })()}
     </div>
   );
 }

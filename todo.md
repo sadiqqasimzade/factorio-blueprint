@@ -1,13 +1,18 @@
 
 # TODO
 - [ ] Find/Create better images for cards
-- [ ] Pixel art page updatePixel slows app (check again)
-- [ ] Bring back pixel art editor 
+
 - [ ] Create reusable file drag&drop component for image+video (Rewrite current)
-- [ ] fix jest tests
-- [ ] redesign main background
+- [ ] fix/add jest tests
+- [ ] redesign website
 - [ ] check for rerenders
 - [ ] test docker image
+- [ ] optimize pixel art page -> blueprint page
+- [ ] PixelArtPageContent create universal Cell to decimal number\[\]\[\] converter
+
+# Testing
+- [ ] Pixel art page updatePixel slows app (check again)
+- [ ] Bring back pixel art editor 
 
 
 #Bugs

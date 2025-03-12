@@ -21,9 +21,10 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
     const { setConvertTo, setSkipInput, convertTo, skipInput } = useContext(SettingsContext);
     useEffect(() => {
         setConvertTo(convertToProp);
+    }, [convertToProp]);
+    useEffect(() => {
         setSkipInput(skipInputProp);
-    }, []);
-
+    }, [skipInputProp]);
 
     return (
         <>

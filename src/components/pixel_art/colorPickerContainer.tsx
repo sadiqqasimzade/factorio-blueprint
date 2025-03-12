@@ -1,6 +1,7 @@
 import { useColor } from '@/src/contexts/pixelArt/colorContext';
-import { memo } from 'react';
-import { ColorPicker, IColor } from 'react-color-palette';
+import { memo, useMemo } from 'react';
+import { ColorPicker, ColorService, IColor } from 'react-color-palette';
+import "react-color-palette/css";
 import CustomColorPicker from './colorPicker';
 
 type Props = {
@@ -10,6 +11,8 @@ type Props = {
 
 function ColorPickerContainer({ convertTo, colors }: Props) {
     const { selectedColor, setSelectedColor } = useColor();
+    // Use useMemo to derive paletteColor from selectedColor
+    const paletteColor = useMemo(() => ColorService.convert("hex", "#" + selectedColor), [selectedColor]);
 
     if (convertTo === "tile") {
         return (
@@ -23,9 +26,8 @@ function ColorPickerContainer({ convertTo, colors }: Props) {
 
     return (
         <ColorPicker
-            color={{ hex: selectedColor } as IColor}
-            onChange={(color: IColor) => setSelectedColor(color.hex)}
-            hideInput
+            color={paletteColor}
+            onChange={(color: IColor) => setSelectedColor(color.hex.substring(1))}
             hideAlpha
         />
     );
