@@ -1,5 +1,5 @@
-import QualitySelector from '@/src/components/shared/QualitySelector';
-import TileSelector from '@/src/components/shared/TileSelector';
+import QualitySelector from '@/src/components/dropdown/QualitySelector';
+import TileSelector from '@/src/components/dropdown/TileSelector';
 import SettingsContext from "@/src/contexts/settings/settingsContext";
 import { getDecimalColorsFromCanvas } from "@/src/utils/image/calculateColors";
 import { useContext, useEffect, useRef, useState } from "react";

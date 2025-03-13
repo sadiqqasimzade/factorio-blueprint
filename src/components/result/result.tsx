@@ -1,8 +1,8 @@
 import SettingsContext from "@/src/contexts/settings/settingsContext";
 import blueprintEncoder from "@/src/utils/convertors/blueprintEncoder";
-import imgToTileBlueprintConvertor from "@/src/utils/convertors/imgToTileBlueprintConvertor";
 import imgToLampBlueprintConvertor from "@/src/utils/convertors/imgToLampBlueprintConvertor";
 import imgToPlatformBlueprintConvertor from "@/src/utils/convertors/imgToPlatformBlueprintConvertor";
+import imgToTileBlueprintConvertor from "@/src/utils/convertors/imgToTileBlueprintConvertor";
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
