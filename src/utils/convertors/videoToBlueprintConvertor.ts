@@ -199,7 +199,6 @@ export function CreateMemoryBlock(frames: number[][][], quality: number, frameRa
         wires
     );
 
-    // return new BlueprintBook([result1])
     return result1
 }
 

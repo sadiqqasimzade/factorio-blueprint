@@ -2,7 +2,7 @@ import { useColor } from '@/src/contexts/pixelArt/colorContext';
 import { memo, useMemo } from 'react';
 import { ColorPicker, ColorService, IColor } from 'react-color-palette';
 import "react-color-palette/css";
-import CustomColorPicker from './colorPicker';
+import CustomColorPicker from './customColorPicker';
 
 type Props = {
     convertTo: "tile" | "lamp" | "platform";

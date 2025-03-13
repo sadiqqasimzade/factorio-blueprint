@@ -1,14 +1,13 @@
 import Blueprint from "@/src/classes/Blueprint";
 import BpConstCombinator from "@/src/classes/BpConstCombinator";
 import BpEntity from "@/src/classes/BpEntity";
-import { signal_priority, Signals } from "@/src/consts/signalsEnum";
-import { CreateScreen } from "./createScreen";
 import BpIcon from "@/src/classes/BpIcon";
-import { Directions } from "@/src/consts/enums";
 import BpLamp from "@/src/classes/BpLamp";
 import { BpStaticMethods } from "@/src/classes/BpStaticMethods";
-import { TileNames } from "@/src/consts/enums";
 import BpTile from "@/src/classes/BpTile";
+import { Directions, TileNames } from "@/src/consts/enums";
+import { signal_priority, Signals } from "@/src/consts/signalsEnum";
+import { CreateScreen } from "./createScreen";
 
 
 type Props = {  
@@ -19,7 +18,6 @@ type Props = {
 }
 
 export default function ImgToLampBlueprintConvertor({ color_indexes, quality, blackLampsAllowed, lampBgTile }: Props): Blueprint {
-  console.log(color_indexes)
   const width = color_indexes.length
   const height = color_indexes[0].length
   const wires: TBpWire[] = []
