@@ -1,34 +1,56 @@
 import SettingsContext from "@/src/contexts/settings/settingsContext";
-import blueprintEncoder from "@/src/utils/convertors/blueprintEncoder";
-import imgToLampBlueprintConvertor from "@/src/utils/convertors/imgToLampBlueprintConvertor";
-import imgToPlatformBlueprintConvertor from "@/src/utils/convertors/imgToPlatformBlueprintConvertor";
-import imgToTileBlueprintConvertor from "@/src/utils/convertors/imgToTileBlueprintConvertor";
 import clickCopyHandler from "@/src/utils/handlers/clickCopyHandler";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-
 type Props = { pixelArt: string[][] | number[][]};
 
 export default function Result({ pixelArt }: Props) {
-  const [bpstring, setBpstring] = useState<string>()
+  const [bpstring, setBpstring] = useState<string>("Loading...")
   const { convertTo, quality, blackLampsAllowed, lampBgTile } = useContext(SettingsContext);
+
   useEffect(() => {
-    let blueprint;
+    let worker: Worker;
+    
     switch (convertTo) {
       case 'lamp':
-        blueprint = imgToLampBlueprintConvertor({ color_indexes: pixelArt as number[][], quality, blackLampsAllowed, lampBgTile });
+        worker = new Worker(new URL('../../workers/lampWorker.ts', import.meta.url));
+        worker.postMessage({ 
+          color_indexes: pixelArt as number[][], 
+          quality, 
+          blackLampsAllowed, 
+          lampBgTile 
+        });
         break;
       case 'tile':
-        blueprint = imgToTileBlueprintConvertor(pixelArt as string[][]);
+        worker = new Worker(new URL('../../workers/tileWorker.ts', import.meta.url));
+        worker.postMessage({ pixelArt: pixelArt as string[][] });
         break;
       case 'platform':
-        blueprint = imgToPlatformBlueprintConvertor(pixelArt as number[][]);
+        worker = new Worker(new URL('../../workers/platformWorker.ts', import.meta.url));
+        worker.postMessage({ pixelArt: pixelArt as number[][] });
         break;
     }
 
-    setBpstring(blueprintEncoder(blueprint));
-  }, [])
+    if (worker) {
+      worker.onmessage = (e) => {
+        setBpstring(e.data);
+        worker.terminate();
+      };
+
+      worker.onerror = (error) => {
+        console.error('Worker error:', error);
+        toast.error('Error generating blueprint');
+        worker.terminate();
+      };
+    }
+
+    return () => {
+      if (worker) {
+        worker.terminate();
+      }
+    };
+  }, [convertTo, pixelArt, quality, blackLampsAllowed, lampBgTile]);
 
   return (
     <div>
