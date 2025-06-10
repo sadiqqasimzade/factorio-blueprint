@@ -12,9 +12,7 @@
     "jest": "jest"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.1",
     "@vercel/analytics": "^1.5.0",
-    "@vercel/mcp-adapter": "^0.10.0",
     "@vercel/speed-insights": "^1.2.0",
     "autoprefixer": "10.4.15",
     "gifuct-js": "^2.1.2",
@@ -27,8 +25,7 @@
     "react-toastify": "^10.0.6",
     "redis": "^5.5.6",
     "sass": "^1.89.0",
-    "sharp": "^0.34.2",
-    "zod": "^3.25.57"
+    "sharp": "^0.34.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
