@@ -1,0 +1,50 @@
+'use client'
+
+import { useContext, useEffect } from 'react'
+import Card from '@/components/card/card'
+import ModalContext from '@/contexts/modal/modalContext'
+
+export default function Home() {
+  const { hideModal, modalIsActive } = useContext(ModalContext)
+  
+  useEffect(() => {
+    if (modalIsActive()) {
+      hideModal()
+    }
+  }, [])
+
+  return (
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5'>
+      <Card
+        title="Blueprint Decoder and Encoder"
+        link="decode-encode"
+        imgSrc="decoder.webp"
+      />
+      <Card
+        title="Image to Lamp Blueprint Converter"
+        link="image-converter-lamp"
+        imgSrc="img_to_lamp.webp"
+      />
+      <Card
+        title="Image to Tile Blueprint Converter"
+        link="image-converter-tile"
+        imgSrc="img_to_tile.webp"
+      />
+      <Card
+        title="Pixel Art to Tile Blueprint Converter"
+        link="pixel-art-tile"
+        imgSrc="pixel_art_tile.webp"
+      />
+      <Card
+        title="Video to Blueprint Converter"
+        link="video-converter"
+        imgSrc="video_to_lamp.gif"
+      />
+      <Card
+        title="Image to Space Platform Blueprint Converter"
+        link="image-converter-platform"
+        imgSrc="img_to_platform.webp"
+      />
+    </div>
+  )
+}

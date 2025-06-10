@@ -1,4 +1,6 @@
-const withPWA = require('next-pwa')({
+import withPWA from 'next-pwa'
+
+const withPWAconfig = withPWA({
   dest: 'public',
   register: true,
   skipWaiting: true,
@@ -6,7 +8,7 @@ const withPWA = require('next-pwa')({
 });
 
 /** @type {import('next').NextConfig} */
-const config = withPWA({
+const config = withPWAconfig({
   reactStrictMode: true,
   output: "standalone",
   images: {
