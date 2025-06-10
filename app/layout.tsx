@@ -1,0 +1,92 @@
+import '@/app/globals.css'
+import '@/app/style.scss'
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import NextScript from 'next/script'
+import { Roboto } from 'next/font/google'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Footer from '@/components/common/footer/Footer'
+import Navbar from '@/components/common/header/header'
+import ModalProvider from '@/contexts/modal/modalProvider'
+import SettingProvider from '@/contexts/settings/settingProvider'
+import { Metadata } from 'next'
+
+const roboto = Roboto({
+  weight: ['400', "100", '300', '500', "700"],
+  subsets: ['latin']
+})
+
+export const metadata: Metadata = {
+  title: 'Factorio Blueprint Generator',
+  description: 'Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions.',
+  keywords: 'Factorio,Blueprint,Converter,Blueprint-Converter,Image to Blueprint,Blueprint Generator',
+  authors: [{ name: 'Sadiq Qasimzade' }],
+  openGraph: {
+    type: 'website',
+    siteName: 'Factorio Tools',
+    images: ['https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif'],
+    url: 'https://factorio-blueprint.vercel.app',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: 'https://factorio-blueprint.vercel.app',
+    creator: 'sadiq_qasimzade',
+    images: ['https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif'],
+  },
+  manifest: 'manifest.json',
+  robots: 'index, follow',
+  applicationName: 'Factorio Tools',
+  icons: [
+    { rel: 'icon', type: 'image/png', sizes: '16x16', url: 'imgs/favicons/favicon-16x16.png' },
+    { rel: 'icon', type: 'image/png', sizes: '32x32', url: 'imgs/favicons/favicon-32x32.png' },
+    { rel: 'icon', url: 'imgs/favicons/favicon.ico' },
+  ],
+  alternates: {
+    canonical: 'https://factorio-blueprint.vercel.app',
+  },
+  verification: {
+    google: 'pcVqOWBcshqtczsXmc7uPJNVNQogS1wN4WJmaDeNPpM',
+    yandex: 'e8eb17829dd8cb60',
+  },
+  metadataBase: new URL('https://factorio-blueprint.vercel.app'),
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={`${roboto.className} text-white`}>
+        <ModalProvider>
+          <div className="grid min-h-screen h-full">
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="dark"
+              style={{ width: '100%' }}
+            />
+            <SettingProvider>
+              <Navbar />
+              <main>
+                  {children}
+              </main>
+              <Footer />
+            </SettingProvider>
+          </div>
+        </ModalProvider>
+        <NextScript />
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  )
+}
