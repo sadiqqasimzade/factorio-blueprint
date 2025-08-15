@@ -26,7 +26,7 @@ export default function SizeInput({ setPixelArtSize }: Props) {
                     <p>max:{finalMaxHeight} min:{minHeight}</p>
                 </div>
                 <div>
-                    <button type="button" className='p-2 w-full bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md' onClick={
+                    <button type="button" className='p-2 cursor-pointer w-full bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md' onClick={
                         () => {
                             const w = parseInt(widthRef.current!.value)
                             const h = parseInt(heightRef.current!.value)

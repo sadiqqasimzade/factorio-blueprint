@@ -105,11 +105,11 @@ export default function FileDragAndDrop({ setImage }: Props) {
       {(() => {
         switch (convertTo) {
           case 'tile':
-            return <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
+            return <button className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
               setSkipInput(true);
             }}>Create pixel art without image</button>
           case 'lamp':
-            return <button className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
+            return <button className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
               setSkipInput(true);
             }}>Create pixel art without image</button>
           case 'platform':

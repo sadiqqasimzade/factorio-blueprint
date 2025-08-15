@@ -186,12 +186,12 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
           <div className="flex gap-4">
             <button
               onClick={() => { setImage(undefined) }}
-              className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md"
+              className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md"
             >
               Back
             </button>
             <button
-              className="p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md"
+              className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md"
               onClick={() => {
                 const canvas = canvasRef.current;
                 if (canvas!.width > maxWidth || canvas!.width < minWidth) {

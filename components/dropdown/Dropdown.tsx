@@ -59,7 +59,7 @@ const Dropdown = ({
         <button
           type="button"
           className={`relative w-full bg-gray-800 border border-gray-700 rounded-lg py-2 px-3 text-left cursor-pointer
-            ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'}
+            ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700 cursor-pointer'}
             focus:outline-none focus:ring-2 focus:ring-blue-500`}
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
