@@ -121,7 +121,7 @@ function PixelArtPageContent(props: Props) {
                 colors={colors}
             />
             <button
-                className='p-2 bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md'
+                className='p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md'
                 onClick={() => convertTo === 'lamp' ? props.setPixelArt(getDecimalColorsFromCanvas(
                 (() => {
                     const canvas = document.createElement('canvas');
