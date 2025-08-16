@@ -17,8 +17,8 @@ export default function Card({ title, link, imgSrc }: Props) {
           <p className="text-center text-white w-auto p-2 group-hover:bg-white group-hover:text-blue-900 group-hover:text-lg group-hover:translate-y-40 group-hover:rounded-b-3xl transition-all duration-1000" >
             {title}
           </p>
-          <Image src={gearIco} className="w-10 absolute left-0 top-0 transition-all duration-1000 group-hover:-rotate-180" alt="" />
-          <Image src={gearIco} className="w-10 absolute right-0 bottom-0 transition-all duration-1000 group-hover:-rotate-180" alt="" />
+          <Image src={gearIco} alt="gear" loading="lazy" width={40} height={40} className="w-10 absolute left-0 top-0 transition-all duration-1000 group-hover:-rotate-180" />
+          <Image src={gearIco} alt="gear" loading="lazy" width={40} height={40} className="w-10 absolute right-0 bottom-0 transition-all duration-1000 group-hover:-rotate-180" />
         </Link>
         <div className="w-full h-1/3 peer-hover:h-full absolute bg-cover bg-no-repeat bg-center transition-all duration-1000" style={{ backgroundImage: `url(./imgs/card_covers/${imgSrc})` }}>
  

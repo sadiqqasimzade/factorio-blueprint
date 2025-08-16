@@ -1,5 +1,4 @@
 import '@/app/globals.css'
-import '@/app/style.scss'
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import NextScript from 'next/script'
@@ -14,21 +13,27 @@ import { Metadata } from 'next'
 
 const roboto = Roboto({
   weight: ['400', "100", '300', '500', "700"],
-  subsets: ['latin']
+  subsets: ['latin'],
+  display: 'swap'
 })
 
 export const metadata: Metadata = {
-  title: 'Factorio Blueprint Generator',
+  title: 'Factorio Blueprint Generator - Create Blueprints Easily',
   description: 'Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions.',
-  keywords: 'Factorio,Blueprint,Converter,Blueprint-Converter,Image to Blueprint,Blueprint Generator',
+  keywords: ['Factorio', 'Blueprint', 'Converter', 'Blueprint-Converter', 'Image to Blueprint', 'Blueprint Generator', 'Factorio Blueprint Generator', 'Factorio Blueprint Converter', 'Factorio Blueprint', 'Factorio', 'Blueprint', 'Converter', 'Image', 'Blueprint', 'Converter'],
   authors: [{ name: 'Sadiq Qasimzade' }],
   openGraph: {
+    title: 'Factorio Blueprint Generator - Create Blueprints Easily',
+    description: 'Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions.',
     type: 'website',
     siteName: 'Factorio Tools',
+    locale: 'en_US',
     images: ['https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif'],
     url: 'https://factorio-blueprint.vercel.app',
   },
   twitter: {
+    title: 'Factorio Blueprint Generator - Create Blueprints Easily',
+    description: 'Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions.',
     card: 'summary_large_image',
     site: 'https://factorio-blueprint.vercel.app',
     creator: 'sadiq_qasimzade',
@@ -59,6 +64,49 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: 'Factorio Blueprint Generator',
+              alternateName: 'Factorio Tools',
+              description: 'A free web-based tool to convert images and videos into Factorio blueprints, create pixel art, and optimize designs for the game Factorio.',
+              url: 'https://factorio-blueprint.vercel.app',
+              operatingSystem: 'Web',
+              applicationCategory: 'Game',
+              applicationSubCategory: 'Utility',
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'USD',
+                availability: 'https://schema.org/OnlineOnly',
+              },
+              isAccessibleForFree: true,
+              creator: {
+                '@type': 'Person',
+                name: 'Sadiq Qasimzade',
+              },
+              datePublished: '2025-06-10',
+              dateModified: '2025-08-16',
+              inLanguage: 'en-US',
+              featureList: [
+                'Image to Blueprint Conversion',
+                'Video to Blueprint Conversion',
+                'Pixel Art Creation for Factorio',
+                'Blueprint Decoding and Encoding',
+              ],
+              keywords: 'Factorio, Blueprint Generator, Image to Blueprint, Video to Blueprint, Pixel Art, Game Tools',
+              mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': 'https://factorio-blueprint.vercel.app',
+              },
+            }),
+          }}
+        />
+      </head>
       <body className={`${roboto.className} text-white bg-slate-900`}>
         <ModalProvider>
           <div className="grid min-h-screen h-full">
@@ -93,7 +141,7 @@ export default function RootLayout({
         <NextScript />
         <Analytics />
         <SpeedInsights />
-        
+
 
       </body>
     </html>
