@@ -1,7 +1,7 @@
 {
     "theme_color": "#727272",
     "background_color": "#0C343D",
-    "display": "fullscreen",
+    "display": "standalone  ",
     "scope": "/",
     "start_url": "/",
     "name": "Factorio Tools",

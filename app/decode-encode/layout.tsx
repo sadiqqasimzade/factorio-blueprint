@@ -4,13 +4,22 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
     title: 'Factorio Blueprint Decoder & Encoder',
     description: 'Effortlessly decode and encode Factorio blueprints into readable JSON with this online tool. Simplify your workflow and enhance blueprint management.',
+    keywords: ['factorio blueprint decoder', 'factorio blueprint encoder', 'factorio blueprint', 'factorio', 'blueprint', 'decoder', 'encoder', 'converter'],
     openGraph: {
         title: 'Factorio Blueprint Decoder & Encoder',
         description: 'Effortlessly decode and encode Factorio blueprints into readable JSON with this online tool. Simplify your workflow and enhance blueprint management.',
+        images: ['https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif'],
+        url: 'https://factorio-blueprint.vercel.app/decode-encode',
+        type: 'website',
+        siteName: 'Factorio Tools',
+        locale: 'en_US',
     },
     twitter: {
         title: 'Factorio Blueprint Decoder & Encoder',
         description: 'Effortlessly decode and encode Factorio blueprints into readable JSON with this online tool. Simplify your workflow and enhance blueprint management.',
+        images: ['https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif'],
+        card: 'summary_large_image',
+        site: 'https://factorio-blueprint.vercel.app',
     },
 } 
 
