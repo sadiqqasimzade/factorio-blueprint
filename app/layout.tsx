@@ -1,6 +1,6 @@
 import '@/app/globals.css'
 import Footer from '@/components/common/footer/Footer'
-import Navbar from '@/components/common/header/Header'
+import Header from '@/components/common/header/Header'
 import ModalProvider from '@/contexts/modal/modalProvider'
 import SettingProvider from '@/contexts/settings/settingProvider'
 import { Analytics } from "@vercel/analytics/react"
@@ -129,7 +129,7 @@ export default function RootLayout({
               style={{ width: '100%' }}
             />
             <SettingProvider>
-              <Navbar />
+              <Header />
               <main>
                 {children}
               </main>
