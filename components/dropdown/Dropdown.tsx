@@ -66,7 +66,7 @@ const Dropdown = ({
         >
           <div className="flex items-center">
             {selectedOption?.imageSrc && (
-              <div className="flex-shrink-0 mr-2 relative size-6">
+              <div className="shrink-0 mr-2 relative w-6 h-6">
                 <Image
                   src={`${imageBasePath}${selectedOption.imageSrc}`}
                   alt={selectedOption.imageAlt || selectedOption.label}
@@ -111,7 +111,7 @@ const Dropdown = ({
                 >
                   <div className="flex items-center">
                     {option.imageSrc && (
-                      <div className="flex-shrink-0 mr-2 relative w-6 h-6">
+                      <div className="shrink-0 mr-2 relative w-6 h-6">
                         <Image
                           src={`${imageBasePath}${option.imageSrc}`}
                           alt={option.imageAlt || option.label}

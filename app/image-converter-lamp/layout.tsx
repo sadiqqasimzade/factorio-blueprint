@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     },
 }
 
-export default function ImageConverterLampLayout({ children }: { children: React.ReactNode }) {
+export default async function ImageConverterLampLayout({ children }: { children: React.ReactNode }) {
     return (
         <Container>
             {children}

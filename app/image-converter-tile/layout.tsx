@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     },
 }
 
-export default function ImageConverterTileLayout({ children }: { children: React.ReactNode }) {
+export default async function ImageConverterTileLayout({ children }: { children: React.ReactNode }) {
     return (
         <Container>
             {children}

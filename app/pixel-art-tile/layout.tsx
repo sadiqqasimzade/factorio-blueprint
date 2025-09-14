@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     },
 }
 
-export default function PixelArtTileLayout({ children }: { children: React.ReactNode }) {
+export default async function PixelArtTileLayout({ children }: { children: React.ReactNode }) {
     return (
         <Container>
             {children}

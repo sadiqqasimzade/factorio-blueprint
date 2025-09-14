@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     },
 }
 
-export default function VideoConverterLayout({ children }: { children: React.ReactNode }) {
+export default async function VideoConverterLayout({ children }: { children: React.ReactNode }) {
     return (
         <Container>
             {children}

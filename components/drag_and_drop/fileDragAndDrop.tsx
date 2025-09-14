@@ -8,8 +8,8 @@ type Props = {
   setImage: React.Dispatch<React.SetStateAction<HTMLImageElement | undefined>>;
 };
 
-const cssDragDropAreaError = "!bg-red-600"
-const cssDragDropAreaSuccess = "!bg-purple-600"
+const cssDragDropAreaError = "bg-red-600!"
+const cssDragDropAreaSuccess = "bg-purple-600!"
 const cssDragDropAreaNormal = "bg-purple-900"
 const fileType = "image"
 
@@ -19,7 +19,7 @@ export default function FileDragAndDrop({ setImage }: Props) {
   const dragDropAreaRef = useRef<HTMLDivElement>(null);
   const dragDropTitleRef = useRef<HTMLParagraphElement>(null);
 
-  const { setSkipInput, convertTo } = useContext(SettingsContext);
+  const { setSkipInput } = useContext(SettingsContext);
   function resetDragDropArea() {
     dragDropAreaRef.current!.classList.remove(cssDragDropAreaError, cssDragDropAreaSuccess);
     dragDropTitleRef.current!.innerText = `Drop ${fileType} file here,or click`;
@@ -102,22 +102,9 @@ export default function FileDragAndDrop({ setImage }: Props) {
           Drop Image file here, or click
         </p>
       </div>
-      {(() => {
-        switch (convertTo) {
-          case 'tile':
-            return <button className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
-              setSkipInput(true);
-            }}>Create pixel art without image</button>
-          case 'lamp':
-            return <button className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
-              setSkipInput(true);
-            }}>Create pixel art without image</button>
-          case 'platform':
-            return <p className="p-2">Any pixel that&apos;s not black or transparent will become a space platform</p>
-          default:
-            return null
-        }
-      })()}
+      <button className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md" onClick={() => {
+        setSkipInput(true);
+      }}>Create pixel art without image</button>
     </div>
   );
 }

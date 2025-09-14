@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import SettingsContext from "../../contexts/settings/settingsContext";
-import FileDragAndDrop from "../drag_and_drop/fileDragAndDrop";
+import FileDropZone from "../drag_and_drop/FileDropZone";
 import ImageEditor from "../image_editor/imageEditor";
 import PixelArtPage from "../pixel_art/pixelArtPage";
 import Result from "../result/result";
@@ -19,7 +19,7 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
     const [resultCanvas, setResultCanvas] = useState<HTMLCanvasElement>();
     const [pixelArt, setPixelArt] = useState<string[][] | number[][] | undefined>()
     const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number }>();
-    
+
     const { setConvertTo, setSkipInput, convertTo, skipInput } = useContext(SettingsContext);
     useEffect(() => {
         setConvertTo(convertToProp);
@@ -30,7 +30,7 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
 
     return (
         <>
-            <p className="text-white font-bold text-2xl mb-4">Convert image to {convertTo} Blueprint</p>
+            <p className="text-white text-2xl mb-4 font-bold ">Convert image to {convertTo} Blueprint</p>
 
             {
                 pixelArt ? <Result pixelArt={pixelArt} /> :
@@ -40,7 +40,16 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
                                 image={validatedImage} setImage={setValidatedImage}
                                 setResultCanvas={setResultCanvas} setPixelArt={setPixelArt} />
                                 :
-                                <FileDragAndDrop setImage={setValidatedImage} />
+                                <FileDropZone
+                                    fileType="image"
+                                    onFileAccepted={(file) => {
+                                        const img = new Image();
+                                        img.src = window.URL.createObjectURL(file);
+                                        img.onload = () => setValidatedImage(img);
+                                    }}
+                                    label={`Drag & drop your image here`}
+                                    description={`or click to browse (PNG, JPG, GIF, WEBP, or any other image format)`}
+                                />
             }
             {
                 skipInput && <SizeInput setPixelArtSize={setPixelArtSize} />

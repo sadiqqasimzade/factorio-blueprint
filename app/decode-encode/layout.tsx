@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     },
 } 
 
-export default function DecodeEncodeLayout({ children }: { children: React.ReactNode }) {
+export default async function DecodeEncodeLayout({ children }: { children: React.ReactNode }) {
     return (
         <Container>
             {children}
