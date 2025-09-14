@@ -26,7 +26,7 @@ const QualitySelector = ({
       value={value}
       onChange={(val) => onChange(Number(val))}
       label="Quality Level"
-      imageBasePath="/imgs/entites/"
+      imageBasePath="/imgs/entities/"
       disabled={disabled}
       className={className}
     />

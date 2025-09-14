@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "react-toastify/dist/ReactToastify.css";
+@config "../tailwind.config.ts";
 
 .Toastify {
     position: absolute;
