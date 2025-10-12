@@ -439,7 +439,7 @@ export default function VideoConverter() {
                             <button
                                 ref={convertButtonRef}
                                 disabled={!readyToStart || isGenerating}
-                                className="inline-flex items-center justify-center rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="inline-flex items-center justify-center rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                 onClick={() => {
                                     if (width < minWidth || width > maxWidthForVideo || isNaN(width)) {
                                         toast.error("Please enter a valid width")
