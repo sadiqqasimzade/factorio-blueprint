@@ -34,7 +34,7 @@ const ModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
         <ModalContext.Provider value={{ showModal, hideModal,modalIsActive }}>
             {children}
             {modalContent && (
-                <div className='fixed w-full h-full bg-black bg-opacity-60 flex justify-center items-center transition-transform duration-500 will-change-transform top-0 left-0' onClick={hideModal}>
+                <div className='fixed z-10 w-full h-full bg-black bg-opacity-60 flex justify-center items-center transition-transform duration-500 will-change-transform top-0 left-0' onClick={hideModal}>
                     <div className='bg-white min-w-[100px] min-h-[100px] rounded-[50px]' onClick={(e) => { e.stopPropagation(); }}>
                         <div className='p-8'>
                             {modalContent}

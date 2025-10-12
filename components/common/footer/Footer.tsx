@@ -16,11 +16,11 @@ const tools = [
     link: "/video-to-blueprint",
   },
 
-  {
-    name: "Audio to Blueprint",
-    description: "Convert audio to Factorio blueprints",
-    link: "/audio-to-blueprint",
-  },
+  // {
+  //   name: "Audio to Blueprint",
+  //   description: "Convert audio to Factorio blueprints",
+  //   link: "/audio-to-blueprint",
+  // },
 ]
 
 export default function Footer() {

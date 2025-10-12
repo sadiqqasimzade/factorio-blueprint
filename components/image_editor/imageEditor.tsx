@@ -110,110 +110,155 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
 
   return (
     <>
-      <div className="flex flex-col gap-6">
-        <div className="flex md:flex-row flex-col gap-4">
-          <div className="flex flex-col w-full">
-            <p className="text-xl font-bold">Width</p>
-            <input
-              type="number"
-              value={width}
-              className="border-b outline-none bg-transparent py-2"
-              min={minWidth}
-              max={maxWidth}
-              onChange={handleWidthChange}
-            />
-            <p>Min:{minWidth}/Max:{maxWidth}</p>
-          </div>
-          <div className="flex flex-col w-full">
-            <p className="text-xl font-bold">Height</p>
-            <input
-              type="number"
-              value={height}
-              className="border-b outline-none bg-transparent py-2"
-              min={minHeight}
-              max={maxH}
-              onChange={handleHeightChange}
-            />
-            <p>Min:{minHeight}/Max:{maxH}</p>
-          </div>
-          {
-            convertTo === "lamp" && (
-              <div className="flex gap-4">
-                <QualitySelector
-                  value={quality}
-                  onChange={setQuality}
-                  disabled={false}
-                  className="w-48"
-                />
-                <TileSelector
-                  value={lampBgTile}
-                  onChange={setLampBgTile}
-                  disabled={false}
-                  className="w-48"
-                />
+      <div className="flex flex-col gap-8">
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl md:text-4xl font-bold">Image to Blueprint Editor</h1>
+          <p className="text-neutral-300">Configure your image settings before conversion</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <section className="rounded-xl border border-neutral-700 bg-neutral-900/60 p-6 space-y-6">
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-neutral-200">Dimensions</h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm text-neutral-300">Width</label>
+                  <input
+                    type="number"
+                    value={width}
+                    className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    min={minWidth}
+                    max={maxWidth}
+                    onChange={handleWidthChange}
+                  />
+                  <p className="text-xs text-neutral-400">min: {minWidth} • max: {maxWidth}</p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-neutral-300">Height</label>
+                  <input
+                    type="number"
+                    value={height}
+                    className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    min={minHeight}
+                    max={maxH}
+                    onChange={handleHeightChange}
+                  />
+                  <p className="text-xs text-neutral-400">min: {minHeight} • max: {maxH}</p>
+                </div>
               </div>
-            )
-          }
-        </div>
-        <div className="flex md:flex-row md:justify-between flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-4">
-              <p className="text-xl font-bold">Maintain original aspect ratio</p>
-              <input
-                type="checkbox"
-                checked={keepAspectRatio}
-                onChange={(e) => setKeepAspectRatio(e.target.checked)}
-              />
+
+              {convertTo === "lamp" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <QualitySelector
+                    value={quality}
+                    onChange={setQuality}
+                    disabled={false}
+                    className="w-full"
+                  />
+                  <TileSelector
+                    value={lampBgTile}
+                    onChange={setLampBgTile}
+                    disabled={false}
+                    className="w-full"
+                  />
+                </div>
+              )}
             </div>
-            {convertTo === "lamp" && <div className="flex gap-4">
-              <p className="text-xl font-bold">Black lamps allowed. Turn off to optimize png images</p>
-              <input
-                type="checkbox"
-                checked={blackLampsAllowed}
-                onChange={(e) => setBlackLampsAllowed(e.target.checked)}
-              />
-            </div>}
-            {convertTo === "tile" && <div className="flex gap-4">
-              <p className="text-xl font-bold">Allow refined tiles</p>
-              <input
-                type="checkbox"
-                checked={isAllowedRefinedTiles}
-                onChange={(e) => setIsAllowedRefinedTiles(e.target.checked)}
-              />
-            </div>}
-          </div>
 
-          <div className="flex gap-4">
-            <button
-              onClick={() => { setImage(undefined) }}
-              className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md"
-            >
-              Back
-            </button>
-            <button
-              className="p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md"
-              onClick={() => {
-                const canvas = canvasRef.current;
-                if (canvas!.width > maxWidth || canvas!.width < minWidth) {
-                  toast.error('Wrong width')
-                } else if (canvas!.height > maxH || canvas!.height < minHeight) {
-                  toast.error('Wrong height')
-                } else {
-                  if (convertTo === 'tile') setResultCanvas(canvasRef.current!);
-                  if (convertTo === 'lamp') setPixelArt(getDecimalColorsFromCanvas(canvas!));
-                  if (convertTo === 'platform') setPixelArt(getDecimalColorsFromCanvas(canvas!));
-                  setImage(undefined);
-                }
-              }}>
-              Continue
-            </button>
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-neutral-200">Settings</h2>
 
-          </div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="aspect-ratio"
+                    className="h-4 w-4 rounded border-neutral-700 bg-neutral-800 text-blue-500 focus:ring-blue-500"
+                    checked={keepAspectRatio}
+                    onChange={(e) => setKeepAspectRatio(e.target.checked)}
+                  />
+                  <label htmlFor="aspect-ratio" className="text-sm text-neutral-300">Maintain original aspect ratio</label>
+                </div>
+
+                {convertTo === "lamp" && (
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="black-lamps"
+                      className="h-4 w-4 rounded border-neutral-700 bg-neutral-800 text-blue-500 focus:ring-blue-500"
+                      checked={blackLampsAllowed}
+                      onChange={(e) => setBlackLampsAllowed(e.target.checked)}
+                    />
+                    <label htmlFor="black-lamps" className="text-sm text-neutral-300">Black lamps allowed. Turn off to optimize png images</label>
+                  </div>
+                )}
+
+                {convertTo === "tile" && (
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="refined-tiles"
+                      className="h-4 w-4 rounded border-neutral-700 bg-neutral-800 text-blue-500 focus:ring-blue-500"
+                      checked={isAllowedRefinedTiles}
+                      onChange={(e) => setIsAllowedRefinedTiles(e.target.checked)}
+                    />
+                    <label htmlFor="refined-tiles" className="text-sm text-neutral-300">Allow refined tiles</label>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <div className="flex gap-4">
+                <button
+                  onClick={() => { setImage(undefined) }}
+                  className="inline-flex cursor-pointer items-center justify-center rounded-md bg-neutral-700 px-4 py-2 text-white transition-colors hover:bg-neutral-600"
+                >
+                  Back
+                </button>
+                <button
+                  className="inline-flex cursor-pointer items-center justify-center rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+                  onClick={() => {
+                    const canvas = canvasRef.current;
+                    if (canvas!.width > maxWidth || canvas!.width < minWidth) {
+                      toast.error('Wrong width')
+                    } else if (canvas!.height > maxH || canvas!.height < minHeight) {
+                      toast.error('Wrong height')
+                    } else {
+                      if (convertTo === 'tile') setResultCanvas(canvasRef.current!);
+                      if (convertTo === 'lamp') setPixelArt(getDecimalColorsFromCanvas(canvas!));
+                      if (convertTo === 'platform') setPixelArt(getDecimalColorsFromCanvas(canvas!));
+                      setImage(undefined);
+                    }
+                  }}>
+                  Continue
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-xl border border-neutral-700 bg-neutral-900/60 p-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-sm text-neutral-300">Preview</p>
+              <div className="rounded-lg border border-neutral-700 bg-neutral-800/50 p-4">
+                <canvas className="max-w-full" ref={canvasRef} />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm text-neutral-300">Current Settings</p>
+              <div className="rounded-md border border-neutral-700 bg-neutral-800/50 px-3 py-2">
+                <div className="text-sm space-y-1">
+                  <p>Width: {width}px • Height: {height}px</p>
+                  <p>Convert to: {convertTo}</p>
+                  <p>Aspect ratio: {keepAspectRatio ? 'Locked' : 'Unlocked'}</p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
-
       </div>
-      <p className="text-2xl font-bold mt-5">Result size</p>
-      <canvas className="mt-2" ref={canvasRef} />
     </>
   );
 }
