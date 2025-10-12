@@ -1,9 +1,6 @@
 
 # TODO
-- [ ] redesign website
-- [ ] Create reusable file drag&drop component for image+video (Rewrite current)
-
-
+- [ ] add audio converter
 - [ ] add option to skip pixel art page for tile gen
 - [ ] PixelArtPageContent create universal Cell to decimal number\[\]\[\] converter
 
