@@ -20,7 +20,7 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
     const [pixelArt, setPixelArt] = useState<string[][] | number[][] | undefined>()
     const [pixelArtSize, setPixelArtSize] = useState<{ width: number, height: number }>();
 
-    const { setConvertTo, setSkipInput, convertTo, skipInput } = useContext(SettingsContext);
+    const { setConvertTo, setSkipInput, skipInput } = useContext(SettingsContext);
     useEffect(() => {
         setConvertTo(convertToProp);
     }, [convertToProp]);
@@ -30,7 +30,7 @@ export default function ImageConverterPage({ convertToProp, skipInputProp }: Pro
 
     return (
         <>
-            <p className="text-white text-2xl mb-4 font-bold ">Convert image to {convertTo} Blueprint</p>
+            {/* <p className="text-white text-2xl mb-4 font-bold ">Convert image to {convertTo} Blueprint</p> */}
 
             {
                 pixelArt ? <Result pixelArt={pixelArt} /> :

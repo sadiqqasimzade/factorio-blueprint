@@ -57,7 +57,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
                     {formatValue(data as object, type)}
                 </span>
                 <button
-                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-6 w-6 cursor-pointer p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                     onClick={() => copyValue(data as object)}
                 >
                     <Copy className="h-3 w-3" />
@@ -74,7 +74,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
         <div className="group">
             <div className="flex items-center gap-1 py-1">
                 <button
-                    className="h-6 w-6 p-0"
+                    className="h-6 w-6 cursor-pointer p-0"
                     onClick={() => setIsExpanded(!isExpanded)}
                 >
                     {length > 0 ? (
@@ -90,7 +90,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
                     {isArray ? `Array[${length}]` : `Object{${length}}`}
                 </span>
                 <button
-                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-6 w-6 cursor-pointer p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                     onClick={() => copyValue(data)}
                 >
                     <Copy className="h-3 w-3" />
