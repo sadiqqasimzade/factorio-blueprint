@@ -75,7 +75,7 @@ export default function DecodeEncodePage() {
     return (
         <>
             <div className="flex flex-col justify-center gap-5">
-                <div className="mb-4 p-4 rounded-lg bg-bg-light border-3 border-gray-600 text-white">
+                <div className="mb-4 p-4 rounded-lg bg-bgLight border-3 border-gray-600 text-white">
                     <h2 className="text-xl font-semibold mb-2">How to Use</h2>
                     <div className="mb-3">
                         <span className="font-bold">Decoding Blueprints:</span>
@@ -95,7 +95,7 @@ export default function DecodeEncodePage() {
                         </ol>
                     </div>
                 </div>
-                <div className="bg-bg-light mt-2 rounded-2xl p-5 border-gray-600 border-3">
+                <div className="bg-bgLight mt-2 rounded-2xl p-5 border-gray-600 border-3">
                     <h2 className="text-center">Base64 Blueprint string/Blueprint JSON</h2>
                     <input
                         placeholder="Blueprint string/Blueprint JSON"
@@ -126,7 +126,7 @@ export default function DecodeEncodePage() {
                 </div>
 
                 {result && result.startsWith('{') && !isProcessing && (
-                    <div className="rounded-2xl p-4 min-h-[200px] bg-bg-light overflow-auto max-h-[400px] border-3 border-gray-600">
+                    <div className="rounded-2xl p-4 min-h-[200px] bg-bgLight overflow-auto max-h-[400px] border-3 border-gray-600">
                         <JsonViewer
                             data={JSON.parse(result)}
                             name="blueprint"

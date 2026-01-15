@@ -10,7 +10,7 @@ export function getDecimalColorsFromCanvas(canvas: HTMLCanvasElement): number[][
     const col = []
     for (let j = 0; j < canvas.height; j++) {
       const data = context!.getImageData(i, j, 1, 1).data;
-      const colorDecimal = rgbToDecimal(data[0], data[1], data[2]);
+      const colorDecimal = rgbToDecimal(data[0]!, data[1]!, data[2]!);
 
       col.push(colorDecimal)
     }
@@ -32,7 +32,7 @@ export function calculateClosestColorsInCanvas(canvas: HTMLCanvasElement, availa
     const col = []
     for (let j = 0; j < canvas.height; j++) {
       const data = context!.getImageData(i, j, 1, 1).data;
-      const colorHex = rgbToHex(data[0], data[1], data[2]);
+      const colorHex = rgbToHex(data[0]!, data[1]!, data[2]!);
       const match = findClosestColor(availableColors, colorHex);
       col.push(match)
     }
@@ -50,13 +50,13 @@ export function calculateClosestColorsInCanvas(canvas: HTMLCanvasElement, availa
 */
 export function findClosestColor(colorarr: string[], hexstr: string): string {
   let min = 0xffffff;
-  let best = colorarr[0]
+  let best = colorarr[0]!
   let current, i;
   for (i = 0; i < colorarr.length; i++) {
-    current = hexToDecimal(colorarr[i], hexstr);
+    current = hexToDecimal(colorarr[i]!, hexstr);
     if (current < min) {
       min = current;
-      best = colorarr[i];
+      best = colorarr[i]!;
     }
   }
   return best;
