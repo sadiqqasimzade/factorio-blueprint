@@ -22,7 +22,7 @@ export const SUBSTATION_QUALITIES: SubstationQuality[] = [
 
 export function CreateScreen(width: number, height: number, wires: TBpWire[], substation_height_offset: number, quality: number = 1, blackLampsAllowed: boolean = false): BpEntity[] {
     const mainEntities: BpEntity[] = [];
-    const substationQuality = SUBSTATION_QUALITIES[quality];
+    const substationQuality = SUBSTATION_QUALITIES[quality]!;
     const substationName = quality !== 1 ? substationQuality.name : undefined;
 
     // Calculate substation coordinates
@@ -118,7 +118,7 @@ function addOffGridSubstations(mainEntities: BpEntity[],
     if (lastWidthCoord >= width) {
         const heightLimit = substationCoordinatesH.length - (lastHeightCoord >= height ? 1 : 0);
         for (let j = 0; j < heightLimit; j++) {
-            substations.push(new BpSubstation(lastWidthCoord + 0.5, substationCoordinatesH[j] + 0.5, substationName));
+            substations.push(new BpSubstation(lastWidthCoord + 0.5, substationCoordinatesH[j]! + 0.5, substationName));
         }
     }
 
@@ -136,7 +136,7 @@ function connectSubstations(mainEntities: BpEntity[], wires: TBpWire[], substati
         const rowSubstations = substations.filter(e => e.position.y === y + 0.5);
 
         for (let j = 0; j < rowSubstations.length - 1; j++) {
-            wires.push(BpStaticMethods.connect(rowSubstations[j], rowSubstations[j + 1], 5, 5));
+            wires.push(BpStaticMethods.connect(rowSubstations[j]!, rowSubstations[j + 1]!, 5, 5));
         }
     }
 
@@ -145,7 +145,7 @@ function connectSubstations(mainEntities: BpEntity[], wires: TBpWire[], substati
         const colSubstations = substations.filter(e => e.position.x === x + 0.5) as BpSubstation[];
 
         for (let j = 0; j < colSubstations.length - 1; j++) {
-            wires.push(BpStaticMethods.connect(colSubstations[j], colSubstations[j + 1], 5, 5));
+            wires.push(BpStaticMethods.connect(colSubstations[j]!, colSubstations[j + 1]!, 5, 5));
         }
     }
 }

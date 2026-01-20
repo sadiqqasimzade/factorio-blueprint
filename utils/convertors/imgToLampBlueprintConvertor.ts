@@ -19,7 +19,7 @@ type Props = {
 
 export default function ImgToLampBlueprintConvertor({ color_indexes, quality, blackLampsAllowed, lampBgTile }: Props): Blueprint {
   const width = color_indexes.length
-  const height = color_indexes[0].length
+  const height = color_indexes[0]!.length
   const wires: TBpWire[] = []
   const mainEntities: BpEntity[] = CreateScreen(width, height, wires, 0, quality, blackLampsAllowed)
   const constCombinators: BpConstCombinator[] = []
@@ -34,7 +34,7 @@ export default function ImgToLampBlueprintConvertor({ color_indexes, quality, bl
           filters.push({
             signal: signal_priority[k],
             index: k + 1,
-            count: signal_strengths[k]
+            count: signal_strengths[k]!
           })
         }
         return filters
@@ -42,7 +42,7 @@ export default function ImgToLampBlueprintConvertor({ color_indexes, quality, bl
     }, i, -1, Directions.NORTH)
 
     const lamp = mainEntities.find(e => e.position.x === i && e.position.y === 0) as BpLamp
-    wires.push(BpStaticMethods.connect(lamp, constCombinator, 2, 2))
+    wires.push(BpStaticMethods.connect(lamp!, constCombinator, 2, 2))
     constCombinators.push(constCombinator)
   })
 

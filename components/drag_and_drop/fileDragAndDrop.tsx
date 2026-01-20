@@ -30,7 +30,7 @@ export default function FileDragAndDrop({ setImage }: Props) {
   function handleDragIn(e: React.DragEvent<HTMLDivElement>): void {
     e.preventDefault();
     resetDragDropArea();
-    if (e.dataTransfer.items && e.dataTransfer.items.length > 0 && e.dataTransfer.items[0].kind === "file" && e.dataTransfer.items[0].type.includes(fileType)) {
+    if (e.dataTransfer.items && e.dataTransfer.items.length > 0 && e.dataTransfer.items[0]!.kind === "file" && e.dataTransfer.items[0]!.type.includes(fileType)) {
       if (e.dataTransfer.items.length > 1) {
         dragDropTitleRef.current!.innerText = `Only first ${fileType} will be used`;
       }

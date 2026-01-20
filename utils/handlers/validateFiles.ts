@@ -9,7 +9,7 @@ export default function validateFiles(files: FileList, fileType: string): File |
     return "You must add file";
   }
 
-  const file = files[0];
+  const file = files[0]!;
 
   // Special-case basic image validation
   if (fileType === "image") {
@@ -29,8 +29,8 @@ export default function validateFiles(files: FileList, fileType: string): File |
     tokens.length > 1 ||
     /\/\*|\/[a-z0-9.+-]+$|^\.[a-z0-9]+$/i.test(fileType)
   ) {
-    const fileName = file.name.toLowerCase();
-    const mime = file.type.toLowerCase();
+    const fileName = file!.name.toLowerCase();
+    const mime = file!.type.toLowerCase();
 
     const isAccepted = tokens.some((token) => {
       const t = token.toLowerCase();
