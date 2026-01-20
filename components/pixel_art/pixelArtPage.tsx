@@ -95,7 +95,7 @@ function PixelArtPageContent(props: Props) {
                 console.error('Invalid cell coordinates:', x, y)
                 return prev
             }
-            newCells[y] = [...prev[y]]
+            newCells[y] = [...prev[y]!]
             newCells[y][x] = selectedColor
             return newCells
         })
@@ -125,7 +125,7 @@ function PixelArtPageContent(props: Props) {
                 onClick={() => convertTo === 'lamp' ? props.setPixelArt(getDecimalColorsFromCanvas(
                 (() => {
                     const canvas = document.createElement('canvas');
-                    canvas.width = cells[0].length;
+                    canvas.width = cells[0]!.length;
                     canvas.height = cells.length;
                     const ctx = canvas.getContext('2d')!;
                     
@@ -153,7 +153,7 @@ export default function PixelArtPage(props: Props) {
         ) : "000000"
 
     return (
-        <ColorProvider initialColor={initialColor}>
+        <ColorProvider initialColor={initialColor!}>
             <PixelArtPageContent {...props} />
         </ColorProvider>
     )

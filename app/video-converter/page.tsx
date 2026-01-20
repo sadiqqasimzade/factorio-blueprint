@@ -114,7 +114,7 @@ export default function VideoConverter() {
         const images: number[][][] = []; // Store resized frames
 
         for (let i = 0; i < gifFrames!.length; i += 1 + skippedFrames) {
-            const frame = gifFrames![i];
+            const frame = gifFrames![i]!;
             // Create a temporary canvas for the original GIF frame
             const tempCanvas = document.createElement("canvas");
             tempCanvas.width = frame.dims.width;
@@ -290,7 +290,7 @@ export default function VideoConverter() {
         setGifFrames(decompressedFrames)
 
         // Calculate frame rate for GIF and set in-game update speed
-        const gifFrameRate = 1000 / decompressedFrames[0].delay; // Delay is in ms
+        const gifFrameRate = 1000 / decompressedFrames[0]!.delay; // Delay is in ms
         setFrameRate(gifFrameRate)
         setScreenUps(Math.min(60, Math.max(1, Math.round(gifFrameRate / (1 + skippedFrames)))))
 

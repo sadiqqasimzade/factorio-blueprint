@@ -42,10 +42,10 @@ export function CreateMemoryBlock(frames: number[][][], quality: number, frameRa
     const constCombinators: BpConstCombinator[] = []
     const wires: TBpWire[] = []
 
-    const width = frames[0].length
-    const height = frames[0][0].length
+    const width = frames[0]!.length
+    const height = frames[0]![0]!.length
 
-    const substationQuality = SUBSTATION_QUALITIES[quality]
+    const substationQuality = SUBSTATION_QUALITIES[quality]!
     const substationName = quality === 1 ? undefined : substationQuality.name
 
     const substationCoordinatesW = quality === 0 ? [] : generateSubstationCoordinatesW(width, substationQuality.value, 0)
@@ -76,18 +76,18 @@ export function CreateMemoryBlock(frames: number[][][], quality: number, frameRa
         }
         else {
 
-            const frame = frames[frameIndex];
+            const frame = frames[frameIndex]!;
             let rindex = 0;
             while (rindex < frame.length) {
                 const row = frame[rindex];
                 const constCombinator = new BpConstCombinator({
                     filters: ((): TBpConstCombinatorControlBehaviorFilter[] => {
                         const filters: TBpConstCombinatorControlBehaviorFilter[] = []
-                        for (let k = 0; k < row.length; k++) {
+                        for (let k = 0; k < row!.length; k++) {
                             filters.push({
                                 signal: signal_priority[k],
                                 index: k + 1,
-                                count: row[k]
+                                count: row![k]!
                             })
                         }
                         return filters
@@ -114,8 +114,8 @@ export function CreateMemoryBlock(frames: number[][][], quality: number, frameRa
                 }
 
                 //Connect previous Decider Combinator in this col to current Decider Combinator Green wire
-                if (deciderCombinators.at(-frames[0].length)) {
-                    wires.push(BpStaticMethods.connect(deciderCombinators.at(- frames[0].length)!, deciderCombinator, 4, 4))
+                if (deciderCombinators.at(-frames[0]!.length)) {
+                    wires.push(BpStaticMethods.connect(deciderCombinators.at(- frames[0]!.length)!, deciderCombinator, 4, 4))
                 }
 
                 deciderCombinators.push(deciderCombinator)
@@ -124,8 +124,8 @@ export function CreateMemoryBlock(frames: number[][][], quality: number, frameRa
                 rindex++;
             }
 
-            if (deciderCombinators.at(-1 - frames[0].length)) {
-                wires.push(BpStaticMethods.connect(deciderCombinators.at(-1 - frames[0].length)!, deciderCombinators.at(-1)!, 1, 1))
+            if (deciderCombinators.at(-1 - frames[0]!.length)) {
+                wires.push(BpStaticMethods.connect(deciderCombinators.at(-1 - frames[0]!.length)!, deciderCombinators.at(-1)!, 1, 1))
             }
         }
 
@@ -170,7 +170,7 @@ export function CreateMemoryBlock(frames: number[][][], quality: number, frameRa
     //#endregion
 
     //#region connect 1st row of lamps to decider combinators
-    for (let i = 0; i < frames[0].length; i++) {
+    for (let i = 0; i < frames[0]!.length; i++) {
         const lamp = screenEntities.find(e => e instanceof BpLamp && e.position.x === i && e.position.y === 0)
         wires.push(BpStaticMethods.connect(lamp!, deciderCombinators[i]!, 2, 4))
     }
