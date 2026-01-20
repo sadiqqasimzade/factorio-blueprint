@@ -7,7 +7,15 @@ import { toast } from "react-toastify";
 export default function DecodeEncodePage() {
     const [result, setResult] = useState<string>('');
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
+    const [scrollContainer, setScrollContainer] = useState<HTMLElement | null>(null);
     const workerRef = useRef<Worker | null>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (scrollContainerRef.current) {
+            setScrollContainer(scrollContainerRef.current);
+        }
+    }, [result]);
 
     useEffect(() => {
         // Create worker instance
@@ -126,11 +134,15 @@ export default function DecodeEncodePage() {
                 </div>
 
                 {result && result.startsWith('{') && !isProcessing && (
-                    <div className="rounded-2xl p-4 min-h-[200px] bg-bgLight overflow-auto max-h-[400px] border-3 border-gray-600">
+                    <div 
+                        ref={scrollContainerRef}
+                        className="rounded-2xl p-4 min-h-[200px] bg-bgLight overflow-auto max-h-[400px] border-3 border-gray-600"
+                    >
                         <JsonViewer
                             data={JSON.parse(result)}
                             name="blueprint"
                             maxDepth={3}
+                            scrollElement={scrollContainer}
                         />
                     </div>
                 )}
