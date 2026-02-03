@@ -27,8 +27,9 @@ export default function VideoConverter() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const progressRef = useRef<HTMLSpanElement>(null);
-    const resultRef = useRef<HTMLParagraphElement>(null)
-    const convertButtonRef = useRef<HTMLButtonElement>(null)
+    const resultRef = useRef<HTMLParagraphElement>(null);
+    const convertButtonRef = useRef<HTMLButtonElement>(null);
+    const blueprintWorkerRef = useRef<Worker | null>(null);
 
 
 
@@ -197,40 +198,46 @@ export default function VideoConverter() {
     }
 
     const generateResult = (images: number[][][]) => {
-        const progress = progressRef.current as HTMLSpanElement;
+        const progress = progressRef.current;
+        if (progress) progress.textContent = "Generating blueprint...";
         setIsGenerating(true);
-        progress.textContent = 'Generating blueprint...';
 
-        // Create a new worker
-        const worker = new Worker(new URL('../../workers/blueprintWorker.ts', import.meta.url));
+        const worker = new Worker(new URL("../../workers/blueprintWorker.ts", import.meta.url));
+        blueprintWorkerRef.current = worker;
 
-        // Listen for the result
-        worker.onmessage = (e) => {
+        worker.onmessage = (e: MessageEvent<string>) => {
             const encoded = e.data;
-            if (resultRef.current) {
-                resultRef.current.textContent = encoded;
-            }
-            progress.textContent = 'Done!';
+            if (resultRef.current) resultRef.current.textContent = encoded;
+            if (progress) progress.textContent = "Done!";
             setIsGenerating(false);
             worker.terminate();
+            blueprintWorkerRef.current = null;
         };
 
-        // Handle any errors
         worker.onerror = (error) => {
-            console.error('Worker error:', error);
-            progress.textContent = 'Error generating blueprint!';
+            console.error("Worker error:", error);
+            if (progress) progress.textContent = "Error generating blueprint!";
             setIsGenerating(false);
             worker.terminate();
+            blueprintWorkerRef.current = null;
         };
 
-        // Send data to worker
         worker.postMessage({
             images,
             quality,
             screenUps,
-            loopWithoutBlankFrame
+            loopWithoutBlankFrame,
         });
-    }
+    };
+
+    useEffect(() => {
+        return () => {
+            if (blueprintWorkerRef.current) {
+                blueprintWorkerRef.current.terminate();
+                blueprintWorkerRef.current = null;
+            }
+        };
+    }, []);
 
     const handleVideoInput = (file: File) => {
         const videoURL = URL.createObjectURL(file);

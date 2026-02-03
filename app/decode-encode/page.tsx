@@ -1,5 +1,7 @@
-'use client'
+"use client";
+
 import JsonViewer from "@/components/json_viewer";
+import Container from "@/components/shared/container";
 import clickCopyHandler from "@/utils/handlers/clickCopyHandler";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -81,7 +83,7 @@ export default function DecodeEncodePage() {
         }
     };
     return (
-        <>
+        <Container>
             <div className="flex flex-col justify-center gap-5">
                 <div className="mb-4 p-4 rounded-lg bg-bgLight border-3 border-gray-600 text-white">
                     <h2 className="text-xl font-semibold mb-2">How to Use</h2>
@@ -118,16 +120,16 @@ export default function DecodeEncodePage() {
                             </div>
                         ) : (
                             <p
-                                className="cursor-pointer"
-                                onClick={(e) => { 
-                                    if (result && !result.startsWith('Error:') && !result.startsWith('Processing...')) {
-                                        clickCopyHandler(e).then(result => 
-                                            result ? toast.success('Successfully copied') : toast.error('Unable to copy')
+                                className="cursor-pointer whitespace-pre-wrap"
+                                onClick={(e: React.MouseEvent<HTMLElement>) => {
+                                    if (result && !result.startsWith("Error:") && !result.startsWith("Processing...")) {
+                                        clickCopyHandler(e).then((ok) =>
+                                            ok ? toast.success("Successfully copied") : toast.error("Unable to copy")
                                         );
                                     }
                                 }}
-                                dangerouslySetInnerHTML={{ __html: result }}
                             >
+                                {result}
                             </p>
                         )}
                     </div>
@@ -146,7 +148,7 @@ export default function DecodeEncodePage() {
                         />
                     </div>
                 )}
-            </div >
-        </>
-    )
+            </div>
+        </Container>
+    );
 }

@@ -41,6 +41,8 @@ workbox-*.js
 public/sw.js
 public/workbox-*.js
 
+.env
+.env.local
 .cursor
 
 \sounds

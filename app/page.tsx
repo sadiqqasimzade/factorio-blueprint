@@ -49,7 +49,7 @@ export default function Home() {
             [
               'Decode blueprint strings',
               'Encode to shareable format',
-              'WIP:Visualize blueprints JSON',
+              'Visualize blueprints JSON',
             ]}
           links={[
             { text: "Decode or Encode", href: "decode-encode", icon: <CodeIcon className="w-4 h-4" /> },

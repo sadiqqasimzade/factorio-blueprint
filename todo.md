@@ -21,3 +21,5 @@
 
 # Ideas
 - Convert large video by passing chunks of memory blocks (book with multiple blueprints?)?
+
+https://lua-api.factorio.com/latest/concepts/BlueprintEntity.html
