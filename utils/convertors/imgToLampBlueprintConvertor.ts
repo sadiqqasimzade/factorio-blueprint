@@ -10,7 +10,7 @@ import { signal_priority, Signals } from "@/consts/signalsEnum";
 import { CreateScreen } from "./createScreen";
 
 
-type Props = {  
+type Props = {
   color_indexes: number[][];
   quality: number;
   blackLampsAllowed: boolean;
@@ -19,47 +19,66 @@ type Props = {
 
 export default function ImgToLampBlueprintConvertor({ color_indexes, quality, blackLampsAllowed, lampBgTile }: Props): Blueprint {
   try {
-    // Validate inputs
-    const width = color_indexes.length;
-    const height = color_indexes[0]?.length || 0;
-    
-    const wires: TBpWire[] = [];
-    const mainEntities: BpEntity[] = CreateScreen(width, height, wires, 0, quality, blackLampsAllowed);
-    const constCombinators: BpConstCombinator[] = [];
-    const tiles: BpTile[] = [];
+    const height = color_indexes.length
+    const width = color_indexes[0]?.length ?? 0
 
-  color_indexes.forEach((signal_strengths, i) => {
-    const constCombinator = new BpConstCombinator({
-      filters: ((): TBpConstCombinatorControlBehaviorFilter[] => {
-        const filters: TBpConstCombinatorControlBehaviorFilter[] = []
+    const wires: TBpWire[] = []
+    const tiles: BpTile[] = []
+    const constCombinators: BpConstCombinator[] = []
 
-        for (let k = 0; k < signal_strengths.length; k++) {
-          filters.push({
-            signal: signal_priority[k],
-            index: k + 1,
-            count: signal_strengths[k]!
-          })
-        }
-        return filters
-      })()
-    }, i, -1, Directions.NORTH)
+    const mainEntities: BpEntity[] = CreateScreen(
+      width,
+      height,
+      wires,
+      0,
+      quality,
+      blackLampsAllowed
+    )
 
-    const lamp = mainEntities.find(e => e.position.x === i && e.position.y === 0) as BpLamp
-    wires.push(BpStaticMethods.connect(lamp!, constCombinator, 2, 2))
-    constCombinators.push(constCombinator)
-  })
-
-
-  mainEntities.push(...constCombinators)
-
-
-  if (lampBgTile) {
-    for (let i = 0; i < width; i++) {
-      for (let j = 0; j < height; j++) {
-        tiles.push(new BpTile(i, j, lampBgTile))
+    // Index lamps by x position for O(1) access
+    const lampsByX = new Map<number, BpLamp>()
+    for (const entity of mainEntities) {
+      if (entity instanceof BpLamp && entity.position.y === 0) {
+        lampsByX.set(entity.position.x, entity)
       }
     }
-  }
+
+    for (let x = 0; x < width; x++) {
+      const filters: TBpConstCombinatorControlBehaviorFilter[] = []
+
+      for (let y = 0; y < height; y++) {
+        filters.push({
+          signal: signal_priority[y],
+          index: y + 1,
+          count: color_indexes[y]![x]!,
+        })
+      }
+
+      const constCombinator = new BpConstCombinator(
+        { filters },
+        x,
+        -1,
+        Directions.NORTH
+      )
+
+      const lamp = lampsByX.get(x)
+      if (lamp) {
+        wires.push(BpStaticMethods.connect(lamp, constCombinator, 2, 2))
+      }
+
+      constCombinators.push(constCombinator)
+    }
+
+    mainEntities.push(...constCombinators)
+
+
+    if (lampBgTile) {
+      for (let x = 0; x < width; x++) {
+        for (let y = 0; y < height; y++) {
+          tiles.push(new BpTile(x, y, lampBgTile))
+        }
+      }
+    }
 
 
     const result: Blueprint = new Blueprint(

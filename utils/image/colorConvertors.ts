@@ -34,10 +34,3 @@ function componentToHex(c: number): string {
   return hex.length === 1 ? "0" + hex : hex;
 }
 
-export function hexToDecimal(hexString1: string, hexString2: string): number {
-  if (!hexString1.length || !hexString2.length) return 0;
-  return (
-    hexToDecimal(hexString1.slice(2), hexString2.slice(2)) +
-    Math.abs(parseInt(hexString1.slice(0, 2), 16) - parseInt(hexString2.slice(0, 2), 16))
-  );
-}

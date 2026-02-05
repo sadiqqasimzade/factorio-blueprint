@@ -26,6 +26,8 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+.env.local
 
 # vercel
 .vercel
@@ -41,8 +43,7 @@ workbox-*.js
 public/sw.js
 public/workbox-*.js
 
-.env
-.env.local
-.cursor
+
+.agent
 
 \sounds
