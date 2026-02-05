@@ -1,10 +1,10 @@
 import { allTileColorsArr, basicTileColorsArr } from '@/consts/colorsEnum'
 import { ColorProvider, useColor } from '@/contexts/pixelArt/colorContext'
 import SettingsContext from '@/contexts/settings/settingsContext'
+import { getDecimalColorsFromCanvas } from '@/utils/image/calculateColors'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ColorPickerContainer from './colorPickerContainer'
-import PixelArtGrid from './pixelArtGrid'
-import { getDecimalColorsFromCanvas } from '@/utils/image/calculateColors'
+import OptimizedPixelArtGrid from './OptimizedPixelArtGrid'
 
 type BaseProps = {
     setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>
@@ -32,6 +32,7 @@ function PixelArtPageContent(props: Props) {
 
     const [cells, setCells] = useState<string[][]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const [workerError, setWorkerError] = useState(false)
 
     const colors = useMemo(() =>
         isAllowedRefinedTiles ? allTileColorsArr : basicTileColorsArr,
@@ -51,16 +52,35 @@ function PixelArtPageContent(props: Props) {
 
     useEffect(() => {
         const worker = new Worker(new URL('../../workers/gridWorker.ts', import.meta.url))
+        let isMounted = true;
 
         worker.onmessage = (e) => {
-            setCells(e.data)
-            setIsLoading(false)
+            console.log('Worker message received:', e.data?.length, 'rows');
+            if (isMounted) {
+                setCells(e.data)
+                setIsLoading(false)
+            }
         }
 
         worker.onerror = (error) => {
             console.error('Worker error:', error)
-            setIsLoading(false)
+            if (isMounted) {
+                setWorkerError(true);
+                // Fallback to direct generation
+                if (props.type === 'size' && colors.length > 0) {
+                    console.log('Using fallback grid generation');
+                    const fallbackGrid = generateEmptyGrid(dimensions.width, dimensions.height, colors[0]!);
+                    setCells(fallbackGrid);
+                }
+                setIsLoading(false);
+            }
         }
+
+        console.log('Sending message to worker:', {
+            type: props.type,
+            dimensions: props.type === 'size' ? dimensions : null,
+            colorsLength: colors.length
+        });
 
         if (props.type === 'size') {
             worker.postMessage({
@@ -70,9 +90,9 @@ function PixelArtPageContent(props: Props) {
                     sizey: dimensions.height,
                     allowedColors: colors
                 }
-            })
+            });
         } else {
-            const canvas = props.resultCanvas
+            const canvas = props.resultCanvas!
             const ctx = canvas.getContext('2d')!
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 
@@ -82,11 +102,39 @@ function PixelArtPageContent(props: Props) {
                     imageData,
                     allowedColors: colors
                 }
-            })
+            });
         }
 
-        return () => worker.terminate()
+        // Add timeout as fallback
+        const timeoutId = setTimeout(() => {
+            if (isMounted) {
+                console.warn('Worker timeout - using fallback generation');
+                setWorkerError(true);
+                // Fallback to direct generation on timeout
+                if (props.type === 'size' && colors.length > 0) {
+                    const fallbackGrid = generateEmptyGrid(dimensions.width, dimensions.height, colors[0]!);
+                    setCells(fallbackGrid);
+                } else {
+                    setCells([]);
+                }
+                setIsLoading(false);
+            }
+        }, 10000); // 10 second timeout
+
+        // Cleanup function
+        return () => {
+            isMounted = false;
+            clearTimeout(timeoutId);
+            worker.terminate();
+        }
+
     }, [props, colors, dimensions])
+
+
+    // Fallback function for direct grid generation
+    const generateEmptyGrid = useCallback((width: number, height: number, color: string) => {
+        return Array(height).fill(null).map(() => Array(width).fill(color));
+    }, []);
 
     const updateCell = useCallback((x: number, y: number) => {
         setCells(prev => {
@@ -102,16 +150,19 @@ function PixelArtPageContent(props: Props) {
     }, [selectedColor])
 
     if (isLoading) {
-        return <div className="flex justify-center items-center p-4">
+        return <div className="flex justify-center items-center p-4 flex-col gap-2">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
             <span className="ml-2">Loading grid...</span>
+            {workerError && (
+                <span className="text-sm text-yellow-600">Worker error - using fallback generation...</span>
+            )}
         </div>
     }
 
     return (
         <div className="flex flex-col items-center gap-4">
             <div className="max-h-[70vh] max-w-[95vw] overflow-auto">
-                <PixelArtGrid
+                <OptimizedPixelArtGrid
                     cells={cells}
                     updateCell={updateCell}
                 />

@@ -1,6 +1,7 @@
 import '@/app/globals.css'
 import Footer from '@/components/common/footer/Footer'
 import Header from '@/components/common/header/Header'
+import ErrorBoundary from '@/components/error/ErrorBoundary'
 import ModalProvider from '@/contexts/modal/modalProvider'
 import SettingProvider from '@/contexts/settings/settingProvider'
 import { Analytics } from "@vercel/analytics/react"
@@ -194,9 +195,11 @@ export default function RootLayout({
             />
             <SettingProvider>
               <Header />
-              <main>
-                {children}
-              </main>
+              <ErrorBoundary>
+                <main>
+                  {children}
+                </main>
+              </ErrorBoundary>
               <Footer />
             </SettingProvider>
           </div>
