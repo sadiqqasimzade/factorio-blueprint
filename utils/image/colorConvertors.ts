@@ -36,23 +36,8 @@ function componentToHex(c: number): string {
 
 export function hexToDecimal(hexString1: string, hexString2: string): number {
   if (!hexString1.length || !hexString2.length) return 0;
-  
-  // Remove # prefix if present
-  const cleanHex1 = hexString1.startsWith('#') ? hexString1.slice(1) : hexString1;
-  const cleanHex2 = hexString2.startsWith('#') ? hexString2.slice(1) : hexString2;
-  
-  // Calculate Euclidean distance in RGB space
-  const r1 = parseInt(cleanHex1.slice(0, 2), 16);
-  const g1 = parseInt(cleanHex1.slice(2, 4), 16);
-  const b1 = parseInt(cleanHex1.slice(4, 6), 16);
-  
-  const r2 = parseInt(cleanHex2.slice(0, 2), 16);
-  const g2 = parseInt(cleanHex2.slice(2, 4), 16);
-  const b2 = parseInt(cleanHex2.slice(4, 6), 16);
-  
-  return Math.sqrt(
-    Math.pow(r1 - r2, 2) + 
-    Math.pow(g1 - g2, 2) + 
-    Math.pow(b1 - b2, 2)
+  return (
+    hexToDecimal(hexString1.slice(2), hexString2.slice(2)) +
+    Math.abs(parseInt(hexString1.slice(0, 2), 16) - parseInt(hexString2.slice(0, 2), 16))
   );
 }

@@ -4,9 +4,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
     title: 'Factorio Blueprint Generator - Decode and Encode Factorio Blueprints',
     description: 'Effortlessly decode and encode Factorio blueprints into readable JSON with this online tool. Simplify your workflow and enhance blueprint management.',
-    keywords: [
-      'factorio blueprint decoder',
-      'factorio blueprint encoder',
+    keywords: ['factorio blueprint decoder','factorio blueprint encoder',
       'factorio blueprint',
       'blueprint decoder',
       'blueprint encoder',

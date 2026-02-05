@@ -7,7 +7,6 @@ import { BpStaticMethods } from "@/classes/BpStaticMethods";
 import BpTile from "@/classes/BpTile";
 import { Directions, TileNames } from "@/consts/enums";
 import { signal_priority, Signals } from "@/consts/signalsEnum";
-import { BlueprintValidationError, BlueprintValidator } from "@/utils/validation/blueprintValidator";
 import { CreateScreen } from "./createScreen";
 
 
@@ -23,14 +22,6 @@ export default function ImgToLampBlueprintConvertor({ color_indexes, quality, bl
     // Validate inputs
     const width = color_indexes.length;
     const height = color_indexes[0]?.length || 0;
-    
-    BlueprintValidator.validateImageToLampConversion({
-      colorIndexes: color_indexes,
-      quality,
-      width,
-      height,
-      blackLampsAllowed
-    });
     
     const wires: TBpWire[] = [];
     const mainEntities: BpEntity[] = CreateScreen(width, height, wires, 0, quality, blackLampsAllowed);
@@ -79,9 +70,6 @@ export default function ImgToLampBlueprintConvertor({ color_indexes, quality, bl
     );
     return result;
   } catch (error) {
-    if (error instanceof BlueprintValidationError) {
-      throw error;
-    }
-    throw new BlueprintValidationError(`Failed to convert image to lamp blueprint: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to convert image to lamp blueprint: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }

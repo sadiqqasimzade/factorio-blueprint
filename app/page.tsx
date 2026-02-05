@@ -122,6 +122,8 @@ export default function Home() {
           features={
             [
               'Space Platform layouts',
+              'Works only with images supporting transparency',
+              'Fills everything except transparent pixels'
             ]}
           links={[
             { text: "Space Platform", href: "image-converter-platform", icon: <Rocket className="w-4 h-4" /> },
