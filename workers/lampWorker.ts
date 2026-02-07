@@ -1,24 +1,22 @@
+import { TileNames } from "@/consts/enums";
 import blueprintEncoder from "../utils/convertors/blueprintEncoder";
 import imgToLampBlueprintConvertor from "../utils/convertors/imgToLampBlueprintConvertor";
 
-// Define the message event type
 type WorkerMessage = {
     color_indexes: number[][];
     quality: number;
     blackLampsAllowed: boolean;
-    lampBgTile: string | null;
+    lampBgTile: TileNames | null;
 };
 
-// Listen for messages from the main thread
-self.addEventListener('message', (e: MessageEvent<WorkerMessage>) => {
+self.addEventListener("message", (e: MessageEvent<WorkerMessage>) => {
     const { color_indexes, quality, blackLampsAllowed, lampBgTile } = e.data;
-    
-    // Create the blueprint
-    const blueprint = imgToLampBlueprintConvertor({ 
-        color_indexes, 
-        quality, 
-        blackLampsAllowed, 
-        lampBgTile: lampBgTile as any 
+
+    const blueprint = imgToLampBlueprintConvertor({
+        color_indexes,
+        quality,
+        blackLampsAllowed,
+        lampBgTile,
     });
     
     // Encode the blueprint

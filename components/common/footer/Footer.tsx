@@ -25,8 +25,9 @@ const tools = [
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-gray-900 border-neutral-500 mt-20">
+    <footer className="border-t bg-gray-900 border-neutral-500 mt-4">
       <div className="container mx-auto px-6 py-8">
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center space-x-2 mb-4">
@@ -66,7 +67,6 @@ export default function Footer() {
 
         <div className="border-t border-neutral-500 mt-8 pt-6">
           <div className="flex flex-col items-center space-y-4">
-            <SupportMe />
             <div className="flex items-center space-x-2 text-sm">
               <span>Made with</span>
               <Heart className="w-4 h-4" />

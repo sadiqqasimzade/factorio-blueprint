@@ -1,10 +1,11 @@
 import { allTileColorsArr, basicTileColorsArr } from '@/consts/colorsEnum'
 import { ColorProvider, useColor } from '@/contexts/pixelArt/colorContext'
 import SettingsContext from '@/contexts/settings/settingsContext'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import ColorPickerContainer from './colorPickerContainer'
-import PixelArtGrid from './pixelArtGrid'
-import { getDecimalColorsFromCanvas } from '@/utils/image/calculateColors'
+import { usePixelArtWorker } from './hooks/usePixelArtWorker'
+import PixelArtGrid from './OptimizedPixelArtGrid'
+import PixelArtActions from './PixelArtActions'
 
 type BaseProps = {
     setPixelArt: React.Dispatch<React.SetStateAction<string[][] | number[][] | undefined>>
@@ -30,63 +31,18 @@ function PixelArtPageContent(props: Props) {
     const { isAllowedRefinedTiles, convertTo } = useContext(SettingsContext)
     const { selectedColor } = useColor()
 
-    const [cells, setCells] = useState<string[][]>([])
-    const [isLoading, setIsLoading] = useState(true)
-
     const colors = useMemo(() =>
         isAllowedRefinedTiles ? allTileColorsArr : basicTileColorsArr,
         [isAllowedRefinedTiles]
     )
 
-    const dimensions = useMemo(() => {
-        if (props.type === 'size') {
-            return { width: props.sizex, height: props.sizey }
-        } else {
-            return {
-                width: props.resultCanvas.width,
-                height: props.resultCanvas.height
-            }
-        }
-    }, [props])
-
-    useEffect(() => {
-        const worker = new Worker(new URL('../../workers/gridWorker.ts', import.meta.url))
-
-        worker.onmessage = (e) => {
-            setCells(e.data)
-            setIsLoading(false)
-        }
-
-        worker.onerror = (error) => {
-            console.error('Worker error:', error)
-            setIsLoading(false)
-        }
-
-        if (props.type === 'size') {
-            worker.postMessage({
-                type: 'generate_empty',
-                data: {
-                    sizex: dimensions.width,
-                    sizey: dimensions.height,
-                    allowedColors: colors
-                }
-            })
-        } else {
-            const canvas = props.resultCanvas
-            const ctx = canvas.getContext('2d')!
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-
-            worker.postMessage({
-                type: 'calculate_from_canvas',
-                data: {
-                    imageData,
-                    allowedColors: colors
-                }
-            })
-        }
-
-        return () => worker.terminate()
-    }, [props, colors, dimensions])
+    const { cells, setCells, isLoading } = usePixelArtWorker({
+        type: props.type,
+        sizex: props.type === 'size' ? props.sizex : undefined,
+        sizey: props.type === 'size' ? props.sizey : undefined,
+        resultCanvas: props.type === 'canvas' ? props.resultCanvas : undefined,
+        colors
+    })
 
     const updateCell = useCallback((x: number, y: number) => {
         setCells(prev => {
@@ -99,7 +55,7 @@ function PixelArtPageContent(props: Props) {
             newCells[y][x] = selectedColor
             return newCells
         })
-    }, [selectedColor])
+    }, [selectedColor, setCells])
 
     if (isLoading) {
         return <div className="flex justify-center items-center p-4">
@@ -120,28 +76,11 @@ function PixelArtPageContent(props: Props) {
                 convertTo={convertTo}
                 colors={colors}
             />
-            <button
-                className='p-2 cursor-pointer bg-blue-400 hover:bg-blue-600 text-black hover:text-white transition-colors mt-5 rounded-md'
-                onClick={() => convertTo === 'lamp' ? props.setPixelArt(getDecimalColorsFromCanvas(
-                (() => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = cells[0]!.length;
-                    canvas.height = cells.length;
-                    const ctx = canvas.getContext('2d')!;
-                    
-                    cells.forEach((row, y) => {
-                        row.forEach((color, x) => {
-                            ctx.fillStyle = '#' + color;
-                            ctx.fillRect(x, y, 1, 1);
-                        });
-                    });
-                    
-                    return canvas;
-                })()
-                )) : props.setPixelArt(cells)}
-            >
-                Continue
-            </button>
+            <PixelArtActions
+                convertTo={convertTo}
+                setPixelArt={props.setPixelArt}
+                cells={cells}
+            />
         </div>
     )
 }

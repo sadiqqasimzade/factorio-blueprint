@@ -1,23 +1,35 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 
 type Props = {
     cells: string[][]
     updateCell: (x: number, y: number) => void
 }
 
-const Cell = memo(({ color, onPaint }: { color: string, onPaint: () => void }) => (
-    <div
-        className="w-4 h-4 border border-black"
-        style={{ backgroundColor: "#" + color }}
-        onMouseDown={onPaint}
-        onMouseEnter={(e) => {
-            // Only paint if left mouse button is pressed
-            if (e.buttons === 1) {
-                onPaint()
-            }
-        }}
-    />
-))
+const Cell = memo(({ color, x, y, updateCell }: { color: string, x: number, y: number, updateCell: (x: number, y: number) => void }) => {
+    const handlePaint = useCallback(() => {
+        updateCell(x, y)
+    }, [x, y, updateCell])
+
+    const handleMouseEnter = useCallback((e: React.MouseEvent) => {
+        if (e.buttons === 1) {
+            handlePaint()
+        }
+    }, [handlePaint])
+
+    return (
+        <div
+            className="w-4 h-4 border border-black"
+            style={{ backgroundColor: "#" + color }}
+            onMouseDown={handlePaint}
+            onMouseEnter={handleMouseEnter}
+        />
+    )
+}, (prevProps, nextProps) => {
+    return prevProps.color === nextProps.color &&
+        prevProps.x === nextProps.x &&
+        prevProps.y === nextProps.y &&
+        prevProps.updateCell === nextProps.updateCell
+})
 
 Cell.displayName = 'Cell'
 
@@ -30,7 +42,9 @@ const Row = memo(({ row, y, updateCell }: { row: string[], y: number, updateCell
             <Cell
                 key={`${x}-${y}`}
                 color={color}
-                onPaint={() => updateCell(x, y)}
+                x={x}
+                y={y}
+                updateCell={updateCell}
             />
         ))}
     </div>

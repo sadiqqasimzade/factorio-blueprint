@@ -49,7 +49,7 @@ export default function Home() {
             [
               'Decode blueprint strings',
               'Encode to shareable format',
-              'WIP:Visualize blueprints JSON',
+              'Visualize blueprints JSON',
             ]}
           links={[
             { text: "Decode or Encode", href: "decode-encode", icon: <CodeIcon className="w-4 h-4" /> },
@@ -122,6 +122,8 @@ export default function Home() {
           features={
             [
               'Space Platform layouts',
+              'Works only with images supporting transparency',
+              'Fills everything except transparent pixels'
             ]}
           links={[
             { text: "Space Platform", href: "image-converter-platform", icon: <Rocket className="w-4 h-4" /> },
