@@ -1,23 +1,18 @@
-
 # TODO
-- [ ] add audio converter
-- [ ] add option to skip pixel art page for tile gen
-- [ ] PixelArtPageContent create universal Cell to decimal number\[\]\[\] converter
+- Add audio sequencer
+- Add display generator
 
-- [ ] optimize pixel art page -> blueprint page
-
-- [ ] test docker image
-
-# Testing
-- [ ] Pixel art page updatePixel slows app (check again)
-- [ ] check for rerenders
-
-
-#Bugs
-- video convertor doenst work properly on more quality than 1
-- video convertor wrong displacement of substations on additional row
+# TODO-Optimization
+- PixelArtPage color switch
+- Add skip pixel art step option
+- Implement pixel art for image gen
 
 
 
 # Ideas
 - Convert large video by passing chunks of memory blocks (book with multiple blueprints?)?
+
+- Separate logic and types from frontend
+
+# DOCS
+- https://lua-api.factorio.com/latest/concepts/BlueprintEntity.html

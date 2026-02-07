@@ -1,28 +1,16 @@
-import CircuitCondition from "@/classes/CircuitCondition";
 import BpEntity from "@/classes/BpEntity";
 import BpLamp from "@/classes/BpLamp";
-import { Signals, signal_priority } from "@/consts/signalsEnum";
-import ControlBehavior from "@/classes/ControlBehavior";
 import { BpStaticMethods } from "@/classes/BpStaticMethods";
 import BpSubstation from "@/classes/BpSubstation";
+import CircuitCondition from "@/classes/CircuitCondition";
+import ControlBehavior from "@/classes/ControlBehavior";
+import { Signals, signal_priority } from "@/consts/signalsEnum";
+import { QUALITY_TIERS } from "@/consts/videoConverter";
 
-type SubstationQuality = {
-    name: string;
-    value: number;
-}
-
-export const SUBSTATION_QUALITIES: SubstationQuality[] = [
-    { name: "none", value: 0 },
-    { name: "common", value: 18 },
-    { name: "uncommon", value: 20 },
-    { name: "rare", value: 22 },
-    { name: "epic", value: 24 },
-    { name: "legendary", value: 28 }
-];
 
 export function CreateScreen(width: number, height: number, wires: TBpWire[], substation_height_offset: number, quality: number = 1, blackLampsAllowed: boolean = false): BpEntity[] {
     const mainEntities: BpEntity[] = [];
-    const substationQuality = SUBSTATION_QUALITIES[quality]!;
+    const substationQuality = QUALITY_TIERS[quality]!;
     const substationName = quality !== 1 ? substationQuality.name : undefined;
 
     // Calculate substation coordinates

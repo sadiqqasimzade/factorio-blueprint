@@ -1,3 +1,4 @@
+import { QUALITY_TIERS } from '@/consts/videoConverter';
 import Dropdown, { DropdownOption } from './Dropdown';
 
 interface QualitySelectorProps {
@@ -7,11 +8,11 @@ interface QualitySelectorProps {
   className?: string;
 }
 
-const qualityOptions: DropdownOption[] = Array.from({ length: 6 }, (_, i) => ({
+const qualityOptions: DropdownOption[] = QUALITY_TIERS.map((tier, i) => ({
   value: i,
-  label: `Quality ${i}`,
-  imageSrc: `quality ${i}.webp`,
-  imageAlt: `Quality Level ${i}`
+  label: tier.label,
+  imageSrc: tier.imagePath.replace('/imgs/entities/', ''), // Dropdown appends basePath
+  imageAlt: tier.label
 }));
 
 const QualitySelector = ({
