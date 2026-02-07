@@ -1,5 +1,6 @@
 import '@/app/globals.css'
 import Footer from '@/components/common/footer/Footer'
+import SupportMe from '@/components/common/footer/SupportMe'
 import Header from '@/components/common/header/Header'
 import ErrorBoundary from '@/components/error/ErrorBoundary'
 import ModalProvider from '@/contexts/modal/modalProvider'
@@ -200,6 +201,8 @@ export default function RootLayout({
                   {children}
                 </main>
               </ErrorBoundary>
+              <SupportMe />
+
               <Footer />
             </SettingProvider>
           </div>

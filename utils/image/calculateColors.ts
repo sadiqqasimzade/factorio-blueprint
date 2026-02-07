@@ -43,7 +43,6 @@ export function calculateClosestColorsInCanvas(canvas: HTMLCanvasElement, availa
 
   const result: string[][] = []
 
-  // Row-major traversal (y then x) to correct orientation
   for (let y = 0; y < height; y++) {
     const row: string[] = []
     for (let x = 0; x < width; x++) {
@@ -52,8 +51,6 @@ export function calculateClosestColorsInCanvas(canvas: HTMLCanvasElement, availa
       const g = imageData[index + 1]!
       const b = imageData[index + 2]!
 
-      // Find closest color using Manhattan distance (approximation) or Euclidean
-      // Using Manhattan distance (|r1-r2| + |g1-g2| + |b1-b2|) for speed as in original recursice func
       let minDist = Infinity
       let closestHex = availableColors[0]!
 

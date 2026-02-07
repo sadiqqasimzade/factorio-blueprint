@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function SupportMe() {
     return (
         <div className="flex items-center justify-center">
-            <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 rounded-full px-6 py-3 backdrop-blur-sm">
+            <div className="bg-linear-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 rounded-full px-6 py-3 backdrop-blur-sm">
                 <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-2">
                         <Heart className="w-5 h-5 text-red-400 animate-pulse" />

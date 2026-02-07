@@ -10,7 +10,8 @@ import { BpStaticMethods } from "@/classes/BpStaticMethods";
 import BpSubstation from "@/classes/BpSubstation";
 import { Directions } from "@/consts/enums";
 import { signal_priority, Signals } from "@/consts/signalsEnum";
-import { CreateScreen, SUBSTATION_QUALITIES } from "./createScreen";
+import { QUALITY_TIERS } from "@/consts/videoConverter";
+import { CreateScreen } from "./createScreen";
 
 function generateSubstationCoordinatesW(
     size: number,
@@ -55,7 +56,7 @@ export function CreateMemoryBlock(
     const height = frames[0]!.length;
     const width = frames[0]![0]!.length;
 
-    const substationQuality = SUBSTATION_QUALITIES[quality]!;
+    const substationQuality = QUALITY_TIERS[quality]!;
     const substationName = quality === 1 ? undefined : substationQuality.name;
 
     const substationCoordinatesW =
@@ -68,7 +69,7 @@ export function CreateMemoryBlock(
             ? []
             : generateSubstationCoordinatesH(
                 frames.length + frames.length / 5,
-                Math.ceil(substationQuality.value / 3)
+                Math.floor(substationQuality.value / 3)
             );
 
     const substationHSet = new Set(substationCoordinatesH);
@@ -272,7 +273,7 @@ export function CreateMemoryBlock(
         substationCoordinatesW.forEach((w, i) => {
             const sub = new BpSubstation(
                 w,
-                -1 - lastH * 3,
+                1 - lastH * 3,
                 substationName
             );
             substations.push(sub);
@@ -290,9 +291,8 @@ export function CreateMemoryBlock(
         });
 
         const last = substations[substations.length - 1];
-        const above =
-            substations[substations.length - 1 - substationCoordinatesW.length];
-
+        //-1 is timer substation
+        const above = substations[substations.length - 1 - 1 - substationCoordinatesW.length];
         if (last && above) {
             wires.push(BpStaticMethods.connect(last, above, 5, 5));
         }

@@ -14,7 +14,7 @@ self.addEventListener('message', (e: MessageEvent<WorkerMessage>) => {
     const { images, quality, screenUps, loopWithoutBlankFrame } = e.data;
     
     // Create the memory block
-    const blueprint = CreateMemoryBlock(images, 4, 60 / screenUps, loopWithoutBlankFrame);
+    const blueprint = CreateMemoryBlock(images, quality, 60 / screenUps, loopWithoutBlankFrame);
     
     // Encode the blueprint
     const encoded = blueprintEncoder(blueprint);
