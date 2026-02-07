@@ -8,7 +8,8 @@
     "build": "next build ",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest | tsc",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
     "jest": "jest"
   },
   "dependencies": {

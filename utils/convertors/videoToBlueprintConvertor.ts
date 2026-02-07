@@ -10,195 +10,305 @@ import { BpStaticMethods } from "@/classes/BpStaticMethods";
 import BpSubstation from "@/classes/BpSubstation";
 import { Directions } from "@/consts/enums";
 import { signal_priority, Signals } from "@/consts/signalsEnum";
-import { CreateScreen, SUBSTATION_QUALITIES } from "./createScreen";
+import { QUALITY_TIERS } from "@/consts/videoConverter";
+import { CreateScreen } from "./createScreen";
 
-
-
-function generateSubstationCoordinatesW(size: number, substationValue: number, offset: number): number[] {
-    const coordinates = [(substationValue / 2) + offset];
+function generateSubstationCoordinatesW(
+    size: number,
+    substationValue: number,
+    offset: number
+): number[] {
+    const coordinates = [substationValue / 2 + offset];
     const maxValue = Math.ceil(size / substationValue) * substationValue;
 
-    while (coordinates.at(-1)! + substationValue < maxValue) {
-        coordinates.push(coordinates.at(-1)! + substationValue);
+    while (coordinates[coordinates.length - 1]! + substationValue < maxValue) {
+        coordinates.push(coordinates[coordinates.length - 1]! + substationValue);
     }
 
     return coordinates;
 }
 
-function generateSubstationCoordinatesH(size: number, substationValue: number): number[] {
-    const coordinates = [4];
+function generateSubstationCoordinatesH(
+    size: number,
+    substationValue: number
+): number[] {
+    const coordinates = [3];
     const maxValue = Math.ceil(size / substationValue) * substationValue;
 
-    while (coordinates.at(-1)! + substationValue < maxValue) {
-        coordinates.push(coordinates.at(-1)! + substationValue);
+    while (coordinates[coordinates.length - 1]! + substationValue < maxValue) {
+        coordinates.push(coordinates[coordinates.length - 1]! + substationValue);
     }
 
     return coordinates;
 }
 
-export function CreateMemoryBlock(frames: number[][][], quality: number, frameRate: number, loopWithoutBlankFrame: boolean): Blueprint {
-    const deciderCombinators: BpDeciderCombinator[] = []
-    const substations: BpSubstation[] = []
-    const constCombinators: BpConstCombinator[] = []
-    const wires: TBpWire[] = []
+export function CreateMemoryBlock(
+    frames: number[][][],
+    quality: number,
+    frameRate: number,
+    loopWithoutBlankFrame: boolean
+): Blueprint {
+    const deciderCombinators: BpDeciderCombinator[] = [];
+    const constCombinators: BpConstCombinator[] = [];
+    const substations: BpSubstation[] = [];
+    const wires: TBpWire[] = [];
 
-    const width = frames[0]!.length
-    const height = frames[0]![0]!.length
+    const height = frames[0]!.length;
+    const width = frames[0]![0]!.length;
 
-    const substationQuality = SUBSTATION_QUALITIES[quality]!
-    const substationName = quality === 1 ? undefined : substationQuality.name
+    const substationQuality = QUALITY_TIERS[quality]!;
+    const substationName = quality === 1 ? undefined : substationQuality.name;
 
-    const substationCoordinatesW = quality === 0 ? [] : generateSubstationCoordinatesW(width, substationQuality.value, 0)
-    const substationCoordinatesH = quality === 0 ? [] : generateSubstationCoordinatesH(frames.length + (frames.length / 5), Math.ceil(substationQuality.value / 3))
-    const screenEntities = CreateScreen(width, height, wires, 0, quality, true)
+    const substationCoordinatesW =
+        quality === 0
+            ? []
+            : generateSubstationCoordinatesW(width, substationQuality.value, 0);
 
+    const substationCoordinatesH =
+        quality === 0
+            ? []
+            : generateSubstationCoordinatesH(
+                frames.length + frames.length / 5,
+                Math.floor(substationQuality.value / 3)
+            );
 
-    let heightOffset = 0
+    const substationHSet = new Set(substationCoordinatesH);
+
+    const screenEntities = CreateScreen(width, height, wires, 0, quality, true);
+
+    // Index lamps once
+    const lampsByX = new Map<number, BpLamp>();
+    for (const entity of screenEntities) {
+        if (entity instanceof BpLamp && entity.position.y === 0) {
+            lampsByX.set(entity.position.x, entity);
+        }
+    }
+
+    let heightOffset = 0;
     let coordinateIndex = 0;
-    let frameIndex = 0
+    let frameIndex = 0;
 
     while (frameIndex < frames.length) {
-        let skipLoop = true
-        if (substationCoordinatesH.includes(coordinateIndex + 1)) {
+        let skipLoop = true;
+
+        if (substationHSet.has(coordinateIndex + 1)) {
             substationCoordinatesW.forEach((w, i) => {
-                substations.push(new BpSubstation(w, -1 - coordinateIndex * 3, substationName))
-                //connect previous substation to current substation
+                const substation = new BpSubstation(
+                    w,
+                    -1 - coordinateIndex * 3,
+                    substationName
+                );
+                substations.push(substation);
+
                 if (i !== 0) {
-                    wires.push(BpStaticMethods.connect(substations.at(-2)!, substations.at(-1)!, 5, 5))
+                    wires.push(
+                        BpStaticMethods.connect(
+                            substations[substations.length - 2]!,
+                            substation,
+                            5,
+                            5
+                        )
+                    );
                 }
-            })
-            if (substations.at(-1) && substations.at(-1 - substationCoordinatesW.length)) {
-                wires.push(BpStaticMethods.connect(substations.at(-1)!, substations.at(-1 - substationCoordinatesW.length)!, 5, 5))
+            });
+
+            const last = substations[substations.length - 1];
+            const above =
+                substations[substations.length - 1 - substationCoordinatesW.length];
+
+            if (last && above) {
+                wires.push(BpStaticMethods.connect(last, above, 5, 5));
             }
 
-            heightOffset += 1;
-            skipLoop = false
-        }
-        else {
+            if (substations.length === substationCoordinatesW.length) {
+                const screenEntityFirstSubstation: BpSubstation = screenEntities.find(entity => entity instanceof BpSubstation)!;
+                wires.push(BpStaticMethods.connect(screenEntityFirstSubstation!, substations[0]!, 5, 5))
+            }
 
+            heightOffset++;
+            skipLoop = false;
+        } else {
             const frame = frames[frameIndex]!;
-            let rindex = 0;
-            while (rindex < frame.length) {
-                const row = frame[rindex];
-                const constCombinator = new BpConstCombinator({
-                    filters: ((): TBpConstCombinatorControlBehaviorFilter[] => {
-                        const filters: TBpConstCombinatorControlBehaviorFilter[] = []
-                        for (let k = 0; k < row!.length; k++) {
-                            filters.push({
-                                signal: signal_priority[k],
-                                index: k + 1,
-                                count: row![k]!
-                            })
-                        }
-                        return filters
-                    })()
-                }, rindex, -3 - ((frameIndex + heightOffset) * 3), Directions.EAST_NORTH_EAST)
+
+            for (let x = 0; x < width; x++) {
+                const filters: TBpConstCombinatorControlBehaviorFilter[] = [];
+
+                for (let y = 0; y < height; y++) {
+                    filters.push({
+                        signal: signal_priority[y],
+                        index: y + 1,
+                        count: frame[y]![x]!,
+                    });
+                }
+
+                const constCombinator = new BpConstCombinator(
+                    { filters },
+                    x,
+                    -3 - (frameIndex + heightOffset) * 3,
+                    Directions.EAST_NORTH_EAST
+                );
 
                 const deciderCombinator = new BpDeciderCombinator(
                     new DeciderCondition(
-                        [{ first_signal: Signals.FISH, comparator: '=', constant: frameIndex + 1, first_signal_networks: { red: true, green: false } }],
-                        [{ signal: Signals.EVERYTHING, networks: { red: false, green: true } }]),
-                    rindex,
-                    -1 - ((frameIndex + heightOffset) * 3),
+                        [
+                            {
+                                first_signal: Signals.FISH,
+                                comparator: "=",
+                                constant: frameIndex + 1,
+                                first_signal_networks: { red: true, green: false },
+                            },
+                        ],
+                        [{ signal: Signals.EVERYTHING, networks: { red: false, green: true } }]
+                    ),
+                    x,
+                    -1 - (frameIndex + heightOffset) * 3,
                     Directions.EAST_NORTH_EAST
-                )
+                );
 
-                //Connect Const Combinator to Decider Combinator Green wire
-                wires.push(BpStaticMethods.connect(constCombinator, deciderCombinator, 2, 2))
+                wires.push(
+                    BpStaticMethods.connect(constCombinator, deciderCombinator, 2, 2)
+                );
 
-                const previousDeciderCombinator = deciderCombinators.at(-1)
-
-                //Connect previous Decider Combinator in this row to current Decider Combinator Red wire
-                if (previousDeciderCombinator && previousDeciderCombinator.position.y === deciderCombinator.position.y) {
-                    wires.push(BpStaticMethods.connect(previousDeciderCombinator, deciderCombinator, 1, 1))
+                const prev = deciderCombinators[deciderCombinators.length - 1];
+                if (prev && prev.position.y === deciderCombinator.position.y) {
+                    wires.push(
+                        BpStaticMethods.connect(prev, deciderCombinator, 1, 1)
+                    );
                 }
 
-                //Connect previous Decider Combinator in this col to current Decider Combinator Green wire
-                if (deciderCombinators.at(-frames[0]!.length)) {
-                    wires.push(BpStaticMethods.connect(deciderCombinators.at(- frames[0]!.length)!, deciderCombinator, 4, 4))
+                const above = deciderCombinators[deciderCombinators.length - width];
+                if (above) {
+                    wires.push(
+                        BpStaticMethods.connect(above, deciderCombinator, 4, 4)
+                    );
                 }
 
-                deciderCombinators.push(deciderCombinator)
-                constCombinators.push(constCombinator)
-
-                rindex++;
+                deciderCombinators.push(deciderCombinator);
+                constCombinators.push(constCombinator);
             }
 
-            if (deciderCombinators.at(-1 - frames[0]!.length)) {
-                wires.push(BpStaticMethods.connect(deciderCombinators.at(-1 - frames[0]!.length)!, deciderCombinators.at(-1)!, 1, 1))
+            const last = deciderCombinators[deciderCombinators.length - 1];
+            const above =
+                deciderCombinators[deciderCombinators.length - 1 - width];
+
+            if (last && above) {
+                wires.push(BpStaticMethods.connect(above, last, 1, 1));
             }
         }
 
-        if (skipLoop) {
-            frameIndex++;
-        }
-
+        if (skipLoop) frameIndex++;
         coordinateIndex++;
     }
 
-    //#region Timer
-    const timerConstCombinator = new BpConstCombinator({ filters: [{ signal: Signals.FISH, count: 1, index: 2 }] }, -6, -2)
-    const timerDeciderCombinator = new BpDeciderCombinator(
-        new DeciderCondition([{ first_signal: Signals.FISH, comparator: '<', constant: (frames.length + (loopWithoutBlankFrame ? 0 : 1)) * frameRate }], [{ signal: Signals.FISH }]),
+    // ---------------- TIMER ----------------
+
+    const timerConst = new BpConstCombinator(
+        { filters: [{ signal: Signals.FISH, count: 1, index: 2 }] },
+        -6,
+        -2
+    );
+
+    const timerDecider = new BpDeciderCombinator(
+        new DeciderCondition(
+            [
+                {
+                    first_signal: Signals.FISH,
+                    comparator: "<",
+                    constant:
+                        (frames.length + (loopWithoutBlankFrame ? 0 : 1)) * frameRate,
+                },
+            ],
+            [{ signal: Signals.FISH }]
+        ),
         -5,
         -2,
         2
-    )
-    const timerArithmeticCombinator = new BpArithmeticCombinator(
-        new ArithmeticCondition(Signals.FISH, '/', frameRate, Signals.FISH),
+    );
+
+    const timerArithmetic = new BpArithmeticCombinator(
+        new ArithmeticCondition(Signals.FISH, "/", frameRate, Signals.FISH),
         -4,
         -2,
         2
-    )
-    const addingArithmeticCombinator = new BpArithmeticCombinator(
-        new ArithmeticCondition(Signals.FISH, '+', 1, Signals.FISH),
+    );
+
+    const addingArithmetic = new BpArithmeticCombinator(
+        new ArithmeticCondition(Signals.FISH, "+", 1, Signals.FISH),
         -3,
         -2,
         2
-    )
-    //connect timer
-    wires.push(BpStaticMethods.connect(timerConstCombinator, timerDeciderCombinator, 2, 2))
-    wires.push(BpStaticMethods.connect(timerDeciderCombinator, timerDeciderCombinator, 2, 4))
-    wires.push(BpStaticMethods.connect(timerArithmeticCombinator, timerDeciderCombinator, 1, 3))
-    wires.push(BpStaticMethods.connect(timerArithmeticCombinator, addingArithmeticCombinator, 3, 1))
-    wires.push(BpStaticMethods.connect(addingArithmeticCombinator, deciderCombinators[0]!, 3, 1))
-
-
-
-    constCombinators.push(timerConstCombinator)
-    deciderCombinators.push(timerDeciderCombinator)
-    //#endregion
-
-    //#region connect 1st row of lamps to decider combinators
-    for (let i = 0; i < frames[0]!.length; i++) {
-        const lamp = screenEntities.find(e => e instanceof BpLamp && e.position.x === i && e.position.y === 0)
-        wires.push(BpStaticMethods.connect(lamp!, deciderCombinators[i]!, 2, 4))
+    );
+    if (quality !== 0) {
+        const timerSubstation = new BpSubstation(-6, -7, substationName);
+        substations.push(timerSubstation);
+        wires.push(BpStaticMethods.connect(timerSubstation, substations[0]!, 5, 5));
     }
-    //#endregion
 
-    //#region Add horizontal row of substations if needed
-    if (substationCoordinatesH.at(-1) && coordinateIndex < substationCoordinatesH.at(-1)!) {
-        substationCoordinatesW.forEach((w, i) => {
-            substations.push(new BpSubstation(w, -1 - (substationCoordinatesH.at(-1)! * 3), substationName))
-            //connect previous substation to current substation
-            if (i !== 0) {
-                wires.push(BpStaticMethods.connect(substations.at(-2)!, substations.at(-1)!, 5, 5))
-            }
-        })
-        if (substations.at(-1) && substations.at(-1 - substationCoordinatesW.length)) {
-            wires.push(BpStaticMethods.connect(substations.at(-1)!, substations.at(-1 - substationCoordinatesW.length)!, 5, 5))
+    wires.push(
+        BpStaticMethods.connect(timerConst, timerDecider, 2, 2),
+        BpStaticMethods.connect(timerDecider, timerDecider, 2, 4),
+        BpStaticMethods.connect(timerArithmetic, timerDecider, 1, 3),
+        BpStaticMethods.connect(timerArithmetic, addingArithmetic, 3, 1),
+        BpStaticMethods.connect(addingArithmetic, deciderCombinators[0]!, 3, 1),
+    );
+
+    constCombinators.push(timerConst);
+    deciderCombinators.push(timerDecider);
+
+    // -------- Connect lamps --------
+
+    for (let i = 0; i < width; i++) {
+        const lamp = lampsByX.get(i);
+        if (lamp) {
+            wires.push(
+                BpStaticMethods.connect(lamp, deciderCombinators[i]!, 2, 4)
+            );
         }
     }
-    //#endregion
 
+    // -------- Final substation row --------
 
-    const result1: Blueprint = new Blueprint(
+    const lastH = substationCoordinatesH[substationCoordinatesH.length - 1];
+    if (lastH && coordinateIndex < lastH) {
+        substationCoordinatesW.forEach((w, i) => {
+            const sub = new BpSubstation(
+                w,
+                1 - lastH * 3,
+                substationName
+            );
+            substations.push(sub);
+
+            if (i !== 0) {
+                wires.push(
+                    BpStaticMethods.connect(
+                        substations[substations.length - 2]!,
+                        sub,
+                        5,
+                        5
+                    )
+                );
+            }
+        });
+
+        const last = substations[substations.length - 1];
+        //-1 is timer substation
+        const above = substations[substations.length - 1 - 1 - substationCoordinatesW.length];
+        if (last && above) {
+            wires.push(BpStaticMethods.connect(last, above, 5, 5));
+        }
+    }
+
+    return new Blueprint(
         [new BpIcon(Signals.WHITE, 1)],
-        [...substations, ...deciderCombinators, ...constCombinators, ...screenEntities, timerArithmeticCombinator, addingArithmeticCombinator],
+        [
+            ...substations,
+            ...deciderCombinators,
+            ...constCombinators,
+            ...screenEntities,
+            timerArithmetic,
+            addingArithmetic,
+        ],
         [],
         wires
     );
-
-    return result1
 }
-

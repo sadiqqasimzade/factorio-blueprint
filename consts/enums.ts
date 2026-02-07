@@ -11,6 +11,7 @@ export enum EntityNames {
   LAMP = "small-lamp",
   MEDIUM_ELECTRIC_POLE = "medium-electric-pole",
   DECIDER_COMBINATOR = "decider-combinator",
+  PROGRAMMABLE_SPEAKER = "programmable-speaker",
 }
 
 export enum TileNames {

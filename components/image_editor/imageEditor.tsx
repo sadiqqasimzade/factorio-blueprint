@@ -1,6 +1,7 @@
 import QualitySelector from '@/components/dropdown/QualitySelector';
 import TileSelector from '@/components/dropdown/TileSelector';
 import SettingsContext from "@/contexts/settings/settingsContext";
+import { useAspectRatioResize } from '@/hooks/useAspectRatioResize';
 import { getDecimalColorsFromCanvas } from "@/utils/image/calculateColors";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -19,15 +20,27 @@ type Props = {
 export default function ImageEditor({ image, setImage, setResultCanvas, setPixelArt }: Props) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [width, setWidth] = useState<number>(0);
-  const [height, setHeight] = useState<number>(0);
   const [keepAspectRatio, setKeepAspectRatio] = useState<boolean>(true);
   const { maxWidth, maxHeight, maxHeightForLamps, minWidth, minHeight, convertTo, quality, isAllowedRefinedTiles, blackLampsAllowed, setQuality, setIsAllowedRefinedTiles, setBlackLampsAllowed, lampBgTile, setLampBgTile } = useContext(SettingsContext);
   const maxH = convertTo === 'lamp' ? maxHeightForLamps : maxHeight;
+
+
+  const { width, height, setWidth, setHeight } = useAspectRatioResize(
+    image?.width,
+    image?.height,
+    {
+      minWidth,
+      minHeight,
+      maxWidth,
+      maxHeight: maxH,
+    },
+    { keepAspectRatio }
+  );
+
   /**
-   * clear and redraw canvas with new size
-   * @returns void
-   */
+     * clear and redraw canvas with new size
+     * @returns void
+     */
   const handleResize = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -44,47 +57,6 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
   };
 
 
-
-  const handleWidthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!image) return;
-
-    let newWidth = Math.min(Number(event.target.value), maxWidth);
-
-    if (keepAspectRatio) {
-      const aspectRatio = image.height / image.width;
-      let newHeight = newWidth * aspectRatio;
-
-      if (newHeight > maxH) {
-        newHeight = maxH;
-        newWidth = newHeight / aspectRatio;
-      }
-
-      setHeight(Math.floor(newHeight));
-    }
-
-    setWidth(Math.floor(newWidth));
-  };
-
-  const handleHeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!image) return;
-
-    let newHeight = Math.min(Number(event.target.value), maxH);
-
-    if (keepAspectRatio) {
-      const aspectRatio = image.width / image.height;
-      let newWidth = newHeight * aspectRatio;
-
-      if (newWidth > maxWidth) {
-        newWidth = maxWidth;
-        newHeight = newWidth / aspectRatio;
-      }
-
-      setWidth(Math.floor(newWidth));
-    }
-
-    setHeight(Math.floor(newHeight));
-  };
-
   useEffect(() => {
     handleResize();
   }, [width, height]);
@@ -92,21 +64,21 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
   /**
    * initial canvas size set to image size or max available size if image is larger
    */
-  useEffect(() => {
-    if (!image) return;
+  // useEffect(() => {
+  //   if (!image) return;
 
-    const aspectRatio = image.width / image.height;
-    let newWidth = Math.min(image.width, maxWidth);
-    let newHeight = newWidth / aspectRatio;
+  //   const aspectRatio = image.width / image.height;
+  //   let newWidth = Math.min(image.width, maxWidth);
+  //   let newHeight = newWidth / aspectRatio;
 
-    if (newHeight > maxH) {
-      newHeight = maxH;
-      newWidth = newHeight * aspectRatio;
-    }
+  //   if (newHeight > maxH) {
+  //     newHeight = maxH;
+  //     newWidth = newHeight * aspectRatio;
+  //   }
 
-    setWidth(Math.floor(newWidth));
-    setHeight(Math.floor(newHeight));
-  }, []);
+  //   setWidth(Math.floor(newWidth));
+  //   setHeight(Math.floor(newHeight));
+  // }, []);
 
   return (
     <>
@@ -130,7 +102,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
                     className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     min={minWidth}
                     max={maxWidth}
-                    onChange={handleWidthChange}
+                    onChange={(e) => setWidth(Number(e.target.value))}
                   />
                   <p className="text-xs text-neutral-400">min: {minWidth} • max: {maxWidth}</p>
                 </div>
@@ -142,7 +114,7 @@ export default function ImageEditor({ image, setImage, setResultCanvas, setPixel
                     className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     min={minHeight}
                     max={maxH}
-                    onChange={handleHeightChange}
+                    onChange={(e) => setHeight(Number(e.target.value))}
                   />
                   <p className="text-xs text-neutral-400">min: {minHeight} • max: {maxH}</p>
                 </div>

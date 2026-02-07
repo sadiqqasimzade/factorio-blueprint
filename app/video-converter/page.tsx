@@ -1,23 +1,17 @@
 "use client"
 
-import FileDropZone from "@/components/drag_and_drop/FileDropZone";
 import SettingsContext from "@/contexts/settings/settingsContext";
-import clickCopyHandler from "@/utils/handlers/clickCopyHandler";
+import { useAspectRatioResize } from "@/hooks/useAspectRatioResize";
 import { getDecimalColorsFromCanvas } from "@/utils/image/calculateColors";
 import { decompressFrames, ParsedFrame, parseGIF } from "gifuct-js";
-import Image from "next/image";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import VideoPreview from "./components/VideoPreview";
+import VideoResult from "./components/VideoResult";
+import VideoSettings from "./components/VideoSettings";
 
 
-const qualities = [
-    "/imgs/entities/quality 0.webp",
-    "/imgs/entities/quality 1.webp",
-    // "/imgs/entities/quality 2.webp",
-    // "/imgs/entities/quality 3.webp",
-    // "/imgs/entities/quality 4.webp",
-    // "/imgs/entities/quality 5.webp",
-]
+
 
 export default function VideoConverter() {
     const { minHeight, minWidth, maxHeightForLamps, maxWidthForVideo, quality, setQuality } = useContext(SettingsContext);
@@ -27,14 +21,13 @@ export default function VideoConverter() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const progressRef = useRef<HTMLSpanElement>(null);
-    const resultRef = useRef<HTMLParagraphElement>(null)
-    const convertButtonRef = useRef<HTMLButtonElement>(null)
+    const resultRef = useRef<HTMLParagraphElement>(null);
+    const convertButtonRef = useRef<HTMLButtonElement>(null);
+    const blueprintWorkerRef = useRef<Worker | null>(null);
 
 
-
-    const [width, setWidth] = useState<number>(50);
-    const [height, setHeight] = useState<number>(50);
-    const [aspectRatio, setAspectRatio] = useState<number>(1);
+    const [originalWidth, setOriginalWidth] = useState<number>(0);
+    const [originalHeight, setOriginalHeight] = useState<number>(0);
     const [frameRate, setFrameRate] = useState<number>(30)
     const [skippedFrames, setSkippedFrames] = useState<number>(2)
     const [screenUps, setScreenUps] = useState(10)
@@ -42,7 +35,16 @@ export default function VideoConverter() {
     const [readyToStart, setReadyToStart] = useState(false)
     const [gifFrames, setGifFrames] = useState<ParsedFrame[]>()
     const [isGenerating, setIsGenerating] = useState(false);
-
+    const { width, height, setWidth, setHeight,aspectRatio } = useAspectRatioResize(
+        originalWidth,
+        originalHeight,
+        {
+            minWidth,
+            minHeight,
+            maxWidth: maxWidthForVideo,
+            maxHeight: maxHeightForLamps,
+        }
+    );
 
     useEffect(() => {
         setScreenUps(Math.min(60, Math.max(1, Math.round(frameRate / (1 + skippedFrames)))))
@@ -58,6 +60,9 @@ export default function VideoConverter() {
 
         currentCanvas.width = width
         currentCanvas.height = height
+
+
+
 
         const captureFrame = (currentTime: number): Promise<void> => {
             return new Promise((resolve) => {
@@ -197,40 +202,46 @@ export default function VideoConverter() {
     }
 
     const generateResult = (images: number[][][]) => {
-        const progress = progressRef.current as HTMLSpanElement;
+        const progress = progressRef.current;
+        if (progress) progress.textContent = "Generating blueprint...";
         setIsGenerating(true);
-        progress.textContent = 'Generating blueprint...';
 
-        // Create a new worker
-        const worker = new Worker(new URL('../../workers/blueprintWorker.ts', import.meta.url));
+        const worker = new Worker(new URL("../../workers/blueprintWorker.ts", import.meta.url));
+        blueprintWorkerRef.current = worker;
 
-        // Listen for the result
-        worker.onmessage = (e) => {
+        worker.onmessage = (e: MessageEvent<string>) => {
             const encoded = e.data;
-            if (resultRef.current) {
-                resultRef.current.textContent = encoded;
-            }
-            progress.textContent = 'Done!';
+            if (resultRef.current) resultRef.current.textContent = encoded;
+            if (progress) progress.textContent = "Done!";
             setIsGenerating(false);
             worker.terminate();
+            blueprintWorkerRef.current = null;
         };
 
-        // Handle any errors
         worker.onerror = (error) => {
-            console.error('Worker error:', error);
-            progress.textContent = 'Error generating blueprint!';
+            console.error("Worker error:", error);
+            if (progress) progress.textContent = "Error generating blueprint!";
             setIsGenerating(false);
             worker.terminate();
+            blueprintWorkerRef.current = null;
         };
 
-        // Send data to worker
         worker.postMessage({
             images,
             quality,
             screenUps,
-            loopWithoutBlankFrame
+            loopWithoutBlankFrame,
         });
-    }
+    };
+
+    useEffect(() => {
+        return () => {
+            if (blueprintWorkerRef.current) {
+                blueprintWorkerRef.current.terminate();
+                blueprintWorkerRef.current = null;
+            }
+        };
+    }, []);
 
     const handleVideoInput = (file: File) => {
         const videoURL = URL.createObjectURL(file);
@@ -252,9 +263,8 @@ export default function VideoConverter() {
                 newWidth = Math.min(maxWidthForVideo, Math.floor(maxHeightForLamps * ratio));
             }
 
-            setWidth(newWidth);
-            setHeight(newHeight);
-            setAspectRatio(ratio);
+            setOriginalHeight(newHeight)
+            setOriginalWidth(newWidth)
             setGifFrames(undefined);
 
             getFrameRate().then(() => {
@@ -284,9 +294,8 @@ export default function VideoConverter() {
             newWidth = Math.min(maxWidthForVideo, Math.floor(maxHeightForLamps * ratio));
         }
 
-        setWidth(newWidth);
-        setHeight(newHeight);
-        setAspectRatio(ratio);
+        setOriginalHeight(newHeight)
+        setOriginalWidth(newWidth)
         setGifFrames(decompressedFrames)
 
         // Calculate frame rate for GIF and set in-game update speed
@@ -313,190 +322,67 @@ export default function VideoConverter() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <section className="rounded-xl border border-neutral-700 bg-neutral-900/60 p-6 space-y-6">
-                        <div className="flex flex-col gap-2">
-                            <FileDropZone
-                                fileType="video/*,.gif"
-                                label="Drag & drop your video or GIF here"
-                                description="or click to browse"
-                                openPixelArtEditorInstead={false}
-                                onFileAccepted={(file) => {
-                                    if (file.type === 'image/gif') {
-                                        handleGifInput(file)
-                                    }
-                                    else {
-                                        handleVideoInput(file)
-                                    }
-                                }}
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <label className="text-sm text-neutral-300">Width</label>
-                                <input
-                                    type="number"
-                                    className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={width}
-                                    disabled={!readyToStart}
-                                    onChange={(e) => {
-                                        const newWidth = Math.min(maxWidthForVideo, Number(e.target.value));
-                                        setWidth(newWidth);
-                                        setHeight(Math.min(maxHeightForLamps, Math.round(newWidth / aspectRatio)));
-                                    }}
-                                    min={minWidth}
-                                    max={maxWidthForVideo}
-                                />
-                                <p className="text-xs text-neutral-400">min: {minWidth} • max: {maxWidthForVideo}</p>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm text-neutral-300">Height</label>
-                                <input
-                                    type="number"
-                                    className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={height}
-                                    disabled={!readyToStart}
-                                    onChange={(e) => {
-                                        const newHeight = Math.min(maxHeightForLamps, Number(e.target.value));
-                                        setHeight(newHeight);
-                                        setWidth(Math.min(maxWidthForVideo, Math.round(newHeight * aspectRatio)));
-                                    }}
-                                    min={minHeight}
-                                    max={maxHeightForLamps}
-                                />
-                                <p className="text-xs text-neutral-400">min: {minHeight} • max: {maxHeightForLamps}</p>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <label className="text-sm text-neutral-300">Skip Frames</label>
-                                <input
-                                    type="number"
-                                    className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={skippedFrames}
-                                    disabled={!readyToStart}
-                                    min={0}
-                                    onChange={(e) => {
-                                        setSkippedFrames(Number(e.target.value))
-                                    }}
-                                />
-                                <p className="text-xs text-neutral-400">Skip frames to reduce result size. UPS adjusts to maintain speed.</p>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm text-neutral-300">Screen UPS</label>
-                                <input
-                                    type="number"
-                                    className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={screenUps}
-                                    disabled={!readyToStart}
-                                    min={1}
-                                    max={60}
-                                    onChange={(e) => {
-                                        setScreenUps(Number(e.target.value))
-                                    }}
-                                />
-                                <p className="text-xs text-neutral-400">Max 60</p>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                            <input
-                                id="loop-without-blank"
-                                type="checkbox"
-                                className="h-4 w-4 rounded border-neutral-700 bg-neutral-800 text-blue-500 focus:ring-blue-500"
-                                checked={loopWithoutBlankFrame}
-                                disabled={!readyToStart}
-                                onChange={(e) => {
-                                    setLoopWithoutBlankFrame(e.target.checked)
-                                }}
-                            />
-                            <label htmlFor="loop-without-blank" className="text-sm text-neutral-300">Loop without blank frame</label>
-                        </div>
-
-                        <div className="space-y-2">
-                            <p className="text-sm font-semibold">Substation quality</p>
-                            <div className="flex gap-4 py-1">
-                                {qualities.map((value, index) => (
-                                    <label key={index} className="flex items-center gap-2 text-sm">
-                                        <input
-                                            type="radio"
-                                            value={index}
-                                            checked={quality === index}
-                                            disabled={!readyToStart}
-                                            onChange={() => setQuality(index)}
-                                            className="h-4 w-4"
-                                        />
-                                        {index}
-                                        <Image src={value} alt={`Quality ${qualities.indexOf(value)}`} width={20} height={20} />
-                                    </label>
-                                ))}
-                            </div>
-                            <p className="text-xs text-neutral-400">0 for no substations, 1 for base game.More options coming soon.......</p>
-                        </div>
-
-                        <div className="pt-2">
-                            <button
-                                ref={convertButtonRef}
-                                disabled={!readyToStart || isGenerating}
-                                className="inline-flex items-center justify-center rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                                onClick={() => {
-                                    if (width < minWidth || width > maxWidthForVideo || isNaN(width)) {
-                                        toast.error("Please enter a valid width")
-                                    }
-                                    else if (height < minHeight || height > maxHeightForLamps || isNaN(height)) {
-                                        toast.error("Please enter a valid height")
-                                    }
-                                    else if (skippedFrames < 0 || isNaN(skippedFrames)) {
-                                        toast.error("Please enter a valid skip frames")
-                                    }
-                                    else if (screenUps < 1 || screenUps > 60 || isNaN(screenUps)) {
-                                        toast.error("Please enter a valid in game update speed")
-                                    }
-                                    else if (gifFrames) {
-                                        extractGifFrames()
-                                    }
-                                    else if (videoRef.current?.readyState === 0) {
-                                        toast.error("Load video first")
-                                    }
-                                    else if (videoRef.current?.readyState !== 4) {
-                                        toast.error("Video is not loaded yet")
-                                    }
-                                    else {
-                                        extractVideoFrames()
-                                    }
-                                }}
-                            >
-                                Convert
-                            </button>
-                        </div>
-                    </section>
+                    <VideoSettings
+                        minWidth={minWidth}
+                        maxWidth={maxWidthForVideo}
+                        minHeight={minHeight}
+                        maxHeight={maxHeightForLamps}
+                        width={width}
+                        height={height}
+                        aspectRatio={aspectRatio}
+                        setWidth={setWidth}
+                        setHeight={setHeight}
+                        skippedFrames={skippedFrames}
+                        setSkippedFrames={setSkippedFrames}
+                        screenUps={screenUps}
+                        setScreenUps={setScreenUps}
+                        loopWithoutBlankFrame={loopWithoutBlankFrame}
+                        setLoopWithoutBlankFrame={setLoopWithoutBlankFrame}
+                        quality={quality}
+                        setQuality={setQuality}
+                        readyToStart={readyToStart}
+                        handleVideoInput={handleVideoInput}
+                        handleGifInput={handleGifInput}
+                        isGenerating={isGenerating}
+                        onConvert={() => {
+                            if (width < minWidth || width > maxWidthForVideo || isNaN(width)) {
+                                toast.error("Please enter a valid width")
+                            }
+                            else if (height < minHeight || height > maxHeightForLamps || isNaN(height)) {
+                                toast.error("Please enter a valid height")
+                            }
+                            else if (skippedFrames < 0 || isNaN(skippedFrames)) {
+                                toast.error("Please enter a valid skip frames")
+                            }
+                            else if (screenUps < 1 || screenUps > 60 || isNaN(screenUps)) {
+                                toast.error("Please enter a valid in game update speed")
+                            }
+                            else if (gifFrames) {
+                                extractGifFrames()
+                            }
+                            else if (videoRef.current?.readyState === 0) {
+                                toast.error("Load video first")
+                            }
+                            else if (videoRef.current?.readyState !== 4) {
+                                toast.error("Video is not loaded yet")
+                            }
+                            else {
+                                extractVideoFrames()
+                            }
+                        }}
+                        convertButtonRef={convertButtonRef}
+                    />
 
                     <section className="rounded-xl border border-neutral-700 bg-neutral-900/60 p-6 space-y-6">
-                        <div className="space-y-2">
-                            <p className="text-sm text-neutral-300">Current Frame</p>
-                            <div className="rounded-lg border border-neutral-700 bg-neutral-800/50 p-4">
-                                <canvas ref={canvasRef} className="max-w-full" />
-                            </div>
-                        </div>
+                        <VideoPreview
+                            canvasRef={canvasRef}
+                            progressRef={progressRef}
+                            isGenerating={isGenerating}
+                        />
 
-                        <div className="space-y-2">
-                            <p className="text-sm text-neutral-300">Status</p>
-                            <div className="flex items-center justify-between rounded-md border border-neutral-700 bg-neutral-800/50 px-3 py-2">
-                                <span className="text-sm">Progress: <span ref={progressRef}>Waiting input</span></span>
-                                {isGenerating && <span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />}
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <p className="text-sm font-semibold">Result</p>
-                            <p
-                                ref={resultRef}
-                                onClick={(e) => { clickCopyHandler(e).then(result => result ? toast.success('Successfully copied') : toast.error('Unable to copy')) }}
-                                className="max-h-80 overflow-y-auto rounded-md border border-neutral-700 bg-neutral-800/50 p-3 text-sm break-all cursor-pointer hover:border-blue-500 transition-colors"
-                            />
-                            <p className="text-xs text-neutral-400">Click the result to copy</p>
-                        </div>
+                        <VideoResult
+                            resultRef={resultRef}
+                        />
                     </section>
                 </div>
             </div>

@@ -9,9 +9,9 @@ export default function ImgToBrickBlueprintConvertor(pixelArt: string[][]): Blue
 
 
 
-  for (let i = 0; i < pixelArt[0]!.length; i++) {
-    for (let j = 0; j < pixelArt.length; j++) {
-      tiles.push(new BpTile(j, i, tileColors[pixelArt[j]![i]!]!));
+  for (let i = 0; i < pixelArt.length; i++) {
+    for (let j = 0; j < pixelArt[i]!.length; j++) {
+      tiles.push(new BpTile(j, i, tileColors[pixelArt[i]![j]!]!));
     }
   }
   return new Blueprint(

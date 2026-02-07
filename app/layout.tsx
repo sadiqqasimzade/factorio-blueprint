@@ -1,6 +1,8 @@
 import '@/app/globals.css'
 import Footer from '@/components/common/footer/Footer'
+import SupportMe from '@/components/common/footer/SupportMe'
 import Header from '@/components/common/header/Header'
+import ErrorBoundary from '@/components/error/ErrorBoundary'
 import ModalProvider from '@/contexts/modal/modalProvider'
 import SettingProvider from '@/contexts/settings/settingProvider'
 import { Analytics } from "@vercel/analytics/react"
@@ -24,35 +26,95 @@ const font = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Factorio Blueprint Generator - Create Blueprints Easily',
+  title: {
+    default: 'Factorio Blueprint Generator - Create Blueprints Easily',
+    template: '%s | Factorio Tools',
+  },
   description: 'Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions.',
-  keywords: ['Factorio', 'Blueprint', 'Converter', 'Blueprint-Converter', 'Image to Blueprint', 'Blueprint Generator', 'Factorio Blueprint Generator', 'Factorio Blueprint Converter', 'Factorio Blueprint', 'Factorio', 'Blueprint', 'Converter', 'Image', 'Blueprint', 'Converter'],
+  keywords: [
+    'Factorio',
+    'Blueprint Generator',
+    'Blueprint Converter',
+    'Image to Blueprint',
+    'Video to Blueprint',
+    'Pixel Art',
+    'Factorio Tools',
+    'Blueprint Decoder',
+    'Blueprint Encoder',
+    'Game Tools',
+    'Factorio Blueprint Creator',
+    'Blueprint Maker',
+    'Factorio Blueprint Tool',
+    'Online Blueprint Generator',
+    'Free Blueprint Converter',
+    'Factorio Base Design',
+    'Blueprint Designer',
+    'Factorio Automation',
+    'Game Blueprint',
+    'Factorio Mod',
+    'Blueprint Sharing',
+    'Factorio Community',
+    'Blueprint String',
+    'Factorio Planner',
+    'Game Utility',
+    'Factorio Helper',
+    'Blueprint Editor',
+    'Factorio Resources',
+    'Blueprint Library',
+    'Factorio Tips',
+  ],
   authors: [{ name: 'Sadiq Qasimzade' }],
+  creator: 'Sadiq Qasimzade',
+  publisher: 'Factorio Tools',
   openGraph: {
     title: 'Factorio Blueprint Generator - Create Blueprints Easily',
     description: 'Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions.',
     type: 'website',
     siteName: 'Factorio Tools',
     locale: 'en_US',
-    images: ['https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif'],
+    images: [
+      {
+        url: 'https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif',
+        width: 1200,
+        height: 630,
+        alt: 'Factorio Blueprint Generator',
+      },
+    ],
     url: 'https://factorio-blueprint.vercel.app',
   },
   twitter: {
+    card: 'summary_large_image',
     title: 'Factorio Blueprint Generator - Create Blueprints Easily',
     description: 'Explore a suite of tools to convert images and videos, create custom art, and optimize Factorio blueprints. Elevate your gaming with easy-to-use solutions.',
-    card: 'summary_large_image',
-    site: 'https://factorio-blueprint.vercel.app',
-    creator: 'sadiq_qasimzade',
+    site: '@factorio_tools',
+    creator: '@sadiq_qasimzade',
     images: ['https://factorio-blueprint.vercel.app/imgs/post_covers/Cover.gif'],
   },
-  manifest: 'manifest.json',
-  robots: 'index, follow',
+  manifest: '/manifest.json',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   applicationName: 'Factorio Tools',
-  icons: [
-    { rel: 'icon', type: 'image/png', sizes: '16x16', url: 'imgs/favicons/favicon-16x16.png' },
-    { rel: 'icon', type: 'image/png', sizes: '32x32', url: 'imgs/favicons/favicon-32x32.png' },
-    { rel: 'icon', url: 'imgs/favicons/favicon.ico' },
-  ],
+  category: 'Game Tools',
+  classification: 'Utility',
+  icons: {
+    icon: [
+      { url: '/imgs/favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/imgs/favicons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/imgs/favicons/favicon.ico' },
+    ],
+    apple: [
+      { url: '/imgs/favicons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+  },
   alternates: {
     canonical: 'https://factorio-blueprint.vercel.app',
   },
@@ -61,6 +123,10 @@ export const metadata: Metadata = {
     yandex: 'e8eb17829dd8cb60',
   },
   metadataBase: new URL('https://factorio-blueprint.vercel.app'),
+  other: {
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'black-translucent',
+  },
 }
 
 export default function RootLayout({
@@ -96,7 +162,7 @@ export default function RootLayout({
                 name: 'Sadiq Qasimzade',
               },
               datePublished: '2025-06-10',
-              dateModified: '2025-08-16',
+              dateModified: new Date().toISOString().split('T')[0],
               inLanguage: 'en-US',
               featureList: [
                 'Image to Blueprint Conversion',
@@ -104,7 +170,7 @@ export default function RootLayout({
                 'Pixel Art Creation for Factorio',
                 'Blueprint Decoding and Encoding',
               ],
-              keywords: 'Factorio, Blueprint Generator, Image to Blueprint, Video to Blueprint, Pixel Art, Game Tools',
+              keywords: 'Factorio, Blueprint Generator, Blueprint Converter, Image to Blueprint, Video to Blueprint, Pixel Art, Factorio Tools, Blueprint Decoder, Blueprint Encoder, Game Tools, Factorio Blueprint Creator, Blueprint Maker, Factorio Blueprint Tool, Online Blueprint Generator, Free Blueprint Converter, Factorio Base Design, Blueprint Designer, Factorio Automation, Game Blueprint, Factorio Mod, Blueprint Sharing, Factorio Community, Blueprint String, Factorio Planner, Game Utility, Factorio Helper, Blueprint Editor, Factorio Resources, Blueprint Library, Factorio Tips',
               mainEntityOfPage: {
                 '@type': 'WebPage',
                 '@id': 'https://factorio-blueprint.vercel.app',
@@ -130,9 +196,13 @@ export default function RootLayout({
             />
             <SettingProvider>
               <Header />
-              <main>
-                {children}
-              </main>
+              <ErrorBoundary>
+                <main>
+                  {children}
+                </main>
+              </ErrorBoundary>
+              <SupportMe />
+
               <Footer />
             </SettingProvider>
           </div>
